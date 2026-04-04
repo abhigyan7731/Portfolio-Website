@@ -41,7 +41,7 @@ const Contact = () => {
               Linkedin <MdArrowOutward />
             </a>
             <a
-              href="https://leetcode.com/abhigyan7731"
+              href="https://leetcode.com/u/Abhigyan007/"
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="disable"
