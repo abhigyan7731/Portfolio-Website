@@ -43,8 +43,9 @@ const Navbar = () => {
   return (
     <>
       <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
+        <a href="/#" className="navbar-title" data-cursor="disable" aria-label="Home">
+          <span className="navbar-logo-mark" aria-hidden="true"></span>
+          <span className="sr-only">Abhigyan Kumar Gupta</span>
         </a>
         <a
           href="mailto:abhigyankumar268@gmail.com"
