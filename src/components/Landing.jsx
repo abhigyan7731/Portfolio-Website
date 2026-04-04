@@ -4,23 +4,26 @@ const Landing = ({ children }) => {
       <div className="landing-section" id="landingDiv">
         <div className="landing-container">
           <div className="landing-intro">
-            <h2>Hello! I'm</h2>
+            <p className="landing-kicker">B.Tech CSE Student</p>
             <h1>
-              ABHIGYAN 
-              <br />
+              ABHIGYAN <br />
               <span>KUMAR GUPTA</span>
             </h1>
+            <p className="landing-summary">
+              Full-stack developer and machine learning enthusiast focused on
+              building practical products with React, Next.js, Node.js,
+              PostgreSQL, Supabase, and Python.
+            </p>
           </div>
           <div className="landing-info">
-            <h3>B.Tech CSE Student</h3>
-            <h2 className="landing-info-h2">
-              <div className="landing-h2-1">Full Stack</div>
-              <div className="landing-h2-2">Developer</div>
-            </h2>
-            <h2>
-              <div className="landing-h2-info">Machine Learning</div>
-              <div className="landing-h2-info-1">Enthusiast</div>
-            </h2>
+            <div className="landing-chip">
+              <span>Full Stack</span>
+              <strong>Developer</strong>
+            </div>
+            <div className="landing-chip landing-chip-alt">
+              <span>Machine Learning</span>
+              <strong>Enthusiast</strong>
+            </div>
           </div>
         </div>
         {children}
