@@ -47,7 +47,7 @@ const Navbar = () => {
           Logo
         </a>
         <a
-          href="mailto:example@mail.com"
+          href="mailto:abhigyankumar268@gmail.com"
           className="navbar-connect"
           data-cursor="disable"
         >

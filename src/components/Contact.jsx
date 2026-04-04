@@ -9,8 +9,8 @@ const Contact = () => {
           <div className="contact-box">
             <h4>Email</h4>
             <p>
-              <a href="mailto:example@mail.com" data-cursor="disable">
-                abhigyankumar268@mail.com
+              <a href="mailto:abhigyankumar268@gmail.com" data-cursor="disable">
+                abhigyankumar268@gmail.com
               </a>
             </p>
             <h4>Phone</h4>
@@ -23,40 +23,35 @@ const Contact = () => {
           <div className="contact-box">
             <h4>Social</h4>
             <a
-              href="https://github.com"
+              href="https://github.com/abhigyan7731"
               target="_blank"
+              rel="noopener noreferrer"
               data-cursor="disable"
               className="contact-social"
             >
               Github <MdArrowOutward />
             </a>
             <a
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/abhigyan-kumar-gupta"
               target="_blank"
+              rel="noopener noreferrer"
               data-cursor="disable"
               className="contact-social"
             >
               Linkedin <MdArrowOutward />
             </a>
             <a
-              href="https://x.com"
+              href="https://leetcode.com/abhigyan7731"
               target="_blank"
+              rel="noopener noreferrer"
               data-cursor="disable"
               className="contact-social"
             >
-              Twitter <MdArrowOutward />
-            </a>
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Instagram <MdArrowOutward />
+              LeetCode <MdArrowOutward />
             </a>
             <h4>Resume</h4>
             <a
-              href="/resume/ABHIGYAN_KUMAR_GUPTA_Resume.pdf"
+              href="/images/Abhigyan_Kumar_Gupta_ATS_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="disable"
