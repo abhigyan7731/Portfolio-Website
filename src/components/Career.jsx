@@ -13,43 +13,41 @@ const Career = () => {
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Position In Company</h4>
-                <h5>Company Name</h5>
+                <h4>B.Tech, Computer Science and Engineering</h4>
+                <h5>SRM IST Ghaziabad</h5>
               </div>
-              <h3>20XX</h3>
+              <h3>2023-2027</h3>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              labore sit non ipsum temporibus quidem, deserunt eaque officiis
-              mollitia ratione suscipit repellat.
+              Current CGPA: 8.88/10. Built multiple full-stack and machine
+              learning projects, with strong focus on software engineering,
+              data structures, and practical product development.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Position In Company</h4>
-                <h5>Company Name</h5>
+                <h4>Class XII (PCM), CBSE</h4>
+                <h5>Kendriya Vidyalaya Kankarbagh No.1</h5>
               </div>
-              <h3>20XX</h3>
+              <h3>2022</h3>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              labore sit non ipsum temporibus quidem, deserunt eaque officiis
-              mollitia ratione suscipit repellat.
+              Completed higher secondary education with 79.3%, strengthening my
+              foundation in mathematics, science, and problem-solving.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Position In Company</h4>
-                <h5>Company Name</h5>
+                <h4>Class X, CBSE</h4>
+                <h5>Bradford International School</h5>
               </div>
-              <h3>NOW</h3>
+              <h3>2020</h3>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              labore sit non ipsum temporibus quidem, deserunt eaque officiis
-              mollitia ratione suscipit repellat.
+              Completed secondary education with 78.5% and developed strong
+              interest in technology, computing, and engineering.
             </p>
           </div>
         </div>

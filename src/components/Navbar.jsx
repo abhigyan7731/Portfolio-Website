@@ -26,11 +26,13 @@ const Navbar = () => {
     links.forEach((elem) => {
       let element = elem;
       element.addEventListener("click", (e) => {
+        let elem = e.currentTarget;
+        let section = elem.getAttribute("data-href");
         if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
+          if (section) {
+            e.preventDefault();
+            smoother.scrollTo(section, true, "top top");
+          }
         }
       });
     });
@@ -49,7 +51,7 @@ const Navbar = () => {
           className="navbar-connect"
           data-cursor="disable"
         >
-          example@mail.com
+          abhigyankumar268@gmail.com
         </a>
         <ul>
           <li>
@@ -65,6 +67,16 @@ const Navbar = () => {
           <li>
             <a data-href="#contact" href="#contact">
               <HoverLinks text="CONTACT" />
+            </a>
+          </li>
+          <li>
+            <a
+              href="/images/Abhigyan_Kumar_Gupta_ATS_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="disable"
+            >
+              <HoverLinks text="RESUME" />
             </a>
           </li>
         </ul>

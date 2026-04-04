@@ -54,6 +54,16 @@ const Contact = () => {
             >
               Instagram <MdArrowOutward />
             </a>
+            <h4>Resume</h4>
+            <a
+              href="/resume/ABHIGYAN_KUMAR_GUPTA_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="disable"
+              className="contact-social"
+            >
+              View Resume <MdArrowOutward />
+            </a>
           </div>
           <div className="contact-box">
             <h2>
