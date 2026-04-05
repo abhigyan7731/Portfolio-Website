@@ -3,6 +3,7 @@
   max-width: var(--cMaxWidth);
   width: var(--cWidth);
   justify-content: space-between;
+  align-items: flex-start;
   padding: 20px 0px;
   margin-bottom: -100px;
   box-sizing: border-box;
@@ -15,17 +16,20 @@
 .header ul {
   font-size: 12px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   margin: 0;
   padding: 0;
   list-style: none;
-  column-gap: 40px;
-  row-gap: 8px;
+  column-gap: 14px;
+  row-gap: 6px;
   align-items: end;
+  max-width: 72%;
 }
 .header ul li {
   margin-left: 0px;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   color: #ccc;
   font-weight: 600;
   cursor: pointer;
@@ -99,7 +103,7 @@
     padding: 20px 0px;
   }
   .header ul {
-    flex-direction: row;
+    column-gap: 20px;
     align-items: center;
     font-size: 14px;
   }
@@ -124,6 +128,7 @@
     padding: 35px 0px;
   }
   .header ul {
+    max-width: none;
     column-gap: 80px;
     font-size: 16px;
   }

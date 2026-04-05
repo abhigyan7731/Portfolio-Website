@@ -390,13 +390,13 @@
   .landing-section {
     height: auto;
     min-height: var(--vh);
-    padding-top: 78px;
+    padding-top: 108px;
     overflow: hidden;
   }
 
   .landing-container {
     height: auto;
-    min-height: calc(var(--vh) - 78px);
+    min-height: calc(var(--vh) - 108px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -485,7 +485,7 @@
 }
 @media screen and (max-width: 600px) {
   .landing-section {
-    padding-top: 70px;
+    padding-top: 98px;
   }
 
   .landing-intro h1 {
