@@ -44,7 +44,12 @@ const Navbar = () => {
     <>
       <div className="header">
         <a href="/#" className="navbar-title" data-cursor="disable" aria-label="Home">
-          <span className="navbar-logo-mark" aria-hidden="true"></span>
+          <span className="navbar-logo-3d" aria-hidden="true">
+            <span className="navbar-logo-face navbar-logo-front">A</span>
+            <span className="navbar-logo-face navbar-logo-right" />
+            <span className="navbar-logo-face navbar-logo-bottom" />
+            <span className="navbar-logo-ring" />
+          </span>
           <span className="sr-only">Abhigyan Kumar Gupta</span>
         </a>
         <a

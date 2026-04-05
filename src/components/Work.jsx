@@ -14,6 +14,7 @@ const projects = [
     github: "https://github.com/abhigyan7731/ai-splitwise-clone",
     gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     accent: "#667eea",
+    accentRgb: "102, 126, 234",
   },
   {
     title: "E-Commerce Website",
@@ -23,6 +24,7 @@ const projects = [
     github: "https://github.com/abhigyan7731/E-commerce-website",
     gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
     accent: "#f093fb",
+    accentRgb: "240, 147, 251",
   },
   {
     title: "Portfolio Website",
@@ -32,6 +34,7 @@ const projects = [
     github: "https://github.com/abhigyan7731/Portfolio-Website",
     gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
     accent: "#4facfe",
+    accentRgb: "79, 172, 254",
   },
   {
     title: "Predictive CKD Classifier",
@@ -42,6 +45,7 @@ const projects = [
       "https://github.com/abhigyan7731/CKD-Stage-Prediction-and-Treatment-AI-Based",
     gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
     accent: "#43e97b",
+    accentRgb: "67, 233, 123",
   },
 ];
 
@@ -152,6 +156,7 @@ const Work = () => {
               onMouseLeave={() => handleCardMouseLeave(index)}
               style={{
                 "--card-accent": project.accent,
+                "--card-accent-rgb": project.accentRgb,
                 "--card-gradient": project.gradient,
               }}
             >
