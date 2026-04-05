@@ -7,6 +7,7 @@ import Landing from "./Landing";
 import Navbar from "./Navbar";
 import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
+import SkillConstellation from "./SkillConstellation";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
 import gsap from "gsap";
@@ -78,6 +79,7 @@ const MainContainer = ({ children }) => {
             <Landing>{!isDesktopView && children}</Landing>
             <About />
             <WhatIDo />
+            <SkillConstellation />
             <Career />
             <Work />
             {isDesktopView && (
