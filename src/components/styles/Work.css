@@ -38,6 +38,14 @@
   gap: 50px;
   justify-content: start;
 }
+.work-box-link {
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease;
+}
+.work-box-link:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
 .work-flex .work-box:nth-child(even) {
   flex-direction: column-reverse;
 }
@@ -84,6 +92,12 @@
 }
 .work-info > p {
   width: 90%;
+}
+.work-repo-cta {
+  margin-top: 14px;
+  color: var(--accentColor);
+  font-weight: 500;
+  letter-spacing: 0.6px;
 }
 .work-image {
   display: flex;
