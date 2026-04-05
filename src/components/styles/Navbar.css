@@ -272,3 +272,39 @@
     height: 56px;
   }
 }
+
+/* ===== Small phone fixes ===== */
+@media only screen and (max-width: 499px) {
+  .header {
+    padding: 12px 0;
+  }
+
+  .navbar-logo-3d {
+    width: 38px;
+    height: 38px;
+  }
+
+  .navbar-logo-front {
+    border-radius: 10px;
+    font-size: 18px;
+  }
+
+  .navbar-logo-front::before {
+    font-size: 18px;
+  }
+
+  .navbar-logo-ring {
+    width: 42px;
+    height: 42px;
+    display: none;
+  }
+
+  .header ul {
+    column-gap: 10px;
+    font-size: 11px;
+  }
+
+  .header ul li {
+    letter-spacing: 0.3px;
+  }
+}

@@ -53,6 +53,36 @@ const Work = () => {
   const cardsRef = useRef([]);
 
   useEffect(() => {
+    // Skip horizontal scroll on mobile — cards stack vertically
+    if (typeof window !== "undefined" && window.innerWidth <= 900) {
+      // Just animate title on mobile
+      gsap.from(".work-title-word", {
+        y: 60,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".work-section",
+          start: "top 80%",
+        },
+      });
+
+      gsap.from(".work-box", {
+        y: 60,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".work-flex",
+          start: "top 85%",
+        },
+      });
+
+      return;
+    }
+
     let translateX = 0;
 
     function setTranslateX() {

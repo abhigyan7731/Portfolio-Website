@@ -300,6 +300,45 @@
   }
 }
 
+@media only screen and (max-width: 480px) {
+  .about-section-v2 {
+    padding: 40px 0 30px;
+  }
+
+  .about-glass-card {
+    width: 100%;
+    padding: 24px 16px;
+    border-radius: 14px;
+  }
+
+  .about-para-line {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .about-stats-row {
+    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .about-stat-item {
+    padding: 16px 20px;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .about-stat-value {
+    font-size: 28px;
+    margin-bottom: 0;
+  }
+
+  .about-stat-label {
+    font-size: 11px;
+  }
+}
+
 @media only screen and (min-width: 1025px) {
   .about-section-v2 {
     min-height: var(--vh);

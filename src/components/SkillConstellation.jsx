@@ -206,8 +206,9 @@ const SkillConstellation = () => {
     const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
     masterGroup.add(linesMesh);
 
-    // Background star field
-    const starCount = 1500;
+    // Background star field — fewer on mobile for performance
+    const isMobile = width < 768;
+    const starCount = isMobile ? 500 : 1500;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
     const starSizes = new Float32Array(starCount);
