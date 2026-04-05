@@ -1,17 +1,40 @@
-.work-section h2 {
-  margin-top: 100px;
-  font-size: 70px;
-  font-weight: 500;
-}
-.work-section h2 > span {
-  color: var(--accentColor);
-}
+/* ===== WORK SECTION V2 — 3D HORIZONTAL SCROLL ===== */
+
 .work-section {
   transition: 0s;
   height: 100vh;
   box-sizing: border-box;
   will-change: transform;
 }
+.work-section h2 {
+  margin-top: 100px;
+  font-size: 70px;
+  font-weight: 700;
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+}
+.work-title-overflow {
+  overflow: hidden;
+  display: inline-block;
+}
+.work-title-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.work-title-accent {
+  background: linear-gradient(135deg, #c2a4ff, #f093fb, #667eea);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: workGradient 4s ease infinite;
+}
+@keyframes workGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 .work-container {
   margin: auto;
   display: flex;
@@ -27,34 +50,14 @@
   padding-right: 120px;
   position: relative;
 }
-.work-box {
-  padding: 80px;
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  box-sizing: border-box;
-  border-right: 1px solid #363636;
-  flex-shrink: 0;
-  gap: 50px;
-  justify-content: start;
-}
-.work-box-link {
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.2s ease;
-}
-.work-box-link:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-}
-.work-flex .work-box:nth-child(even) {
-  flex-direction: column-reverse;
-}
+
+/* --- Horizontal lines --- */
 .work-flex::before,
 .work-flex::after {
   content: "";
   width: calc(50000vw);
   height: 1px;
-  background-color: #363636;
+  background: linear-gradient(90deg, transparent, rgba(194, 164, 255, 0.15), rgba(255,255,255,0.06), transparent);
   position: absolute;
   left: 50%;
   top: 0;
@@ -63,86 +66,202 @@
 .work-flex::after {
   top: 100%;
 }
+
+/* --- Project Cards --- */
+.work-box {
+  position: relative;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+  gap: 40px;
+  justify-content: start;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+  will-change: transform;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.01);
+}
+.work-box:hover {
+  background: rgba(255, 255, 255, 0.025);
+  box-shadow:
+    0 0 60px rgba(var(--card-accent-rgb, 194, 164, 255), 0.06),
+    0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Alternating layout */
+.work-flex .work-box:nth-child(even) {
+  flex-direction: column-reverse;
+}
+
+/* Shine effect overlay */
+.work-card-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: background 0.15s ease;
+}
+
+/* Gradient top border */
+.work-card-top-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--card-gradient, linear-gradient(135deg, #c2a4ff, #667eea));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.work-box:hover .work-card-top-border {
+  opacity: 1;
+}
+
+/* --- Card Info --- */
 .work-title {
   justify-content: space-between;
   display: flex;
   width: 100%;
   margin-bottom: 20px;
+  align-items: flex-start;
 }
 .work-title > div {
   text-align: right;
 }
-.work-title h3 {
-  font-size: 50px;
-  line-height: 50px;
+.work-number {
+  font-size: 56px;
+  line-height: 1;
   margin: 0;
+  font-weight: 800;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: all 0.4s ease;
+}
+.work-box:hover .work-number {
+  background: linear-gradient(180deg, var(--card-accent, #c2a4ff) 0%, rgba(255,255,255,0.08) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.work-project-name {
+  font-size: 20px;
   font-weight: 600;
+  margin: 0;
+  color: #fff;
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
+  text-transform: none;
+}
+.work-box:hover .work-project-name {
+  color: var(--card-accent, #c2a4ff);
+}
+
+.work-category {
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 4px 0 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
 .work-info h4 {
-  font-size: 18px;
-  font-weight: 400;
-  margin: 0;
-}
-.work-info p {
-  font-weight: 200;
-  color: #adacac;
-  margin: 0;
-  margin-top: 3px;
-}
-.work-info > p {
-  width: 90%;
-}
-.work-repo-cta {
-  margin-top: 14px;
-  color: var(--accentColor);
+  font-size: 14px;
   font-weight: 500;
-  letter-spacing: 0.6px;
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Tool chips */
+.work-tools-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.work-tool-chip {
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+.work-box:hover .work-tool-chip {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* CTA */
+.work-repo-cta {
+  margin-top: 16px;
+  color: var(--card-accent, var(--accentColor));
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.3s ease;
+}
+.work-box:hover .work-repo-cta {
+  gap: 14px;
+}
+.work-cta-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 18px;
+}
+.work-box:hover .work-cta-arrow {
+  transform: translateX(4px);
+}
+
+/* --- Image --- */
+.work-image-wrapper {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
 }
 .work-image {
   display: flex;
   width: 100%;
   justify-content: center;
 }
-.work-image-in {
-  position: relative;
-}
-.work-link {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: var(--backgroundColor);
-  width: 50px;
-  border-radius: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 25px;
-  box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5),
-    inset 0px 0px 10px 0px #393939;
-  transition: 0.3s;
-  opacity: 0;
-}
-.work-image a:hover {
-  color: inherit;
-}
-.work-image a:hover .work-link {
-  opacity: 1;
-}
-.work-image video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: #000;
-  object-fit: cover;
-}
 .work-image img {
   max-width: 100%;
   max-height: 350px;
+  border-radius: 14px;
+  transition: transform 0.5s ease;
 }
+.work-box:hover .work-image img {
+  transform: scale(1.05);
+}
+.work-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(11, 8, 12, 0.6) 100%);
+  pointer-events: none;
+  border-radius: 14px;
+}
+
+/* --- RESPONSIVE --- */
 @media only screen and (max-height: 900px) {
   .work-image img {
     max-height: 250px;
@@ -158,18 +277,18 @@
   }
 }
 @media only screen and (max-width: 1400px) {
-  .work-title h3 {
-    font-size: 35px;
+  .work-number {
+    font-size: 40px;
   }
-  .work-info p {
-    font-size: 13px;
+  .work-project-name {
+    font-size: 17px;
   }
   .work-info h4 {
-    font-size: 15px;
+    font-size: 13px;
   }
   .work-box {
     width: 450px;
-    padding: 50px;
+    padding: 40px;
   }
   .work-flex {
     margin-left: -50px;
@@ -179,17 +298,17 @@
     font-size: 50px;
   }
 }
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1100px) {
   .work-box {
-    width: 350px;
+    width: 380px;
     padding: 30px;
+    gap: 24px;
   }
   .work-flex {
     margin-left: -30px;
     padding-right: 45px;
   }
 }
-
 @media only screen and (max-height: 650px) {
   .work-image img {
     max-height: 200px;
@@ -202,18 +321,6 @@
     gap: 20px;
   }
 }
-/* @media only screen and (max-width: 900px) {
-  .work-image img {
-    max-height: 200px;
-  }
-  .work-section h2 {
-    font-size: 40px;
-    margin-bottom: 20px;
-  }
-  .work-box {
-    gap: 20px;
-  }
-} */
 @media only screen and (max-width: 1025px) {
   .work-container {
     align-content: normal;
