@@ -386,3 +386,137 @@
     font-size: 34px;
   }
 }
+@media screen and (max-width: 900px) {
+  .landing-section {
+    height: auto;
+    min-height: var(--vh);
+    padding-top: 78px;
+    overflow: hidden;
+  }
+
+  .landing-container {
+    height: auto;
+    min-height: calc(var(--vh) - 78px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-bottom: 24px;
+    box-sizing: border-box;
+  }
+
+  .landing-intro {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    z-index: 3;
+    max-width: 100%;
+  }
+
+  .landing-info {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    z-index: 3;
+    align-items: flex-start;
+    margin-top: 18px;
+    max-width: 100%;
+  }
+
+  .landing-chip {
+    width: 100%;
+    min-width: 0;
+    max-width: 320px;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .landing-chip strong {
+    font-size: 22px;
+  }
+
+  .landing-kicker {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  .landing-intro h1 {
+    font-size: clamp(46px, 11vw, 74px);
+    line-height: 0.9;
+    letter-spacing: 1px;
+  }
+
+  .landing-summary {
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 28rem;
+    margin-top: 14px;
+  }
+
+  .character-model {
+    position: absolute;
+    left: 50%;
+    bottom: -18px;
+    width: min(100%, 640px);
+    height: 48vh;
+    transform: translateX(-50%);
+    z-index: 1;
+    opacity: 0.78;
+    pointer-events: none;
+  }
+
+  .character-model::before {
+    height: 320px;
+  }
+
+  .character-model::after {
+    height: 170px;
+    bottom: -20px;
+  }
+
+  .character-rim {
+    width: 260px;
+    height: 260px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .landing-section {
+    padding-top: 70px;
+  }
+
+  .landing-intro h1 {
+    font-size: clamp(40px, 15vw, 56px);
+  }
+
+  .landing-summary {
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+  .landing-info {
+    margin-top: 14px;
+    gap: 10px;
+  }
+
+  .landing-chip {
+    padding: 10px 14px;
+  }
+
+  .landing-chip span {
+    font-size: 10px;
+  }
+
+  .landing-chip strong {
+    font-size: 19px;
+  }
+
+  .character-model {
+    height: 42vh;
+    bottom: -26px;
+    opacity: 0.72;
+  }
+}
