@@ -39,17 +39,18 @@
   pointer-events: none;
 }
 
-/* Content overlay */
+/* Content overlay — split top/bottom layout */
 .sc-content {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 3;
   text-align: center;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 40px 20px;
+  justify-content: space-between;
+  padding: 50px 20px 40px;
 }
 
 /* Title characters */
@@ -103,7 +104,23 @@
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+}
+
+/* Top group — title + subtitle together */
+.sc-top-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Bottom group — hover label + chips */
+.sc-bottom-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 /* Hover label */

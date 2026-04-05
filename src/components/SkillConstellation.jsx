@@ -61,7 +61,7 @@ const SkillConstellation = () => {
     // Scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 200);
-    camera.position.set(0, 0, 12);
+    camera.position.set(0, 2.5, 12);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
@@ -517,36 +517,40 @@ const SkillConstellation = () => {
       <div className="sc-vignette" />
 
       <div className="sc-content">
-        <div className="sc-title">
-          {titleChars.map((char, i) => (
-            <span
-              className={`sc-title-char ${char === " " ? "sc-space" : ""}`}
-              key={i}
-            >
-              {char === " " ? "\u00A0" : char}
-            </span>
-          ))}
+        <div className="sc-top-group">
+          <div className="sc-title">
+            {titleChars.map((char, i) => (
+              <span
+                className={`sc-title-char ${char === " " ? "sc-space" : ""}`}
+                key={i}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </div>
+
+          <p className="sc-subtitle">
+            My technical universe — hover over the nodes to explore
+          </p>
         </div>
 
-        <p className="sc-subtitle">
-          My technical universe — hover over the nodes to explore
-        </p>
+        <div className="sc-bottom-group">
+          <div className="sc-hover-label" />
 
-        <div className="sc-hover-label" />
-
-        <div className="sc-chips-row">
-          {SKILLS.map((skill) => (
-            <span
-              className="sc-skill-chip"
-              key={skill.name}
-              style={{
-                "--chip-color": skill.color,
-              }}
-            >
-              <span className="sc-chip-dot" style={{ background: skill.color }} />
-              {skill.name}
-            </span>
-          ))}
+          <div className="sc-chips-row">
+            {SKILLS.map((skill) => (
+              <span
+                className="sc-skill-chip"
+                key={skill.name}
+                style={{
+                  "--chip-color": skill.color,
+                }}
+              >
+                <span className="sc-chip-dot" style={{ background: skill.color }} />
+                {skill.name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
