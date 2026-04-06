@@ -28,6 +28,7 @@
   z-index: 0;
   opacity: 0.08;
 }
+
 .whatido-grid-line {
   width: 100%;
   height: 1px;
@@ -45,6 +46,7 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .whatido-title-char {
   display: inline-block;
   font-size: clamp(45px, 7vw, 100px);
@@ -52,15 +54,17 @@
   letter-spacing: 4px;
   text-transform: uppercase;
   line-height: 1.1;
-  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.5) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   will-change: transform, opacity;
 }
+
 .whatido-space {
   width: 20px;
 }
+
 .whatido-subtitle {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.35);
@@ -97,6 +101,7 @@
   overflow: hidden;
   will-change: transform;
 }
+
 .whatido-card:hover {
   box-shadow:
     0 0 50px var(--card-glow, rgba(194, 164, 255, 0.1)),
@@ -128,6 +133,7 @@
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
 .whatido-card:hover .whatido-card-border {
   opacity: 1;
 }
@@ -137,6 +143,7 @@
   position: relative;
   z-index: 1;
 }
+
 .whatido-card-icon {
   width: 56px;
   height: 56px;
@@ -149,6 +156,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .whatido-card:hover .whatido-card-icon {
   transform: translateY(-4px) scale(1.08);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
@@ -161,6 +169,7 @@
   color: #fff;
   letter-spacing: 0.5px;
 }
+
 .whatido-card-front p {
   font-size: 14px;
   font-weight: 300;
@@ -175,6 +184,7 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
 .whatido-tag {
   padding: 4px 12px;
   border-radius: 50px;
@@ -186,6 +196,7 @@
   color: rgba(255, 255, 255, 0.55);
   transition: all 0.3s ease;
 }
+
 .whatido-card:hover .whatido-tag {
   border-color: rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.75);
@@ -211,12 +222,15 @@
     width: 95%;
     gap: 20px;
   }
+
   .whatido-section-v2 {
     padding: 80px 0;
   }
+
   .whatido-card {
     padding: 30px 24px;
   }
+
   .whatido-subtitle {
     font-size: 12px;
     letter-spacing: 2px;
@@ -228,12 +242,15 @@
   .whatido-section-v2 {
     padding: 60px 0;
   }
+
   .whatido-card-front h3 {
     font-size: 18px;
   }
+
   .whatido-card-front p {
     font-size: 13px;
   }
+
   .whatido-card-icon {
     width: 46px;
     height: 46px;
@@ -254,12 +271,15 @@
     max-width: 1200px;
     gap: 40px;
   }
+
   .whatido-card {
     padding: 50px 44px;
   }
+
   .whatido-card-front h3 {
     font-size: 26px;
   }
+
   .whatido-card-front p {
     font-size: 16px;
   }

@@ -21,6 +21,7 @@
   pointer-events: none;
   z-index: 0;
 }
+
 .about-orb-1 {
   width: 350px;
   height: 350px;
@@ -28,6 +29,7 @@
   top: -50px;
   right: -100px;
 }
+
 .about-orb-2 {
   width: 280px;
   height: 280px;
@@ -35,6 +37,7 @@
   bottom: 0;
   left: -80px;
 }
+
 .about-orb-3 {
   width: 200px;
   height: 200px;
@@ -51,9 +54,11 @@
   perspective: 600px;
   z-index: 2;
 }
+
 .about-title-overflow {
   overflow: hidden;
 }
+
 .about-title-word {
   display: inline-block;
   font-size: clamp(50px, 8vw, 120px);
@@ -65,6 +70,7 @@
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.7);
   will-change: transform, opacity;
 }
+
 .about-title-accent {
   -webkit-text-stroke: none;
   background: linear-gradient(135deg, #c2a4ff, #f093fb, #667eea);
@@ -73,9 +79,17 @@
   background-clip: text;
   animation: aboutGradientShift 4s ease infinite;
 }
+
 @keyframes aboutGradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* --- Glass Card --- */
@@ -95,6 +109,7 @@
   overflow: hidden;
   cursor: default;
 }
+
 .about-glass-card:hover {
   box-shadow:
     0 0 60px rgba(194, 164, 255, 0.08),
@@ -108,19 +123,20 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent,
-    rgba(194, 164, 255, 0.06),
-    transparent,
-    rgba(102, 126, 234, 0.06),
-    transparent
-  );
+  background: conic-gradient(from 0deg,
+      transparent,
+      rgba(194, 164, 255, 0.06),
+      transparent,
+      rgba(102, 126, 234, 0.06),
+      transparent);
   animation: aboutGlowSpin 8s linear infinite;
   z-index: -1;
 }
+
 @keyframes aboutGlowSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Edge light */
@@ -130,13 +146,11 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(194, 164, 255, 0.6),
-    rgba(102, 126, 234, 0.6),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(194, 164, 255, 0.6),
+      rgba(102, 126, 234, 0.6),
+      transparent);
   opacity: 0.6;
 }
 
@@ -145,6 +159,7 @@
   position: relative;
   z-index: 1;
 }
+
 .about-badge {
   display: inline-flex;
   align-items: center;
@@ -159,6 +174,7 @@
   margin-bottom: 24px;
   font-weight: 500;
 }
+
 .about-badge-dot {
   width: 8px;
   height: 8px;
@@ -166,9 +182,19 @@
   background: #c2a4ff;
   animation: aboutDotPulse 2s ease infinite;
 }
+
 @keyframes aboutDotPulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(194, 164, 255, 0.4); }
-  50% { opacity: 0.6; box-shadow: 0 0 0 8px rgba(194, 164, 255, 0); }
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(194, 164, 255, 0.4);
+  }
+
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 0 8px rgba(194, 164, 255, 0);
+  }
 }
 
 .about-para-line {
@@ -179,10 +205,12 @@
   margin: 0 0 14px;
   will-change: transform, opacity;
 }
+
 .about-para-line strong {
   color: #fff;
   font-weight: 600;
 }
+
 .about-para-line em {
   color: #c2a4ff;
   font-style: normal;
@@ -196,6 +224,7 @@
   gap: 10px;
   margin-top: 24px;
 }
+
 .about-chip {
   padding: 5px 14px;
   border-radius: 50px;
@@ -207,6 +236,7 @@
   color: rgba(255, 255, 255, 0.7);
   transition: all 0.3s ease;
 }
+
 .about-chip:hover {
   background: rgba(194, 164, 255, 0.15);
   border-color: rgba(194, 164, 255, 0.3);
@@ -223,6 +253,7 @@
   z-index: 2;
   perspective: 800px;
 }
+
 .about-stat-item {
   text-align: center;
   padding: 28px 36px;
@@ -232,11 +263,13 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   will-change: transform, opacity;
 }
+
 .about-stat-item:hover {
   transform: translateY(-8px) rotateX(5deg);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(194, 164, 255, 0.08);
   background: rgba(255, 255, 255, 0.05);
 }
+
 .about-stat-value {
   font-size: 42px;
   font-weight: 800;
@@ -248,10 +281,12 @@
   margin-bottom: 8px;
   padding-bottom: 2px;
 }
+
 .about-stat-suffix {
   font-size: 22px;
   font-weight: 600;
 }
+
 .about-stat-label {
   font-size: 13px;
   text-transform: uppercase;
@@ -265,35 +300,43 @@
   .about-section-v2 {
     padding: 60px 0 50px;
   }
+
   .about-title-row {
     gap: 12px;
     margin-bottom: 30px;
   }
+
   .about-glass-card {
     width: 95%;
     padding: 30px 24px;
     border-radius: 18px;
   }
+
   .about-para-line {
     font-size: 16px;
     line-height: 1.6;
   }
+
   .about-stats-row {
     gap: 16px;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 30px;
   }
+
   .about-stat-item {
     padding: 20px 24px;
   }
+
   .about-stat-value {
     font-size: 32px;
   }
+
   .about-orb-1 {
     width: 200px;
     height: 200px;
   }
+
   .about-orb-2 {
     width: 160px;
     height: 160px;
