@@ -1,217 +1,819 @@
-.header {
-  display: flex;
-  max-width: var(--cMaxWidth);
-  width: var(--cWidth);
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 20px 0px;
-  margin-bottom: -100px;
-  box-sizing: border-box;
+/* ╔══════════════════════════════════════════════════╗
+   ║       🔥 CRAZY 3D NAVBAR — FULL MADNESS 🔥        ║
+   ╚══════════════════════════════════════════════════╝ */
+
+/* ===== Main Bar — Floating Glassmorphic Pill ===== */
+.nav3d-bar {
   position: fixed;
+  top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  top: 0;
   z-index: 9999;
-}
-.header ul {
-  font-size: 12px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  column-gap: 14px;
-  row-gap: 6px;
-  align-items: end;
-  max-width: 72%;
-}
-.header ul li {
-  margin-left: 0px;
-  letter-spacing: 0.8px;
-  color: #ccc;
-  font-weight: 600;
-  cursor: pointer;
-}
-.navbar-connect {
-  position: absolute;
-  display: none;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 15px;
-  letter-spacing: 1px;
-  font-weight: 500;
-}
-/* ===== Navbar Title ===== */
-.navbar-title {
-  display: inline-flex;
   align-items: center;
-  color: #f6f1ff;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.2px;
-  text-decoration: none;
-  user-select: none;
-}
-
-/* ===== 3D Logo ===== */
-.navbar-logo-3d {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 48px;
-  height: 48px;
-  perspective: 300px;
-  cursor: pointer;
-}
-
-.navbar-logo-3d:hover .navbar-logo-front {
-  transform: translateZ(6px) rotateY(-8deg) rotateX(5deg);
+  justify-content: space-between;
+  padding: 10px 20px;
+  width: min(94%, 1600px);
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 10, 25, 0.65) 0%,
+    rgba(25, 15, 45, 0.55) 50%,
+    rgba(12, 8, 20, 0.7) 100%
+  );
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(194, 164, 255, 0.12);
   box-shadow:
-    0 0 20px rgba(194, 164, 255, 0.4),
-    0 0 40px rgba(194, 164, 255, 0.15),
-    inset 0 0 20px rgba(255, 255, 255, 0.05);
-  border-color: rgba(194, 164, 255, 0.6);
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(194, 164, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 80px rgba(194, 164, 255, 0.04);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.navbar-logo-3d:hover .navbar-logo-right {
+.nav3d-bar--scrolled {
+  top: 8px;
+  padding: 8px 16px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 6, 18, 0.88) 0%,
+    rgba(20, 12, 38, 0.82) 50%,
+    rgba(8, 5, 14, 0.92) 100%
+  );
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(194, 164, 255, 0.15),
+    0 0 100px rgba(194, 164, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ===== Animated Border Glow ===== */
+.nav3d-border-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 25px;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    transparent 0%,
+    rgba(194, 164, 255, 0.5) 10%,
+    transparent 20%,
+    rgba(240, 147, 251, 0.4) 30%,
+    transparent 40%,
+    rgba(79, 172, 254, 0.5) 50%,
+    transparent 60%,
+    rgba(67, 233, 123, 0.4) 70%,
+    transparent 80%,
+    rgba(194, 164, 255, 0.5) 90%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderRotate 4s linear infinite;
+  pointer-events: none;
+  z-index: -1;
   opacity: 0.7;
 }
 
-.navbar-logo-3d:hover .navbar-logo-bottom {
-  opacity: 0.5;
+@keyframes borderRotate {
+  to {
+    --border-angle: 360deg;
+  }
 }
 
-.navbar-logo-3d:hover .navbar-logo-ring {
+.nav3d-bar--scrolled .nav3d-border-glow {
+  border-radius: 19px;
   opacity: 1;
-  transform: rotateX(65deg) rotateZ(0deg);
-  box-shadow: 0 0 15px rgba(194, 164, 255, 0.3);
 }
 
-/* Front face — main logo */
-.navbar-logo-front {
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
+/* ╔═══════════════════════════════════╗
+   ║    3D ROTATING CUBE LOGO          ║
+   ╚═══════════════════════════════════╝ */
+.nav3d-logo {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  width: 52px;
+  height: 52px;
+  text-decoration: none;
+  flex-shrink: 0;
+  perspective: 400px;
+}
+
+.nav3d-cube-wrap {
+  width: 36px;
+  height: 36px;
+  perspective: 400px;
+  transform-style: preserve-3d;
+}
+
+.nav3d-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.1s linear;
+}
+
+.nav3d-cube-face {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
   font-weight: 900;
-  letter-spacing: 1px;
+  border: 1.5px solid rgba(194, 164, 255, 0.25);
+  border-radius: 8px;
+  backface-visibility: visible;
   background: linear-gradient(
-    145deg,
-    rgba(30, 15, 50, 0.95) 0%,
-    rgba(15, 8, 30, 0.98) 100%
+    135deg,
+    rgba(20, 10, 40, 0.9) 0%,
+    rgba(30, 15, 60, 0.8) 100%
   );
-  border: 1.5px solid rgba(194, 164, 255, 0.3);
-  color: transparent;
-  background-clip: padding-box;
-  box-shadow:
-    0 4px 15px rgba(0, 0, 0, 0.4),
-    0 0 12px rgba(194, 164, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transform: translateZ(0px);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  z-index: 3;
+}
+
+.nav3d-cube-front {
+  transform: translateZ(18px);
+  background: linear-gradient(
+    135deg,
+    rgba(20, 10, 40, 0.9) 0%,
+    rgba(30, 15, 60, 0.8) 100%
+  );
+  border-color: rgba(194, 164, 255, 0.4);
+  box-shadow: 0 0 20px rgba(194, 164, 255, 0.3);
+  color: #c2a4ff;
+  text-shadow: 0 0 8px rgba(194, 164, 255, 0.5);
+}
+
+.nav3d-cube-back {
+  transform: rotateY(180deg) translateZ(18px);
+  color: rgba(240, 147, 251, 0.8);
+  border-color: rgba(240, 147, 251, 0.2);
+}
+
+.nav3d-cube-right {
+  transform: rotateY(90deg) translateZ(18px);
+  color: rgba(79, 172, 254, 0.8);
+  border-color: rgba(79, 172, 254, 0.2);
+}
+
+.nav3d-cube-left {
+  transform: rotateY(-90deg) translateZ(18px);
+  color: rgba(67, 233, 123, 0.8);
+  border-color: rgba(67, 233, 123, 0.2);
+}
+
+.nav3d-cube-top {
+  transform: rotateX(90deg) translateZ(18px);
+  color: rgba(194, 164, 255, 0.8);
+  border-color: rgba(194, 164, 255, 0.2);
+  font-size: 16px;
+}
+
+.nav3d-cube-bottom {
+  transform: rotateX(-90deg) translateZ(18px);
+  color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.08);
+  font-size: 16px;
+}
+
+/* Orbital rings around logo */
+.nav3d-orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  pointer-events: none;
+}
+
+.nav3d-orbit-1 {
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(70deg);
+  border-top-color: rgba(194, 164, 255, 0.5);
+  border-right-color: rgba(194, 164, 255, 0.2);
+  animation: orbitSpin1 3s linear infinite;
+}
+
+.nav3d-orbit-2 {
+  width: 56px;
+  height: 56px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(70deg) rotateZ(90deg);
+  border-bottom-color: rgba(240, 147, 251, 0.4);
+  border-left-color: rgba(240, 147, 251, 0.15);
+  animation: orbitSpin2 5s linear infinite;
+}
+
+@keyframes orbitSpin1 {
+  to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+}
+
+@keyframes orbitSpin2 {
+  to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(450deg); }
+}
+
+/* ╔═══════════════════════════════════╗
+   ║       CENTER EMAIL LINK           ║
+   ╚═══════════════════════════════════╝ */
+.nav3d-email {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  letter-spacing: 1.2px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  display: none;
+  transition: color 0.3s ease;
   overflow: hidden;
 }
 
-/* Gradient letter */
-.navbar-logo-front::before {
-  content: "A";
+.nav3d-email:hover {
+  color: #c2a4ff;
+}
+
+.nav3d-email-text {
+  position: relative;
+  z-index: 1;
+}
+
+.nav3d-email-glow {
   position: absolute;
-  font-size: 24px;
-  font-weight: 900;
+  inset: -4px -12px;
+  background: radial-gradient(ellipse, rgba(194, 164, 255, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.nav3d-email:hover .nav3d-email-glow {
+  opacity: 1;
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║   🔥 BUTTON BASE — SHARED ACROSS ALL TYPES 🔥     ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav3d-btn-wrap {
+  perspective: 600px;
+  animation: btnFadeIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: inherit;
+}
+
+.nav3d-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  isolation: isolate;
+  border: none;
+  outline: none;
+}
+
+.nav3d-btn-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -2;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.nav3d-btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  z-index: 1;
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.nav3d-btn:hover .nav3d-btn-shine {
+  left: 100%;
+}
+
+.nav3d-btn-text {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* Corner accents — all buttons */
+.nav3d-corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  z-index: 3;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.nav3d-corner--tl {
+  top: 2px;
+  left: 2px;
+  border-top: 1.5px solid rgba(194, 164, 255, 0.6);
+  border-left: 1.5px solid rgba(194, 164, 255, 0.6);
+}
+
+.nav3d-corner--tr {
+  top: 2px;
+  right: 2px;
+  border-top: 1.5px solid rgba(194, 164, 255, 0.6);
+  border-right: 1.5px solid rgba(194, 164, 255, 0.6);
+}
+
+.nav3d-corner--bl {
+  bottom: 2px;
+  left: 2px;
+  border-bottom: 1.5px solid rgba(194, 164, 255, 0.6);
+  border-left: 1.5px solid rgba(194, 164, 255, 0.6);
+}
+
+.nav3d-corner--br {
+  bottom: 2px;
+  right: 2px;
+  border-bottom: 1.5px solid rgba(194, 164, 255, 0.6);
+  border-right: 1.5px solid rgba(194, 164, 255, 0.6);
+}
+
+.nav3d-btn:hover .nav3d-corner {
+  opacity: 1;
+  width: 10px;
+  height: 10px;
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║   ⚡ BUTTON TYPE 1: GLITCH BUTTON ⚡               ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-btn--glitch {
   background: linear-gradient(
     135deg,
-    #e8dcff 0%,
-    #c2a4ff 40%,
-    #8b5cf6 70%,
-    #667eea 100%
+    rgba(194, 164, 255, 0.08) 0%,
+    rgba(139, 92, 246, 0.06) 100%
   );
+  border: 1px solid rgba(194, 164, 255, 0.15);
+}
+
+.nav3d-btn--glitch .nav3d-btn-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(194, 164, 255, 0.12) 0%,
+    rgba(139, 92, 246, 0.08) 100%
+  );
+}
+
+.nav3d-btn--glitch:hover {
+  border-color: rgba(194, 164, 255, 0.4);
+  box-shadow:
+    0 0 20px rgba(194, 164, 255, 0.2),
+    0 0 60px rgba(194, 164, 255, 0.08),
+    inset 0 0 20px rgba(194, 164, 255, 0.05);
+  animation: glitchShake 0.3s ease-in-out;
+}
+
+.nav3d-btn--glitch:hover .nav3d-btn-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(194, 164, 255, 0.2) 0%,
+    rgba(139, 92, 246, 0.15) 100%
+  );
+}
+
+/* Glitch text layers */
+.nav3d-glitch-r,
+.nav3d-glitch-b {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 4;
+}
+
+.nav3d-glitch-r::before {
+  content: attr(data-text);
+  color: #ff0040;
+}
+
+.nav3d-glitch-b::before {
+  content: attr(data-text);
+  color: #00ffff;
+}
+
+.nav3d-btn--glitch:hover .nav3d-glitch-r {
+  opacity: 0.7;
+  animation: glitchR 0.25s ease-in-out infinite;
+}
+
+.nav3d-btn--glitch:hover .nav3d-glitch-b {
+  opacity: 0.7;
+  animation: glitchB 0.25s ease-in-out infinite;
+}
+
+@keyframes glitchR {
+  0% { transform: translate(-50%, -50%); clip-path: inset(20% 0 60% 0); }
+  25% { transform: translate(calc(-50% + 2px), calc(-50% - 1px)); clip-path: inset(40% 0 20% 0); }
+  50% { transform: translate(calc(-50% - 2px), calc(-50% + 1px)); clip-path: inset(60% 0 0% 0); }
+  75% { transform: translate(calc(-50% + 1px), calc(-50% + 2px)); clip-path: inset(10% 0 70% 0); }
+  100% { transform: translate(-50%, -50%); clip-path: inset(30% 0 40% 0); }
+}
+
+@keyframes glitchB {
+  0% { transform: translate(-50%, -50%); clip-path: inset(60% 0 10% 0); }
+  25% { transform: translate(calc(-50% - 2px), calc(-50% + 1px)); clip-path: inset(10% 0 70% 0); }
+  50% { transform: translate(calc(-50% + 1px), calc(-50% - 2px)); clip-path: inset(0% 0 80% 0); }
+  75% { transform: translate(calc(-50% - 1px), calc(-50% - 1px)); clip-path: inset(70% 0 5% 0); }
+  100% { transform: translate(-50%, -50%); clip-path: inset(40% 0 30% 0); }
+}
+
+@keyframes glitchShake {
+  0%, 100% { transform: translate(0); }
+  10% { transform: translate(-2px, 1px); }
+  20% { transform: translate(2px, -1px); }
+  30% { transform: translate(-1px, -2px); }
+  40% { transform: translate(1px, 2px); }
+  50% { transform: translate(-2px, -1px); }
+  60% { transform: translate(2px, 1px); }
+  70% { transform: translate(1px, -2px); }
+  80% { transform: translate(-1px, 2px); }
+  90% { transform: translate(2px, -1px); }
+}
+
+.nav3d-btn--glitch .nav3d-corner--tl,
+.nav3d-btn--glitch .nav3d-corner--br {
+  border-color: rgba(255, 0, 64, 0.6);
+}
+
+.nav3d-btn--glitch .nav3d-corner--tr,
+.nav3d-btn--glitch .nav3d-corner--bl {
+  border-color: rgba(0, 255, 255, 0.6);
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║   🌈 BUTTON TYPE 2: HOLOGRAPHIC BUTTON 🌈         ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-btn--holographic {
+  background: linear-gradient(
+    135deg,
+    rgba(79, 172, 254, 0.06),
+    rgba(0, 242, 254, 0.06)
+  );
+  border: 1px solid rgba(79, 172, 254, 0.12);
+}
+
+.nav3d-btn--holographic .nav3d-btn-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.08),
+    rgba(0, 255, 255, 0.08),
+    rgba(128, 0, 255, 0.08),
+    rgba(0, 255, 128, 0.08)
+  );
+  background-size: 300% 300%;
+  animation: holoShift 3s ease infinite;
+}
+
+@keyframes holoShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.nav3d-btn--holographic:hover {
+  border-color: rgba(79, 172, 254, 0.4);
+  box-shadow:
+    0 0 25px rgba(79, 172, 254, 0.2),
+    0 0 50px rgba(0, 242, 254, 0.1),
+    0 0 80px rgba(128, 0, 255, 0.06),
+    inset 0 0 25px rgba(79, 172, 254, 0.08);
+}
+
+.nav3d-btn--holographic:hover .nav3d-btn-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.15),
+    rgba(0, 255, 255, 0.15),
+    rgba(128, 0, 255, 0.15),
+    rgba(0, 255, 128, 0.15)
+  );
+  background-size: 300% 300%;
+}
+
+.nav3d-btn--holographic:hover .nav3d-btn-text {
+  background: linear-gradient(90deg, #ff0080, #00ffff, #8000ff, #00ff80, #ff0080);
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 6px rgba(194, 164, 255, 0.4));
+  animation: holoText 2s linear infinite;
 }
 
-/* Specular highlight */
-.navbar-logo-front::after {
-  content: "";
+@keyframes holoText {
+  to { background-position: 300% 0; }
+}
+
+/* Holographic scanlines */
+.nav3d-holo-scan {
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.015) 2px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+  transition: opacity 0.3s ease;
+}
+
+.nav3d-btn--holographic:hover .nav3d-holo-scan {
+  opacity: 1;
+  animation: scanMove 2s linear infinite;
+}
+
+@keyframes scanMove {
+  to { transform: translateY(100%); }
+}
+
+.nav3d-btn--holographic .nav3d-corner {
+  border-color: rgba(79, 172, 254, 0.5);
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║   💡 BUTTON TYPE 3: NEON PULSE BUTTON 💡          ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-btn--neon {
+  background: rgba(67, 233, 123, 0.04);
+  border: 1px solid rgba(67, 233, 123, 0.15);
+  color: rgba(67, 233, 123, 0.85);
+}
+
+.nav3d-btn--neon .nav3d-btn-bg {
+  background: transparent;
+}
+
+.nav3d-neon-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid rgba(67, 233, 123, 0.4);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: neonPulseGlow 2s ease-in-out infinite;
+}
+
+.nav3d-neon-flicker {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(67, 233, 123, 0.03);
+  pointer-events: none;
+  z-index: -1;
+  animation: neonFlicker 3s ease-in-out infinite;
+}
+
+@keyframes neonPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(67, 233, 123, 0.3), 0 0 15px rgba(67, 233, 123, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(67, 233, 123, 0.5), 0 0 40px rgba(67, 233, 123, 0.2), 0 0 80px rgba(67, 233, 123, 0.08);
+  }
+}
+
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
+}
+
+.nav3d-btn--neon:hover {
+  color: #43e97b;
+  border-color: rgba(67, 233, 123, 0.5);
+  box-shadow:
+    0 0 20px rgba(67, 233, 123, 0.3),
+    0 0 60px rgba(67, 233, 123, 0.12),
+    0 0 100px rgba(67, 233, 123, 0.06),
+    inset 0 0 30px rgba(67, 233, 123, 0.08);
+  text-shadow: 0 0 10px rgba(67, 233, 123, 0.5), 0 0 30px rgba(67, 233, 123, 0.3);
+}
+
+.nav3d-btn--neon:hover .nav3d-neon-glow {
+  opacity: 1;
+}
+
+.nav3d-btn--neon:hover .nav3d-btn-bg {
+  background: rgba(67, 233, 123, 0.06);
+}
+
+.nav3d-btn--neon .nav3d-corner {
+  border-color: rgba(67, 233, 123, 0.6);
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║   🧲 BUTTON TYPE 4: MAGNETIC FIELD BUTTON 🧲      ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-btn--magnetic {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    transparent 40%
+    rgba(240, 147, 251, 0.06),
+    rgba(245, 87, 108, 0.06)
   );
+  border: 1px solid rgba(240, 147, 251, 0.15);
+}
+
+.nav3d-btn--magnetic .nav3d-btn-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 147, 251, 0.1),
+    rgba(245, 87, 108, 0.08)
+  );
+}
+
+.nav3d-magnetic-field {
+  position: absolute;
+  inset: -16px;
   pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-/* Right face — 3D depth */
-.navbar-logo-right {
+.nav3d-field-line {
   position: absolute;
-  top: 3px;
-  right: -4px;
-  width: 4px;
-  height: calc(100% - 6px);
-  background: linear-gradient(
-    to bottom,
-    rgba(194, 164, 255, 0.2),
-    rgba(102, 126, 234, 0.1)
-  );
-  border-radius: 0 4px 4px 0;
-  opacity: 0.5;
-  transition: opacity 0.4s ease;
-  z-index: 2;
-}
-
-/* Bottom face — 3D depth */
-.navbar-logo-bottom {
-  position: absolute;
-  bottom: -4px;
-  left: 3px;
-  width: calc(100% - 6px);
-  height: 4px;
-  background: linear-gradient(
-    to right,
-    rgba(194, 164, 255, 0.15),
-    rgba(102, 126, 234, 0.08)
-  );
-  border-radius: 0 0 4px 4px;
-  opacity: 0.4;
-  transition: opacity 0.4s ease;
-  z-index: 2;
-}
-
-/* Orbital ring */
-.navbar-logo-ring {
-  position: absolute;
-  width: 52px;
-  height: 52px;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(240, 147, 251, 0.1);
   border-radius: 50%;
-  border: 1.5px solid rgba(194, 164, 255, 0.15);
-  border-top-color: rgba(194, 164, 255, 0.5);
-  border-right-color: rgba(194, 164, 255, 0.3);
-  transform: rotateX(65deg) rotateZ(-30deg);
-  opacity: 0.6;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  animation: logoRingSpin 6s linear infinite;
-  z-index: 1;
-  pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
-@keyframes logoRingSpin {
-  to { transform: rotateX(65deg) rotateZ(330deg); }
+.nav3d-field-line:nth-child(1) { width: 100%; height: 100%; animation: fieldPulse 2s ease-in-out 0s infinite; }
+.nav3d-field-line:nth-child(2) { width: 120%; height: 120%; animation: fieldPulse 2s ease-in-out 0.3s infinite; }
+.nav3d-field-line:nth-child(3) { width: 140%; height: 140%; animation: fieldPulse 2s ease-in-out 0.6s infinite; }
+.nav3d-field-line:nth-child(4) { width: 160%; height: 160%; animation: fieldPulse 2s ease-in-out 0.9s infinite; }
+.nav3d-field-line:nth-child(5) { width: 180%; height: 180%; animation: fieldPulse 2s ease-in-out 1.2s infinite; }
+.nav3d-field-line:nth-child(6) { width: 200%; height: 200%; animation: fieldPulse 2s ease-in-out 1.5s infinite; }
+
+@keyframes fieldPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+    border-color: rgba(240, 147, 251, 0.12);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+    border-color: rgba(240, 147, 251, 0.25);
+  }
 }
 
+.nav3d-btn--magnetic:hover {
+  border-color: rgba(240, 147, 251, 0.4);
+  box-shadow:
+    0 0 30px rgba(240, 147, 251, 0.25),
+    0 0 60px rgba(245, 87, 108, 0.1),
+    0 0 100px rgba(240, 147, 251, 0.06),
+    inset 0 0 25px rgba(240, 147, 251, 0.06);
+}
+
+.nav3d-btn--magnetic:hover .nav3d-magnetic-field {
+  opacity: 1;
+}
+
+.nav3d-btn--magnetic:hover .nav3d-btn-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 147, 251, 0.18),
+    rgba(245, 87, 108, 0.14)
+  );
+}
+
+.nav3d-btn--magnetic:hover .nav3d-btn-text {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 6px rgba(240, 147, 251, 0.5));
+}
+
+.nav3d-btn--magnetic .nav3d-corner {
+  border-color: rgba(240, 147, 251, 0.6);
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║    CSS ENTRY ANIMATIONS (no GSAP dependency)       ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-animate-in {
+  animation: navSlideIn 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.3s both;
+}
+
+@keyframes navSlideIn {
+  from {
+    transform: translateX(-50%) translateY(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.nav3d-animate-logo {
+  animation: logoSpinIn 1.6s cubic-bezier(0.23, 1, 0.32, 1) 0.5s both;
+}
+
+@keyframes logoSpinIn {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes btnFadeIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║    ACTIVE STATE — Universal 3D press effect        ║
+   ╚═══════════════════════════════════════════════════╝ */
+.nav3d-btn:active {
+  transform: translateZ(-3px) scale(0.96) !important;
+  transition: transform 0.1s ease;
+}
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║           SCREEN-READER ONLY                       ║
+   ╚═══════════════════════════════════════════════════╝ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -223,88 +825,148 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ╔═══════════════════════════════════════════════════╗
+   ║            📱 RESPONSIVE BREAKPOINTS               ║
+   ╚═══════════════════════════════════════════════════╝ */
+
+/* ==> 500px+ */
 @media only screen and (min-width: 500px) {
-  .header {
-    padding: 20px 0px;
+  .nav3d-bar {
+    padding: 10px 24px;
+    border-radius: 22px;
   }
-  .header ul {
-    column-gap: 20px;
-    align-items: center;
-    font-size: 14px;
+
+  .nav3d-links {
+    gap: 10px;
   }
-  .header ul li {
-    color: #eae5ec;
-  }
-  .navbar-title {
-    font-size: 16px;
-  }
-  .navbar-logo-3d {
-    height: 46px;
-    width: 46px;
+
+  .nav3d-btn {
+    font-size: 12px;
+    padding: 9px 20px;
   }
 }
+
+/* ==> 900px+ — Show email */
 @media only screen and (min-width: 900px) {
-  .navbar-connect {
+  .nav3d-email {
     display: block;
   }
 }
+
+/* ==> 1200px+ — Full desktop */
 @media only screen and (min-width: 1200px) {
-  .header {
-    padding: 35px 0px;
+  .nav3d-bar {
+    top: 20px;
+    padding: 12px 32px;
+    border-radius: 28px;
   }
-  .header ul {
-    max-width: none;
-    column-gap: 80px;
-    font-size: 16px;
+
+  .nav3d-links {
+    gap: 14px;
   }
-  .navbar-connect {
-    font-size: 16px;
+
+  .nav3d-btn {
+    font-size: 13px;
+    letter-spacing: 2.5px;
+    padding: 10px 26px;
+    border-radius: 14px;
   }
-  .navbar-title {
-    font-size: 18px;
+
+  .nav3d-cube-wrap {
+    width: 40px;
+    height: 40px;
   }
-  .navbar-logo-3d {
-    width: 52px;
-    height: 52px;
+
+  .nav3d-cube-face {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
   }
-  .navbar-logo-ring {
-    width: 56px;
-    height: 56px;
-  }
+
+  .nav3d-cube-front { transform: translateZ(20px); }
+  .nav3d-cube-back { transform: rotateY(180deg) translateZ(20px); }
+  .nav3d-cube-right { transform: rotateY(90deg) translateZ(20px); }
+  .nav3d-cube-left { transform: rotateY(-90deg) translateZ(20px); }
+  .nav3d-cube-top { transform: rotateX(90deg) translateZ(20px); }
+  .nav3d-cube-bottom { transform: rotateX(-90deg) translateZ(20px); }
+
+  .nav3d-orbit-1 { width: 54px; height: 54px; }
+  .nav3d-orbit-2 { width: 60px; height: 60px; }
 }
 
-/* ===== Small phone fixes ===== */
+/* ==> Small phones (<500px) */
 @media only screen and (max-width: 499px) {
-  .header {
-    padding: 12px 0;
+  .nav3d-bar {
+    top: 8px;
+    padding: 8px 12px;
+    width: calc(100% - 16px);
+    border-radius: 16px;
+    gap: 8px;
   }
 
-  .navbar-logo-3d {
-    width: 38px;
-    height: 38px;
+  .nav3d-logo {
+    width: 40px;
+    height: 40px;
   }
 
-  .navbar-logo-front {
-    border-radius: 10px;
-    font-size: 18px;
+  .nav3d-cube-wrap {
+    width: 28px;
+    height: 28px;
   }
 
-  .navbar-logo-front::before {
-    font-size: 18px;
+  .nav3d-cube-face {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+    border-radius: 6px;
   }
 
-  .navbar-logo-ring {
-    width: 42px;
-    height: 42px;
+  .nav3d-cube-front::before {
+    font-size: 15px;
+  }
+
+  .nav3d-cube-front { transform: translateZ(14px); }
+  .nav3d-cube-back { transform: rotateY(180deg) translateZ(14px); }
+  .nav3d-cube-right { transform: rotateY(90deg) translateZ(14px); }
+  .nav3d-cube-left { transform: rotateY(-90deg) translateZ(14px); }
+  .nav3d-cube-top { transform: rotateX(90deg) translateZ(14px); }
+  .nav3d-cube-bottom { transform: rotateX(-90deg) translateZ(14px); }
+
+  .nav3d-orbit-1,
+  .nav3d-orbit-2 {
     display: none;
   }
 
-  .header ul {
-    column-gap: 10px;
-    font-size: 11px;
+  .nav3d-links {
+    gap: 5px;
   }
 
-  .header ul li {
-    letter-spacing: 0.3px;
+  .nav3d-btn {
+    font-size: 10px;
+    padding: 6px 10px;
+    letter-spacing: 1px;
+    border-radius: 8px;
+  }
+
+  .nav3d-corner {
+    display: none;
+  }
+
+  .nav3d-magnetic-field {
+    display: none;
+  }
+}
+
+/* ==> Very small phones (<380px) */
+@media only screen and (max-width: 379px) {
+  .nav3d-btn {
+    font-size: 9px;
+    padding: 5px 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .nav3d-links {
+    gap: 3px;
   }
 }

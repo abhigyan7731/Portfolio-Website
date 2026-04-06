@@ -43,7 +43,7 @@
 /* ===== Top Kicker — B.Tech CSE ===== */
 .l3d-top-kicker {
   position: absolute;
-  top: 90px;
+  top: 120px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 15;
