@@ -1,4 +1,4 @@
-/* ===== 3D CONTACT SECTION ===== */
+/* ===== 3D HOLOGRAPHIC CONTACT SECTION ===== */
 
 .ct-section {
   position: relative;
@@ -11,6 +11,44 @@
   align-items: center;
   overflow: hidden;
   z-index: 9;
+  perspective: 1500px;
+}
+
+/* ===== Holographic 3D Grid Floor ===== */
+.ct-holo-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transform: perspective(600px) rotateX(45deg);
+  transform-origin: center bottom;
+  opacity: 0.12;
+}
+
+.ct-holo-line-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(0, 242, 254, 0.5) 30%,
+      rgba(194, 164, 255, 0.6) 50%,
+      rgba(0, 242, 254, 0.5) 70%,
+      transparent 100%);
+}
+
+.ct-holo-line-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(0, 242, 254, 0.3) 30%,
+      rgba(194, 164, 255, 0.4) 50%,
+      rgba(0, 242, 254, 0.3) 70%,
+      transparent 100%);
 }
 
 /* ===== Ghost Background Text ===== */
@@ -64,60 +102,6 @@
   left: 60%;
 }
 
-/* ===== Perspective Grid ===== */
-.ct-perspective-grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.ct-grid-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(194, 164, 255, 0.04) 30%,
-      rgba(194, 164, 255, 0.06) 50%,
-      rgba(194, 164, 255, 0.04) 70%,
-      transparent 100%);
-}
-
-.ct-grid-line:nth-child(1) {
-  top: 5%;
-}
-
-.ct-grid-line:nth-child(2) {
-  top: 18%;
-}
-
-.ct-grid-line:nth-child(3) {
-  top: 32%;
-}
-
-.ct-grid-line:nth-child(4) {
-  top: 46%;
-}
-
-.ct-grid-line:nth-child(5) {
-  top: 60%;
-}
-
-.ct-grid-line:nth-child(6) {
-  top: 74%;
-}
-
-.ct-grid-line:nth-child(7) {
-  top: 87%;
-}
-
-.ct-grid-line:nth-child(8) {
-  top: 96%;
-}
-
 /* ===== Title ===== */
 .ct-title {
   display: flex;
@@ -159,15 +143,8 @@
 }
 
 @keyframes ctGradientFlow {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 /* ===== Subtitle ===== */
@@ -176,9 +153,138 @@
   font-weight: 300;
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 1px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   text-align: center;
   z-index: 2;
+}
+
+/* ===== 3D TERMINAL BOX ===== */
+.ct-terminal {
+  width: 90%;
+  max-width: 650px;
+  border-radius: 16px;
+  background: rgba(10, 10, 20, 0.85);
+  border: 1px solid rgba(0, 242, 254, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(0, 242, 254, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  z-index: 5;
+  margin-bottom: 50px;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Terminal header bar */
+.ct-terminal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ct-terminal-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.ct-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.ct-dot-red { background: #ff5f57; box-shadow: 0 0 6px rgba(255, 95, 87, 0.5); }
+.ct-dot-yellow { background: #ffbd2e; box-shadow: 0 0 6px rgba(255, 189, 46, 0.5); }
+.ct-dot-green { background: #28c840; box-shadow: 0 0 6px rgba(40, 200, 64, 0.5); }
+
+.ct-terminal-title {
+  font-size: 12px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.5px;
+}
+
+/* Terminal body */
+.ct-terminal-body {
+  padding: 20px 22px;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.ct-terminal-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.ct-terminal-prompt {
+  color: #00f2fe;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
+}
+
+.ct-terminal-cmd {
+  color: #c2a4ff;
+  font-weight: 500;
+}
+
+.ct-terminal-output {
+  color: rgba(255, 255, 255, 0.65);
+  padding-left: 22px;
+  margin-bottom: 6px;
+}
+
+.ct-terminal-json {
+  color: rgba(255, 255, 255, 0.5);
+  padding-left: 22px;
+  margin-bottom: 6px;
+}
+
+.ct-json-key {
+  color: #c2a4ff;
+}
+
+.ct-json-val {
+  color: #43e97b;
+}
+
+.ct-json-status {
+  color: #00f2fe;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+}
+
+.ct-terminal-cursor {
+  color: #00f2fe;
+  font-size: 16px;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+}
+
+/* Holographic scanline sweeping across terminal */
+.ct-terminal-scanline {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.06), transparent);
+  transform: skewX(-15deg);
+  animation: terminalSweep 5s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes terminalSweep {
+  0% { left: -100%; }
+  50% { left: 200%; }
+  100% { left: 200%; }
 }
 
 /* ===== Contact Cards Grid ===== */
@@ -189,7 +295,7 @@
   width: 90%;
   max-width: 900px;
   z-index: 2;
-  perspective: 1000px;
+  perspective: 1200px;
 }
 
 .ct-card {
@@ -205,18 +311,17 @@
   -webkit-backdrop-filter: blur(12px);
   text-decoration: none;
   color: inherit;
-  transition: transform 0.15s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
   will-change: transform;
-  cursor: pointer;
   overflow: hidden;
   transform-style: preserve-3d;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .ct-card:hover {
-  border-color: rgba(194, 164, 255, 0.2);
+  border-color: rgba(194, 164, 255, 0.25);
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.4),
-    0 0 40px var(--card-glow, rgba(194, 164, 255, 0.1));
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 50px var(--card-glow, rgba(194, 164, 255, 0.15));
 }
 
 /* Shine overlay */
@@ -263,7 +368,7 @@
 .ct-card:hover .ct-card-icon {
   background: rgba(194, 164, 255, 0.1);
   border-color: rgba(194, 164, 255, 0.2);
-  transform: scale(1.1) rotateZ(-5deg);
+  transform: scale(1.15) rotateZ(-8deg) translateZ(20px);
 }
 
 /* Card content */
@@ -308,7 +413,7 @@
 
 .ct-card:hover .ct-card-arrow {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) translateZ(10px);
 }
 
 /* ===== CTA Box ===== */
@@ -345,9 +450,7 @@
 }
 
 @keyframes ctCtaGlowSpin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .ct-cta-text {
@@ -479,6 +582,15 @@
     font-size: clamp(60px, 18vw, 150px);
     letter-spacing: 10px;
   }
+
+  .ct-terminal-body {
+    font-size: 11px;
+    padding: 14px 16px;
+  }
+
+  .ct-holo-grid {
+    opacity: 0.06;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -500,6 +612,10 @@
 
   .ct-cta-text {
     font-size: 22px;
+  }
+
+  .ct-terminal-body {
+    font-size: 10px;
   }
 }
 

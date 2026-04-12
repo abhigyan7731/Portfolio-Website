@@ -1,33 +1,44 @@
-.cursor-main {
-  --size: 0px;
+/* ===== MAGNETIC CURSOR SYSTEM ===== */
+
+/* Hide default cursor globally */
+* {
+  cursor: none !important;
+}
+
+/* Inner dot — snaps fast */
+.cursor-dot {
   position: fixed;
-  top: calc(var(--size) / -2);
-  left: calc(var(--size) / -2);
-  width: var(--size);
-  height: var(--size);
-  border-radius: 50px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
   pointer-events: none;
-  z-index: 99;
-  background-color: #e6c3ff;
-  box-shadow: 0px 0px 30px 0px rgb(175, 131, 255);
-  mix-blend-mode: difference;
-  transition: top 0.3s ease-out, left 0.3s ease-out, width 0.3s ease-out,
-    height 0.3s ease-out;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 20px rgba(194, 164, 255, 0.4);
+  transition: transform 0.1s ease;
 }
-.cursor-icons {
-  top: 10px;
-  left: 10px;
-  height: calc(var(--cursorH) - 20px);
-  transition: all 0.5s ease-out, height 0.5s ease-in-out;
+
+/* Outer ring — follows with delay for magnetic feel */
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(194, 164, 255, 0.5);
+  pointer-events: none;
+  z-index: 999998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
 }
-.cursor-disable {
-  --size: 0px;
-}
-@media only screen and (min-width: 600px) {
-  .cursor-main {
-    --size: 50px;
+
+/* Disable custom cursor on touch / small screens */
+@media (max-width: 768px), (hover: none) {
+  * {
+    cursor: auto !important;
   }
-  .cursor-disable {
-    --size: 0px;
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
   }
 }

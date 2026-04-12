@@ -9,6 +9,28 @@
   overflow: hidden;
 }
 
+/* ===== FILM GRAIN OVERLAY ===== */
+.landing-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 150px;
+  animation: grainShift 0.5s steps(6) infinite;
+}
+
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5px, 5px); }
+  40% { transform: translate(3px, -3px); }
+  60% { transform: translate(-3px, 1px); }
+  80% { transform: translate(2px, -4px); }
+}
+
 .landing-container {
   width: var(--cWidth);
   margin: auto;
@@ -104,6 +126,50 @@
   transform-style: preserve-3d;
   will-change: transform;
   user-select: none;
+  position: relative;
+  animation: nameGlitch 8s infinite;
+}
+
+/* ===== PERIODIC GLITCH EFFECT ===== */
+@keyframes nameGlitch {
+  0%, 94%, 100% {
+    text-shadow:
+      0 0 80px rgba(194, 164, 255, 0.06),
+      0 0 160px rgba(102, 126, 234, 0.03);
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.12);
+    transform: translate(0, 0);
+  }
+  94.5% {
+    text-shadow:
+      -3px 0 #00f2fe,
+      3px 0 #f093fb;
+    transform: translate(4px, -2px) skewX(-2deg);
+  }
+  95% {
+    text-shadow:
+      3px 0 #c2a4ff,
+      -3px 0 #00f2fe;
+    transform: translate(-3px, 1px) skewX(1deg);
+  }
+  95.5% {
+    text-shadow:
+      -2px 0 #f093fb,
+      2px 0 #00f2fe;
+    transform: translate(2px, 2px) skewX(-1deg);
+  }
+  96% {
+    text-shadow:
+      4px 0 #00f2fe,
+      -4px 0 #c2a4ff;
+    transform: translate(-4px, -1px) skewX(2deg);
+  }
+  96.5% {
+    text-shadow:
+      0 0 80px rgba(194, 164, 255, 0.06),
+      0 0 160px rgba(102, 126, 234, 0.03);
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.12);
+    transform: translate(0, 0);
+  }
 }
 
 .l3d-hero-lastname {

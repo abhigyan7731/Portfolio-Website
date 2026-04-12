@@ -59,29 +59,28 @@ const contactLinks = [
 const Contact = () => {
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
-  const ctaBtnRef = useRef(null);
-  const shardsRef = useRef([]);
+  const terminalRef = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      // Title characters
+      // Title characters fly in from deep 3D space
       gsap.from(".ct-title-char", {
-        y: 100,
-        rotateX: -90,
+        z: -600,
+        rotateY: 90,
         opacity: 0,
-        stagger: 0.04,
-        duration: 0.8,
-        ease: "back.out(1.7)",
+        stagger: 0.05,
+        duration: 1,
+        ease: "back.out(1.4)",
         scrollTrigger: {
           trigger: section,
           start: "top 70%",
         },
       });
 
-      // Subtitle
+      // Subtitle slides up
       gsap.from(".ct-subtitle", {
         y: 30,
         opacity: 0,
@@ -93,13 +92,27 @@ const Contact = () => {
         },
       });
 
-      // Contact cards stagger in with 3D rotation
-      gsap.from(".ct-card", {
-        y: 80,
-        rotateY: -20,
-        rotateX: 10,
+      // Terminal box rotates in from deep 3D space
+      gsap.from(".ct-terminal", {
+        rotateX: 45,
+        rotateY: -15,
+        z: -300,
         opacity: 0,
-        stagger: 0.1,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".ct-terminal",
+          start: "top 80%",
+        },
+      });
+
+      // Contact cards cascade from different 3D angles
+      gsap.from(".ct-card", {
+        y: 100,
+        z: -200,
+        rotateX: 25,
+        opacity: 0,
+        stagger: 0.08,
         duration: 0.9,
         ease: "power3.out",
         scrollTrigger: {
@@ -108,12 +121,12 @@ const Contact = () => {
         },
       });
 
-      // CTA box
+      // CTA floats in from below
       gsap.from(".ct-cta-box", {
-        y: 60,
+        y: 80,
         opacity: 0,
-        scale: 0.9,
-        duration: 1.2,
+        scale: 0.85,
+        duration: 1.4,
         ease: "elastic.out(1, 0.6)",
         scrollTrigger: {
           trigger: ".ct-cta-box",
@@ -133,7 +146,7 @@ const Contact = () => {
         },
       });
 
-      // Floating orbs
+      // Orbs float
       gsap.to(".ct-orb", {
         y: "random(-30, 30)",
         x: "random(-20, 20)",
@@ -142,6 +155,15 @@ const Contact = () => {
         yoyo: true,
         ease: "sine.inOut",
         stagger: { each: 0.8 },
+      });
+
+      // Terminal typing cursor blink
+      gsap.to(".ct-terminal-cursor", {
+        opacity: 0,
+        duration: 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "steps(1)",
       });
 
     }, section);
@@ -156,70 +178,57 @@ const Contact = () => {
     const rect = card.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    card.style.transform = `perspective(800px) rotateX(${y * -15}deg) rotateY(${x * 15}deg) translateY(-8px) scale(1.03)`;
+
+    gsap.to(card, {
+      rotateX: y * -20,
+      rotateY: x * 20,
+      z: 30,
+      duration: 0.3,
+      ease: "power2.out",
+    });
 
     const shine = card.querySelector(".ct-card-shine");
     if (shine) {
-      shine.style.background = `radial-gradient(circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.12), transparent 50%)`;
+      shine.style.background = `radial-gradient(circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.15), transparent 50%)`;
     }
   };
 
   const handleCardMouseLeave = (index) => {
     const card = cardsRef.current[index];
     if (!card) return;
-    card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)";
+    gsap.to(card, {
+      rotateX: 0,
+      rotateY: 0,
+      z: 0,
+      duration: 0.6,
+      ease: "elastic.out(1, 0.5)",
+    });
     const shine = card.querySelector(".ct-card-shine");
-    if (shine) {
-      shine.style.background = "transparent";
-    }
+    if (shine) shine.style.background = "transparent";
   };
 
-  const handleExplode = (e) => {
-    e.preventDefault();
-    const btn = ctaBtnRef.current;
-    if (!btn) return;
-
-    // Trigger physical shatter on the shards
-    gsap.to(shardsRef.current, {
-      x: () => (Math.random() - 0.5) * 400,
-      y: () => (Math.random() - 0.5) * 400,
-      z: () => Math.random() * 200,
-      rotationX: () => Math.random() * 720 - 360,
-      rotationY: () => Math.random() * 720 - 360,
-      rotationZ: () => Math.random() * 720 - 360,
-      opacity: 0,
-      scale: () => Math.random() * 2 + 0.5,
-      duration: 1.2,
-      ease: "power4.out",
-      stagger: 0.02,
+  // Terminal 3D tilt for the whole terminal box
+  const handleTerminalMove = (e) => {
+    const el = terminalRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(el, {
+      rotateX: y * -8,
+      rotateY: x * 12,
+      duration: 0.5,
+      ease: "power2.out",
     });
+  };
 
-    // Shrink and fade the real button text
-    gsap.to(btn.querySelectorAll(".ct-cta-btn-text, svg"), {
-      opacity: 0,
-      scale: 0,
-      duration: 0.3,
+  const handleTerminalLeave = () => {
+    gsap.to(terminalRef.current, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 1,
+      ease: "elastic.out(1, 0.4)",
     });
-
-    // Wait for the shrapnel to spread, then execute the link action
-    setTimeout(() => {
-      window.open("mailto:abhigyankumar268@gmail.com", "_blank");
-      
-      // Cleanup: Reassemble the button gracefully after it opened
-      gsap.to(btn.querySelectorAll(".ct-cta-btn-text, svg"), {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        delay: 1
-      });
-      gsap.to(shardsRef.current, {
-        x: 0, y: 0, z: 0,
-        rotationX: 0, rotationY: 0, rotationZ: 0,
-        opacity: 0,
-        scale: 1,
-        duration: 0
-      });
-    }, 600);
   };
 
   const titleChars = "GET IN TOUCH".split("");
@@ -234,19 +243,23 @@ const Contact = () => {
       {/* Large ghost text */}
       <div className="ct-ghost-text" aria-hidden="true">CONTACT</div>
 
-      {/* Perspective grid */}
-      <div className="ct-perspective-grid">
+      {/* Holographic 3D Grid Floor */}
+      <div className="ct-holo-grid">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <div className="ct-holo-line-h" key={`h${i}`} style={{ top: `${(i + 1) * 8}%` }} />
+        ))}
         {Array.from({ length: 8 }).map((_, i) => (
-          <div className="ct-grid-line" key={i} />
+          <div className="ct-holo-line-v" key={`v${i}`} style={{ left: `${(i + 1) * 12.5}%` }} />
         ))}
       </div>
 
-      {/* Title */}
-      <div className="ct-title" style={{ perspective: "800px" }}>
+      {/* Title with 3D perspective */}
+      <div className="ct-title" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
         {titleChars.map((char, i) => (
           <span
             className={`ct-title-char ${char === " " ? "ct-space" : ""}`}
             key={i}
+            style={{ transformStyle: "preserve-3d" }}
           >
             {char === " " ? "\u00A0" : char}
           </span>
@@ -256,6 +269,55 @@ const Contact = () => {
       <p className="ct-subtitle">
         Have a project in mind? Let&apos;s build something amazing together.
       </p>
+
+      {/* 3D Terminal Box */}
+      <div
+        className="ct-terminal"
+        ref={terminalRef}
+        onMouseMove={handleTerminalMove}
+        onMouseLeave={handleTerminalLeave}
+      >
+        {/* Terminal header bar */}
+        <div className="ct-terminal-bar">
+          <div className="ct-terminal-dots">
+            <span className="ct-dot ct-dot-red" />
+            <span className="ct-dot ct-dot-yellow" />
+            <span className="ct-dot ct-dot-green" />
+          </div>
+          <span className="ct-terminal-title">abhigyan@portfolio ~ /contact</span>
+          <div style={{ width: 52 }} />
+        </div>
+
+        {/* Terminal body with typing lines */}
+        <div className="ct-terminal-body">
+          <div className="ct-terminal-line">
+            <span className="ct-terminal-prompt">$</span>
+            <span className="ct-terminal-cmd">whoami</span>
+          </div>
+          <div className="ct-terminal-output">Abhigyan Kumar Gupta — Full Stack Developer & ML Engineer</div>
+
+          <div className="ct-terminal-line">
+            <span className="ct-terminal-prompt">$</span>
+            <span className="ct-terminal-cmd">cat contact.json</span>
+          </div>
+          <div className="ct-terminal-json">
+            {'{'}<br />
+            &nbsp;&nbsp;<span className="ct-json-key">&quot;email&quot;</span>: <span className="ct-json-val">&quot;abhigyankumar268@gmail.com&quot;</span>,<br />
+            &nbsp;&nbsp;<span className="ct-json-key">&quot;phone&quot;</span>: <span className="ct-json-val">&quot;+91 8987209472&quot;</span>,<br />
+            &nbsp;&nbsp;<span className="ct-json-key">&quot;github&quot;</span>: <span className="ct-json-val">&quot;abhigyan7731&quot;</span>,<br />
+            &nbsp;&nbsp;<span className="ct-json-key">&quot;status&quot;</span>: <span className="ct-json-status">&quot;Open to work&quot;</span><br />
+            {'}'}
+          </div>
+
+          <div className="ct-terminal-line">
+            <span className="ct-terminal-prompt">$</span>
+            <span className="ct-terminal-cursor">▊</span>
+          </div>
+        </div>
+
+        {/* Holographic scanline */}
+        <div className="ct-terminal-scanline" />
+      </div>
 
       {/* Contact cards grid */}
       <div className="ct-grid">
@@ -270,7 +332,7 @@ const Contact = () => {
             ref={(el) => (cardsRef.current[i] = el)}
             onMouseMove={(e) => handleCardMouseMove(e, i)}
             onMouseLeave={() => handleCardMouseLeave(i)}
-            style={{ "--card-gradient": link.gradient, "--card-glow": link.glow }}
+            style={{ "--card-gradient": link.gradient, "--card-glow": link.glow, transformStyle: "preserve-3d" }}
           >
             <div className="ct-card-shine" />
             <div className="ct-card-border" />
@@ -293,37 +355,12 @@ const Contact = () => {
           Let&apos;s create something <span>extraordinary</span>
         </h3>
         <a
-          className="ct-cta-button explode-btn"
+          className="ct-cta-button"
           href="mailto:abhigyankumar268@gmail.com"
           data-cursor="disable"
-          ref={ctaBtnRef}
-          onClick={handleExplode}
-          style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Explosive geometry shards stored inside the button */}
-          <div className="explode-shards-container" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-            {Array.from({ length: 15 }).map((_, i) => (
-              <div 
-                key={i} 
-                ref={el => shardsRef.current[i] = el}
-                style={{
-                  position: 'absolute',
-                  top: `${Math.random() * 80 + 10}%`,
-                  left: `${Math.random() * 80 + 10}%`,
-                  width: `${Math.random() * 20 + 10}px`,
-                  height: `${Math.random() * 20 + 10}px`,
-                  background: `linear-gradient(135deg, rgba(0,242,254,0.8), rgba(194,164,255,0.8))`,
-                  clipPath: `polygon(${Math.random()*100}% 0%, 100% ${Math.random()*100}%, ${Math.random()*100}% 100%, 0% ${Math.random()*100}%)`,
-                  opacity: 0,
-                  transform: 'translateZ(0px)',
-                  boxShadow: '0 0 10px rgba(0,242,254,0.5)'
-                }}
-              />
-            ))}
-          </div>
-
-          <span className="ct-cta-btn-text" style={{ position: 'relative', zIndex: 2 }}>Send me an email</span>
-          <MdArrowOutward style={{ position: 'relative', zIndex: 2 }} />
+          <span>Send me an email</span>
+          <MdArrowOutward />
         </a>
       </div>
 
