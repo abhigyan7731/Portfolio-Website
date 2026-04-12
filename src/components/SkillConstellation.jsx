@@ -96,6 +96,8 @@ const SkillConstellation = () => {
 
     // Master group
     const masterGroup = new THREE.Group();
+    // Shift the globe physically downwards so it doesn't overlap with the top text
+    masterGroup.position.y = -1.2;
     scene.add(masterGroup);
 
     // Generate positions
