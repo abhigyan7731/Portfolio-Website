@@ -1,4 +1,4 @@
-/* ===== ABOUT SECTION V2 — 3D GLASSMORPHIC ===== */
+/* ===== ABOUT SECTION V2 — 3D HOLOGRAPHIC ===== */
 
 .about-section-v2 {
   position: relative;
@@ -11,9 +11,55 @@
   align-items: center;
   overflow: visible;
   z-index: 9;
+  perspective: 1500px;
 }
 
-/* --- Floating Orbs --- */
+/* ===== Ghost Text ===== */
+.about-ghost-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(100px, 22vw, 350px);
+  font-weight: 900;
+  letter-spacing: 20px;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.025);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+/* ===== Holographic Grid ===== */
+.about-holo-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transform: perspective(600px) rotateX(40deg);
+  transform-origin: center bottom;
+  opacity: 0.08;
+}
+
+.about-holo-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.5) 30%, rgba(194, 164, 255, 0.6) 50%, rgba(0, 242, 254, 0.5) 70%, transparent);
+}
+
+.about-holo-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(0, 242, 254, 0.3) 30%, rgba(194, 164, 255, 0.4) 50%, rgba(0, 242, 254, 0.3) 70%, transparent);
+}
+
+/* ===== Floating Orbs ===== */
 .about-orb {
   position: absolute;
   border-radius: 50%;
@@ -46,20 +92,17 @@
   left: 50%;
 }
 
-/* --- Title --- */
+/* ===== Title ===== */
 .about-title-row {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
   margin-bottom: 50px;
-  perspective: 600px;
   z-index: 2;
 }
 
-.about-title-overflow {
-  overflow: hidden;
-}
-
-.about-title-word {
+.about-title-char {
   display: inline-block;
   font-size: clamp(50px, 8vw, 120px);
   font-weight: 800;
@@ -80,6 +123,10 @@
   animation: aboutGradientShift 4s ease infinite;
 }
 
+.about-space {
+  width: 20px;
+}
+
 @keyframes aboutGradientShift {
 
   0%,
@@ -92,87 +139,108 @@
   }
 }
 
-/* --- Glass Card --- */
+/* ===== 3D Terminal Glass Card ===== */
 .about-glass-card {
   position: relative;
   width: 90%;
-  max-width: 800px;
-  padding: 50px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 750px;
+  border-radius: 18px;
+  background: rgba(10, 10, 20, 0.85);
+  border: 1px solid rgba(0, 242, 254, 0.15);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-  will-change: transform;
-  z-index: 2;
-  overflow: hidden;
-  cursor: default;
-}
-
-.about-glass-card:hover {
   box-shadow:
-    0 0 60px rgba(194, 164, 255, 0.08),
-    0 30px 60px rgba(0, 0, 0, 0.4);
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(0, 242, 254, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  z-index: 5;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-/* Glow behind the card */
-.about-card-glow {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg,
-      transparent,
-      rgba(194, 164, 255, 0.06),
-      transparent,
-      rgba(102, 126, 234, 0.06),
-      transparent);
-  animation: aboutGlowSpin 8s linear infinite;
-  z-index: -1;
-}
-
-@keyframes aboutGlowSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Edge light */
-.about-card-edge-light {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(194, 164, 255, 0.6),
-      rgba(102, 126, 234, 0.6),
-      transparent);
-  opacity: 0.6;
-}
-
-/* --- Card Content --- */
-.about-card-content {
-  position: relative;
-  z-index: 1;
-}
-
-.about-badge {
-  display: inline-flex;
+/* Terminal header bar */
+.about-term-bar {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.about-term-dots {
+  display: flex;
   gap: 8px;
-  padding: 6px 16px;
-  border-radius: 50px;
-  background: rgba(194, 164, 255, 0.1);
-  border: 1px solid rgba(194, 164, 255, 0.2);
+}
+
+.about-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.about-dot-r {
+  background: #ff5f57;
+  box-shadow: 0 0 6px rgba(255, 95, 87, 0.5);
+}
+
+.about-dot-y {
+  background: #ffbd2e;
+  box-shadow: 0 0 6px rgba(255, 189, 46, 0.5);
+}
+
+.about-dot-g {
+  background: #28c840;
+  box-shadow: 0 0 6px rgba(40, 200, 64, 0.5);
+}
+
+.about-term-title {
+  font-size: 12px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.5px;
+}
+
+/* Terminal body */
+.about-term-body {
+  padding: 22px 24px;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
   font-size: 13px;
-  letter-spacing: 1px;
+  line-height: 1.8;
+}
+
+.about-term-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.about-prompt {
+  color: #00f2fe;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
+}
+
+.about-cmd {
   color: #c2a4ff;
-  margin-bottom: 24px;
   font-weight: 500;
+}
+
+.about-cursor {
+  color: #00f2fe;
+  font-size: 16px;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+}
+
+.about-term-output {
+  padding-left: 22px;
+  margin: 8px 0 16px;
+}
+
+.about-badge-line {
+  margin-bottom: 12px;
 }
 
 .about-badge-dot {
@@ -181,6 +249,7 @@
   border-radius: 50%;
   background: #c2a4ff;
   animation: aboutDotPulse 2s ease infinite;
+  flex-shrink: 0;
 }
 
 @keyframes aboutDotPulse {
@@ -197,22 +266,30 @@
   }
 }
 
-.about-para-line {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.82);
-  margin: 0 0 14px;
-  will-change: transform, opacity;
+.about-badge-text {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #c2a4ff;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
-.about-para-line strong {
+.about-term-para {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 10px;
+}
+
+.about-term-para strong {
   color: #fff;
   font-weight: 600;
 }
 
-.about-para-line em {
-  color: #c2a4ff;
+.about-term-para em {
+  color: #43e97b;
   font-style: normal;
   font-weight: 500;
 }
@@ -221,53 +298,180 @@
 .about-tech-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 8px;
+  margin: 10px 0 16px 22px;
 }
 
 .about-chip {
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 50px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.5px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
   transition: all 0.3s ease;
+  font-family: "SF Mono", "Fira Code", monospace;
 }
 
 .about-chip:hover {
-  background: rgba(194, 164, 255, 0.15);
-  border-color: rgba(194, 164, 255, 0.3);
-  color: #c2a4ff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(194, 164, 255, 0.15);
+  background: rgba(0, 242, 254, 0.1);
+  border-color: rgba(0, 242, 254, 0.3);
+  color: #00f2fe;
+  transform: translateY(-2px) translateZ(10px);
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.15);
 }
 
-/* --- 3D Stats --- */
+/* Scanline */
+.about-scanline {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.05), transparent);
+  transform: skewX(-15deg);
+  animation: aboutSweep 6s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes aboutSweep {
+  0% {
+    left: -100%;
+  }
+
+  50% {
+    left: 200%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+/* Edge light */
+.about-card-edge-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.5), rgba(194, 164, 255, 0.5), transparent);
+  opacity: 0.7;
+}
+
+/* ===== Journey Timeline ===== */
+.about-timeline {
+  width: 90%;
+  max-width: 750px;
+  margin-top: 60px;
+  z-index: 5;
+}
+
+.about-timeline-title {
+  font-size: 14px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.about-timeline-track {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  padding-left: 30px;
+  border-left: 2px solid rgba(255, 255, 255, 0.06);
+}
+
+.about-timeline-item {
+  position: relative;
+  padding: 16px 0 24px 24px;
+  transform-style: preserve-3d;
+}
+
+.about-tl-dot {
+  position: absolute;
+  left: -37px;
+  top: 22px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tl-color);
+  box-shadow: 0 0 12px var(--tl-color);
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.about-tl-year {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--tl-color);
+  text-shadow: 0 0 8px var(--tl-color);
+  margin-bottom: 4px;
+  font-family: "SF Mono", monospace;
+}
+
+.about-tl-content {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s ease;
+}
+
+.about-tl-content:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(194, 164, 255, 0.15);
+  transform: translateX(8px) translateZ(15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.about-tl-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4px;
+}
+
+.about-tl-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.5px;
+}
+
+/* ===== 3D Stats ===== */
 .about-stats-row {
   display: flex;
-  gap: 40px;
+  gap: 24px;
   margin-top: 50px;
-  z-index: 2;
-  perspective: 800px;
+  z-index: 5;
+  perspective: 1000px;
 }
 
-.about-stat-item {
+.about-stat-card {
   text-align: center;
-  padding: 28px 36px;
+  padding: 28px 32px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform, opacity;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
+  transform-style: preserve-3d;
 }
 
-.about-stat-item:hover {
-  transform: translateY(-8px) rotateX(5deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(194, 164, 255, 0.08);
-  background: rgba(255, 255, 255, 0.05);
+.about-stat-card:hover {
+  transform: translateY(-10px) rotateX(8deg) translateZ(20px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(194, 164, 255, 0.1);
+  border-color: rgba(194, 164, 255, 0.2);
+}
+
+.about-stat-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
 }
 
 .about-stat-value {
@@ -279,7 +483,6 @@
   color: transparent;
   line-height: 1.2;
   margin-bottom: 8px;
-  padding-bottom: 2px;
 }
 
 .about-stat-suffix {
@@ -288,33 +491,35 @@
 }
 
 .about-stat-label {
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 500;
 }
 
-/* --- RESPONSIVE --- */
+/* ===== RESPONSIVE ===== */
 @media only screen and (max-width: 768px) {
   .about-section-v2 {
     padding: 60px 0 50px;
   }
 
   .about-title-row {
-    gap: 12px;
+    gap: 4px;
     margin-bottom: 30px;
   }
 
   .about-glass-card {
     width: 95%;
-    padding: 30px 24px;
-    border-radius: 18px;
   }
 
-  .about-para-line {
-    font-size: 16px;
-    line-height: 1.6;
+  .about-term-body {
+    font-size: 11px;
+    padding: 16px 18px;
+  }
+
+  .about-term-para {
+    font-size: 12px;
   }
 
   .about-stats-row {
@@ -324,7 +529,7 @@
     margin-top: 30px;
   }
 
-  .about-stat-item {
+  .about-stat-card {
     padding: 20px 24px;
   }
 
@@ -332,14 +537,12 @@
     font-size: 32px;
   }
 
-  .about-orb-1 {
-    width: 200px;
-    height: 200px;
+  .about-timeline {
+    margin-top: 40px;
   }
 
-  .about-orb-2 {
-    width: 160px;
-    height: 160px;
+  .about-holo-grid {
+    opacity: 0.04;
   }
 }
 
@@ -350,13 +553,12 @@
 
   .about-glass-card {
     width: 100%;
-    padding: 24px 16px;
     border-radius: 14px;
   }
 
-  .about-para-line {
-    font-size: 14px;
-    line-height: 1.5;
+  .about-term-body {
+    font-size: 10px;
+    padding: 14px 12px;
   }
 
   .about-stats-row {
@@ -365,11 +567,17 @@
     align-items: stretch;
   }
 
-  .about-stat-item {
+  .about-stat-card {
     padding: 16px 20px;
     flex-direction: row;
+    display: flex;
     gap: 12px;
     align-items: center;
+    text-align: left;
+  }
+
+  .about-stat-icon {
+    margin-bottom: 0;
   }
 
   .about-stat-value {
