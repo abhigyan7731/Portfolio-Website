@@ -18,7 +18,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TechStack = lazy(() => import("./TechStack"));
+
 
 const MainContainer = ({ children }) => {
   const [isDesktopView, setIsDesktopView] = useState(
@@ -88,11 +88,7 @@ const MainContainer = ({ children }) => {
             <SkillConstellation />
             <Career />
             <Work />
-            {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
-                <TechStack />
-              </Suspense>
-            )}
+
             <Contact />
           </div>
         </div>
