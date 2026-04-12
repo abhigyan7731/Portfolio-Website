@@ -120,7 +120,7 @@
     rgba(194, 164, 255, 0.3) 100%
   );
   border-radius: 100px;
-  transition: width 0.3s ease-out;
+  transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
 

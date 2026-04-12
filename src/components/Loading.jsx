@@ -30,12 +30,12 @@ const Loading = ({ percent, setIsLoading }) => {
     const timer = setTimeout(() => {
       setClicked(true);
 
-      // Animate the pill expanding to fill the screen
+      // Animate the pill expanding to fill the screen — fast & snappy
       if (wrapRef.current) {
         gsap.to(wrapRef.current, {
           scale: 50,
           opacity: 0,
-          duration: 1.5,
+          duration: 0.8,
           ease: "power3.in",
         });
       }
@@ -50,8 +50,8 @@ const Loading = ({ percent, setIsLoading }) => {
             setIsLoading(false);
           }
         });
-      }, 1200);
-    }, 600);
+      }, 600);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [loaded, setIsLoading]);
@@ -120,20 +120,20 @@ export const setProgress = (setLoading) => {
 
   let interval = setInterval(() => {
     if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
-      percent = percent + rand;
+      let rand = Math.round(Math.random() * 8) + 2; // faster jumps
+      percent = Math.min(percent + rand, 100);
       setLoading(percent);
     } else {
       clearInterval(interval);
       interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
+        percent = Math.min(percent + Math.round(Math.random() * 3) + 1, 100);
         setLoading(percent);
         if (percent > 91) {
           clearInterval(interval);
         }
-      }, 2000);
+      }, 200); // was 2000ms — now 200ms, 10x faster
     }
-  }, 100);
+  }, 60); // was 100ms — now 60ms
 
   function clear() {
     clearInterval(interval);
@@ -145,7 +145,8 @@ export const setProgress = (setLoading) => {
       clearInterval(interval);
       interval = setInterval(() => {
         if (percent < 100) {
-          percent++;
+          percent += 2; // double tick speed
+          percent = Math.min(percent, 100);
           setLoading(percent);
         } else {
           resolve(percent);
