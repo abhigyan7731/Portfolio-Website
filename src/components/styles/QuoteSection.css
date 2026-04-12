@@ -1,0 +1,100 @@
+.quote-section {
+  width: 100%;
+  min-height: 45vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  padding: 4rem 2rem;
+  perspective: 1000px;
+}
+
+.quote-glass-card {
+  max-width: 850px;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 5rem 4rem;
+  text-align: center;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease;
+  overflow: hidden;
+}
+
+.quote-glass-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.1), transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.quote-glass-card:hover {
+  transform: translateY(-5px) scale(1.02) rotateX(2deg) rotateY(2deg) !important;
+  border-color: rgba(0, 242, 254, 0.3);
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              0 0 30px rgba(0, 242, 254, 0.1);
+}
+
+.quote-content {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+  margin-bottom: 2.5rem;
+  position: relative;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.quote-mark {
+  color: #00f2fe;
+  font-size: 5rem;
+  font-family: 'Courier New', Courier, monospace;
+  vertical-align: middle;
+  line-height: 0;
+  margin: 0 15px;
+  display: inline-block;
+  transform: translateY(15px);
+  -webkit-text-fill-color: #00f2fe;
+  text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+}
+
+.quote-author {
+  font-size: 1.5rem;
+  color: #00f2fe;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
+@media (max-width: 768px) {
+  .quote-content {
+    font-size: 2rem;
+  }
+  .quote-glass-card {
+    padding: 3rem 2rem;
+  }
+  .quote-mark {
+    font-size: 3rem;
+    transform: translateY(8px);
+  }
+  .quote-author {
+    font-size: 1.1rem;
+  }
+}

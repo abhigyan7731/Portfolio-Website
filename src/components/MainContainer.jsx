@@ -9,6 +9,9 @@ import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import SkillConstellation from "./SkillConstellation";
 import Work from "./Work";
+import QuoteSection from "./QuoteSection";
+import ScrollProgressBar from "./ScrollProgressBar";
+import GlobalBackground from "./GlobalBackground";
 import setSplitText from "./utils/splitText";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -69,6 +72,8 @@ const MainContainer = ({ children }) => {
 
   return (
     <div className="container-main">
+      <ScrollProgressBar />
+      <GlobalBackground />
       <Cursor />
       <Navbar />
       <SocialIcons />
@@ -78,6 +83,7 @@ const MainContainer = ({ children }) => {
           <div className="container-main">
             <Landing>{!isDesktopView && children}</Landing>
             <About />
+            <QuoteSection />
             <WhatIDo />
             <SkillConstellation />
             <Career />

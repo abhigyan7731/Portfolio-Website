@@ -12,7 +12,9 @@ import '../src/components/styles/style.css'
 import '../src/components/styles/WhatIDo.css'
 import '../src/components/styles/Work.css'
 import '../src/components/styles/SkillConstellation.css'
-
+import '../src/components/styles/GlobalBackground.css'
+import '../src/components/styles/QuoteSection.css'
+import '../src/components/styles/ScrollProgressBar.css'
 export default function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
 }
