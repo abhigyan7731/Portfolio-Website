@@ -1,29 +1,54 @@
 .quote-section {
   width: 100%;
-  min-height: 45vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 10;
-  padding: 4rem 2rem;
-  perspective: 1000px;
+  padding: 6rem 2rem 4rem 2rem;
+  margin-top: 5rem;
+  perspective: 2000px;
+}
+
+.quote-glass-wrapper {
+  position: relative;
+  transform-style: preserve-3d;
 }
 
 .quote-glass-card {
-  max-width: 850px;
+  max-width: 750px;
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 30px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 5rem 4rem;
+  padding: 3.5rem 3rem;
   text-align: center;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5),
               inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease;
-  overflow: hidden;
+  /* Hover effects are now handled by true JS GSAP */
+  overflow: visible; /* Required to allow 3D elements to pop out physically */
+}
+
+/* 3D Hologram Scanline Effect */
+.quote-hologram-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.2), transparent);
+  transform: translateZ(10px) skewX(-20deg);
+  animation: sweep 4s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes sweep {
+  0% { left: -100%; }
+  50% { left: 200%; }
+  100% { left: 200%; }
 }
 
 .quote-glass-card::before {
@@ -39,19 +64,19 @@
 }
 
 .quote-glass-card:hover {
-  transform: translateY(-5px) scale(1.02) rotateX(2deg) rotateY(2deg) !important;
   border-color: rgba(0, 242, 254, 0.3);
   box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6),
               inset 0 1px 0 rgba(255, 255, 255, 0.2),
-              0 0 30px rgba(0, 242, 254, 0.1);
+              0 0 50px rgba(0, 242, 254, 0.2);
 }
 
 .quote-content {
-  font-size: 3.5rem;
+  transform: translateZ(60px); /* Pushes text physically towards user */
+  font-size: 2.2rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.4;
   color: #fff;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   position: relative;
   font-family: inherit;
   text-transform: uppercase;
@@ -63,19 +88,20 @@
 
 .quote-mark {
   color: #00f2fe;
-  font-size: 5rem;
+  font-size: 4rem;
   font-family: 'Courier New', Courier, monospace;
   vertical-align: middle;
   line-height: 0;
-  margin: 0 15px;
+  margin: 0 12px;
   display: inline-block;
-  transform: translateY(15px);
+  transform: translateZ(90px) translateY(12px); /* Massive 3D pop out for quote marks */
   -webkit-text-fill-color: #00f2fe;
-  text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+  text-shadow: 0 10px 30px rgba(0, 242, 254, 0.8);
 }
 
 .quote-author {
-  font-size: 1.5rem;
+  transform: translateZ(40px); /* Author slightly raised */
+  font-size: 1.2rem;
   color: #00f2fe;
   letter-spacing: 4px;
   text-transform: uppercase;
