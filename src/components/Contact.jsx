@@ -59,6 +59,8 @@ const contactLinks = [
 const Contact = () => {
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
+  const ctaBtnRef = useRef(null);
+  const shardsRef = useRef([]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -172,6 +174,54 @@ const Contact = () => {
     }
   };
 
+  const handleExplode = (e) => {
+    e.preventDefault();
+    const btn = ctaBtnRef.current;
+    if (!btn) return;
+
+    // Trigger physical shatter on the shards
+    gsap.to(shardsRef.current, {
+      x: () => (Math.random() - 0.5) * 400,
+      y: () => (Math.random() - 0.5) * 400,
+      z: () => Math.random() * 200,
+      rotationX: () => Math.random() * 720 - 360,
+      rotationY: () => Math.random() * 720 - 360,
+      rotationZ: () => Math.random() * 720 - 360,
+      opacity: 0,
+      scale: () => Math.random() * 2 + 0.5,
+      duration: 1.2,
+      ease: "power4.out",
+      stagger: 0.02,
+    });
+
+    // Shrink and fade the real button text
+    gsap.to(btn.querySelectorAll(".ct-cta-btn-text, svg"), {
+      opacity: 0,
+      scale: 0,
+      duration: 0.3,
+    });
+
+    // Wait for the shrapnel to spread, then execute the link action
+    setTimeout(() => {
+      window.open("mailto:abhigyankumar268@gmail.com", "_blank");
+      
+      // Cleanup: Reassemble the button gracefully after it opened
+      gsap.to(btn.querySelectorAll(".ct-cta-btn-text, svg"), {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        delay: 1
+      });
+      gsap.to(shardsRef.current, {
+        x: 0, y: 0, z: 0,
+        rotationX: 0, rotationY: 0, rotationZ: 0,
+        opacity: 0,
+        scale: 1,
+        duration: 0
+      });
+    }, 600);
+  };
+
   const titleChars = "GET IN TOUCH".split("");
 
   return (
@@ -243,12 +293,37 @@ const Contact = () => {
           Let&apos;s create something <span>extraordinary</span>
         </h3>
         <a
-          className="ct-cta-button"
+          className="ct-cta-button explode-btn"
           href="mailto:abhigyankumar268@gmail.com"
           data-cursor="disable"
+          ref={ctaBtnRef}
+          onClick={handleExplode}
+          style={{ transformStyle: "preserve-3d" }}
         >
-          <span className="ct-cta-btn-text">Send me an email</span>
-          <MdArrowOutward />
+          {/* Explosive geometry shards stored inside the button */}
+          <div className="explode-shards-container" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+            {Array.from({ length: 15 }).map((_, i) => (
+              <div 
+                key={i} 
+                ref={el => shardsRef.current[i] = el}
+                style={{
+                  position: 'absolute',
+                  top: `${Math.random() * 80 + 10}%`,
+                  left: `${Math.random() * 80 + 10}%`,
+                  width: `${Math.random() * 20 + 10}px`,
+                  height: `${Math.random() * 20 + 10}px`,
+                  background: `linear-gradient(135deg, rgba(0,242,254,0.8), rgba(194,164,255,0.8))`,
+                  clipPath: `polygon(${Math.random()*100}% 0%, 100% ${Math.random()*100}%, ${Math.random()*100}% 100%, 0% ${Math.random()*100}%)`,
+                  opacity: 0,
+                  transform: 'translateZ(0px)',
+                  boxShadow: '0 0 10px rgba(0,242,254,0.5)'
+                }}
+              />
+            ))}
+          </div>
+
+          <span className="ct-cta-btn-text" style={{ position: 'relative', zIndex: 2 }}>Send me an email</span>
+          <MdArrowOutward style={{ position: 'relative', zIndex: 2 }} />
         </a>
       </div>
 

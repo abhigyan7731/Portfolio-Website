@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -83,6 +84,15 @@ const SkillConstellation = () => {
       0.15
     );
     composer.addPass(bloomPass);
+
+    // OrbitControls for true tactile 3D interactivity
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = false; // Prevents scroll hijacking
+    controls.enablePan = false; 
+    controls.autoRotate = true; // Slowly rotate when user isn't holding it
+    controls.autoRotateSpeed = 1.0;
 
     // Master group
     const masterGroup = new THREE.Group();
@@ -281,6 +291,7 @@ const SkillConstellation = () => {
     let hoveredNode = -1;
 
     const onMouseMove = (e) => {
+      // Don't update coordinates if dragging (OrbitControls is active)
       const rect = container.getBoundingClientRect();
       mouse.targetX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.targetY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -462,15 +473,10 @@ const SkillConstellation = () => {
         ring.material.opacity = (1 - t) * 0.15;
       });
 
-      // Orbit master group
-      masterGroup.rotation.y += 0.001;
-      masterGroup.rotation.x += (mouse.y * 0.15 - masterGroup.rotation.x) * 0.02;
-      masterGroup.rotation.y += (mouse.x * 0.3 - masterGroup.rotation.y) * 0.01;
+      // Update 3D orbital trajectory
+      controls.update();
 
-      // Camera subtle movement
-      camera.position.x += (mouse.x * 1.5 - camera.position.x) * 0.02;
-      camera.position.y += (mouse.y * 1.0 - camera.position.y) * 0.02;
-      camera.lookAt(0, 0, 0);
+      // Camera subtle movement removed in favor of orbit controls handling orientation
 
       // Overall visibility
       masterGroup.material;
