@@ -16,7 +16,7 @@ export const LoadingProvider = ({ children }) => {
 
   return (
     <LoadingContext.Provider value={value}>
-      {isLoading && <Loading percent={loading} />}
+      {isLoading && <Loading percent={loading} setIsLoading={setIsLoading} />}
       <main className="main-body">{children}</main>
     </LoadingContext.Provider>
   );

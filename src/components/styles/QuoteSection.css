@@ -17,13 +17,13 @@
 }
 
 .quote-glass-card {
-  max-width: 750px;
+  max-width: 550px;
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 3.5rem 3rem;
+  padding: 2.5rem 2.5rem;
   text-align: center;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5),
               inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -72,11 +72,11 @@
 
 .quote-content {
   transform: translateZ(60px); /* Pushes text physically towards user */
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.4;
   color: #fff;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
   font-family: inherit;
   text-transform: uppercase;
@@ -88,22 +88,22 @@
 
 .quote-mark {
   color: #00f2fe;
-  font-size: 4rem;
+  font-size: 3rem;
   font-family: 'Courier New', Courier, monospace;
   vertical-align: middle;
   line-height: 0;
-  margin: 0 12px;
+  margin: 0 10px;
   display: inline-block;
-  transform: translateZ(90px) translateY(12px); /* Massive 3D pop out for quote marks */
+  transform: translateZ(90px) translateY(8px); /* Massive 3D pop out for quote marks */
   -webkit-text-fill-color: #00f2fe;
   text-shadow: 0 10px 30px rgba(0, 242, 254, 0.8);
 }
 
 .quote-author {
   transform: translateZ(40px); /* Author slightly raised */
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #00f2fe;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   font-weight: 500;
   text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
@@ -111,16 +111,16 @@
 
 @media (max-width: 768px) {
   .quote-content {
-    font-size: 2rem;
+    font-size: 1.3rem;
   }
   .quote-glass-card {
-    padding: 3rem 2rem;
+    padding: 2rem 1.5rem;
   }
   .quote-mark {
-    font-size: 3rem;
-    transform: translateY(8px);
+    font-size: 2.2rem;
+    transform: translateY(6px);
   }
   .quote-author {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
 }
