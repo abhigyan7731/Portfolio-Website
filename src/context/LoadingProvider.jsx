@@ -12,7 +12,7 @@ export const LoadingProvider = ({ children }) => {
     setIsLoading,
     setLoading,
   };
-  useEffect(() => {}, [loading]);
+  useEffect(() => { }, [loading]);
 
   return (
     <LoadingContext.Provider value={value}>

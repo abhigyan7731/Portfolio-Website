@@ -9,6 +9,7 @@
   place-items: center;
   justify-content: center;
 }
+
 .loading-button {
   padding: 20px 50px;
   border-radius: 100px;
@@ -19,6 +20,7 @@
   position: relative;
   z-index: 9;
 }
+
 .loading-button::before {
   content: "";
   background-color: #ffffff;
@@ -34,9 +36,11 @@
   opacity: 0;
   transform: translate(-50%, -50%);
 }
+
 .loading-button:hover::before {
   opacity: 1;
 }
+
 .loading-clicked .loading-button::before {
   opacity: 0;
 }
@@ -57,6 +61,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .loading-clicked {
   transition-delay: 0ms;
   transition-timing-function: cubic-bezier(0.33, 0.11, 1, 0.72);
@@ -66,9 +71,11 @@
   min-height: calc(100vh + 500px);
   box-shadow: none;
 }
+
 .loading-clicked .loading-button {
   overflow: visible;
 }
+
 .loading-hover {
   background-color: #a87cff;
   width: 250px;
@@ -86,10 +93,12 @@
 .loading-wrap:hover .loading-hover {
   opacity: 1;
 }
+
 .loading-clicked:hover .loading-hover,
 .loading-clicked .loading-hover {
   opacity: 0;
 }
+
 .loading-content {
   position: relative;
   background-color: #000;
@@ -98,11 +107,13 @@
   transition: 0.6s;
   text-transform: uppercase;
 }
+
 .loading-content-in {
   position: relative;
   width: var(--Lsize);
   overflow: hidden;
 }
+
 .loading-content2 {
   position: relative;
   letter-spacing: 2px;
@@ -117,6 +128,7 @@
   transition: 1s;
   max-width: var(--Lsize);
 }
+
 .loading-clicked .loading-content2 {
   opacity: 0;
   transition: 0.5s;
@@ -130,6 +142,7 @@
   transform: translateY(-50%);
   opacity: 0.7;
 }
+
 .loading-box {
   position: absolute;
   right: 0px;
@@ -140,6 +153,7 @@
   background-color: white;
   animation: blink 1s linear infinite;
 }
+
 .loading-icon {
   transform: scale(0);
   opacity: 0;
@@ -151,19 +165,23 @@
   transform: scale(1);
   opacity: 1;
 }
+
 .loading-clicked .loading-icon {
   transition-delay: 0s;
   transition: 1s;
   transform: translateX(200px);
 }
+
 .loading-clicked .loading-content2 {
   overflow: visible;
 }
+
 .loading-clicked .loading-content2 span {
   transition: 1s;
   transform: translateY(100px);
   opacity: 0;
 }
+
 .loading-container {
   position: absolute;
   width: 100%;
@@ -179,6 +197,7 @@
 .loading-complete .loading-container {
   max-width: 0px;
 }
+
 .loading-header {
   width: var(--cWidth);
   max-width: var(--cMaxWidth);
@@ -193,30 +212,37 @@
   top: 0;
   color: var(--backgroundColor);
 }
+
 .loader-title {
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.2px;
 }
+
 @keyframes blink {
   0% {
     opacity: 0;
   }
+
   25% {
     opacity: 1;
   }
+
   75% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
 }
+
 .loading-complete .loading-box {
   animation: blinkDone 0.3s forwards;
   animation-delay: 1s;
   opacity: 1;
 }
+
 @keyframes blinkDone {
   to {
     opacity: 0;
@@ -232,9 +258,11 @@
   transform: scale(0.4);
   transform-origin: top right;
 }
+
 .loader-out .loaderGame-container {
   opacity: 0;
 }
+
 .loaderGame-in {
   width: 1200px;
   position: absolute;
@@ -242,14 +270,17 @@
   left: 0;
   animation: loaderGame 7s linear infinite;
 }
+
 @keyframes loaderGame {
   0% {
     transform: translateX(0px);
   }
+
   100% {
     transform: translateX(-300px);
   }
 }
+
 .loaderGame-line {
   float: left;
   margin: 0px 20px;
@@ -260,6 +291,7 @@
   background-color: #000;
   display: block;
 }
+
 .loaderGame-line:nth-child(2n) {
   margin-top: 40px;
   margin-bottom: 0px;
@@ -277,6 +309,7 @@
   transform: translateY(10px);
   animation-timing-function: cubic-bezier(0.3, 1.18, 0.63, 1.28);
 }
+
 .loading-marquee {
   position: absolute;
   top: 50%;
@@ -288,10 +321,12 @@
   font-weight: 600;
   text-transform: uppercase;
 }
+
 .loading-marquee span {
   padding: 0px 50px;
   position: relative;
 }
+
 .loading-marquee span::before {
   content: "";
   width: 20px;
@@ -303,28 +338,36 @@
   left: 0px;
   transform: translate(-50%, -50%);
 }
+
 @keyframes ball25 {
   0% {
     transform: translateY(70px);
   }
+
   15% {
     transform: translateY(10px);
   }
+
   30% {
     transform: translateY(70px);
   }
+
   45% {
     transform: translateY(10px);
   }
+
   67% {
     transform: translateY(70px);
   }
+
   80% {
     transform: translateY(10px);
   }
+
   90% {
     transform: translateY(70px);
   }
+
   100% {
     transform: translateY(70px);
   }
@@ -334,29 +377,36 @@
   .loading-wrap {
     --Lsize: 210px;
   }
+
   .loading-button {
     padding: 30px 70px;
     font-size: 25px;
   }
+
   .loading-container {
     left: 70px;
   }
+
   .loading-marquee {
     font-size: 100px;
   }
 }
+
 @media only screen and (min-width: 500px) {
   .loading-header {
     padding: 20px 0px;
   }
+
   .loader-title {
     font-size: 16px;
   }
 }
+
 @media only screen and (min-width: 1200px) {
   .loading-header {
     padding: 35px 0px;
   }
+
   .loader-title {
     font-size: 18px;
   }

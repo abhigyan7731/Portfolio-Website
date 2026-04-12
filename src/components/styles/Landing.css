@@ -74,9 +74,9 @@
 /* ===== MASSIVE NAME BACKDROP — Sits BEHIND the character ===== */
 .l3d-name-backdrop {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
-  transform: translate(-50%, -58%);
+  transform: translate(-50%, -50%);
   z-index: 3;
   text-align: center;
   pointer-events: none;
@@ -84,9 +84,9 @@
 }
 
 .l3d-hero-name {
-  font-size: clamp(80px, 16vw, 220px);
+  font-size: clamp(70px, 15vw, 175px);
   font-weight: 900;
-  line-height: 0.85;
+  line-height: 0.9;
   letter-spacing: clamp(4px, 2vw, 20px);
   text-transform: uppercase;
   margin: 0;
@@ -107,12 +107,12 @@
 }
 
 .l3d-hero-lastname {
-  font-size: clamp(40px, 8vw, 110px);
+  font-size: clamp(35px, 7vw, 90px);
   font-weight: 800;
   line-height: 0.9;
   letter-spacing: clamp(6px, 2vw, 24px);
   text-transform: uppercase;
-  margin: 10px 0 0;
+  margin: 5px 0 0;
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.08);
   background: linear-gradient(180deg,
@@ -478,12 +478,12 @@
   }
 
   .l3d-hero-name {
-    font-size: clamp(120px, 16vw, 220px);
+    font-size: clamp(100px, 14vw, 190px);
     -webkit-text-stroke: 2.5px rgba(255, 255, 255, 0.14);
   }
 
   .l3d-hero-lastname {
-    font-size: clamp(60px, 8vw, 110px);
+    font-size: clamp(50px, 7vw, 95px);
   }
 
   .l3d-role-value {
@@ -501,13 +501,13 @@
 
 @media screen and (min-width: 1600px) {
   .l3d-hero-name {
-    font-size: 240px;
-    letter-spacing: 24px;
+    font-size: 200px;
+    letter-spacing: 20px;
   }
 
   .l3d-hero-lastname {
-    font-size: 120px;
-    letter-spacing: 28px;
+    font-size: 100px;
+    letter-spacing: 22px;
   }
 
   .l3d-role-value {

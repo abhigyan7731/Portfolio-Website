@@ -1,91 +1,186 @@
-import { useEffect, useState } from "react";
-import { useLoading } from "../context/LoadingProvider";
+import { useEffect, useState, useRef } from "react";
+import * as THREE from "three";
+import gsap from "gsap";
 
-import Marquee from "react-fast-marquee";
-
-const Loading = ({ percent }) => {
-  const { setIsLoading } = useLoading();
+const Loading = ({ percent, setIsLoading }) => {
   const [loaded, setLoaded] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
-
-  if (percent >= 100) {
-    setTimeout(() => {
-      setLoaded(true);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
-    }, 600);
-  }
+  const canvasRef = useRef(null);
+  const percentRef = useRef(percent);
 
   useEffect(() => {
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
+    percentRef.current = percent;
+  }, [percent]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x05020f, 0.0015);
+    
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 2000);
+    camera.position.z = 400;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: false,
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const particleCount = 10000;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+
+    const colorA = new THREE.Color("#00f2fe"); // Neon Blue
+    const colorB = new THREE.Color("#c2a4ff"); // Neon Purple
+
+    for (let i = 0; i < particleCount; i++) {
+        const t = Math.random() * Math.PI * 20; 
+        const r = (Math.random() * 800) * (t / 20); 
+        
+        positions[i * 3] = Math.cos(t) * r;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 100 * (r / 200); 
+        positions[i * 3 + 2] = Math.sin(t) * r;
+
+        const mixRatio = Math.random();
+        const mixedColor = colorA.clone().lerp(colorB, mixRatio);
+        colors[i * 3] = mixedColor.r;
+        colors[i * 3 + 1] = mixedColor.g;
+        colors[i * 3 + 2] = mixedColor.b;
+
+        sizes[i] = Math.random() * 2 + 1;
+    }
+
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+      },
+      vertexShader: `
+        attribute float aSize;
+        uniform float uTime;
+        uniform float uPixelRatio;
+        varying vec3 vColor;
+        void main() {
+          vColor = color;
+          vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mvPos;
+          gl_PointSize = aSize * uPixelRatio * (300.0 / -mvPos.z);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        void main() {
+          vec2 c = gl_PointCoord - vec2(0.5);
+          float d = length(c);
+          if (d > 0.5) discard;
+          float a = smoothstep(0.5, 0.0, d);
+          gl_FragColor = vec4(vColor, a * 0.8);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true,
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    let animationFrameId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      const elapsed = clock.getElapsedTime();
+      const currentPercent = percentRef.current;
+      
+      material.uniforms.uTime.value = elapsed;
+
+      const baseRotationSpeed = 0.002;
+      const intenseMultiplier = 1 + (currentPercent / 100) * 15; 
+      
+      particles.rotation.y -= baseRotationSpeed * intenseMultiplier;
+      particles.rotation.z -= baseRotationSpeed * (intenseMultiplier * 0.5);
+      
+      const tightness = Math.max(0.1, 1 - (currentPercent / 100) * 0.8);
+      particles.scale.set(tightness, tightness, tightness);
+
+      renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    const onResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      material.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+    };
+    window.addEventListener("resize", onResize);
+
+    window._supernovaCamera = camera;
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(animationFrameId);
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (percent >= 100 && !loaded) {
+      setLoaded(true);
+      setTimeout(() => {
         setClicked(true);
-        setTimeout(() => {
+        if (window._supernovaCamera) {
+          gsap.to(window._supernovaCamera.position, {
+            z: -1000, 
+            duration: 1.5,
+            ease: "power3.in",
+          });
+        }
+      }, 400);
+
+      setTimeout(() => {
+        import("./utils/initialFX").then((module) => {
           if (module.initialFX) {
             module.initialFX();
           }
-          setIsLoading(false);
-        }, 900);
-      }
-    });
-  }, [isLoaded]);
-
-  function handleMouseMove(e) {
-    const { currentTarget: target } = e;
-    const rect = target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    target.style.setProperty("--mouse-x", `${x}px`);
-    target.style.setProperty("--mouse-y", `${y}px`);
-  }
+          if (setIsLoading) {
+            setIsLoading(false);
+          }
+        });
+      }, 1600);
+    }
+  }, [percent, loaded, setIsLoading]);
 
   return (
-    <>
-      <div className="loading-header">
-        <a href="/#" className="loader-title" data-cursor="disable">
-          Logo
-        </a>
-        <div className={`loaderGame ${clicked && "loader-out"}`}>
-          <div className="loaderGame-container">
-            <div className="loaderGame-in">
-              {[...Array(27)].map((_, index) => (
-                <div className="loaderGame-line" key={index}></div>
-              ))}
-            </div>
-            <div className="loaderGame-ball"></div>
-          </div>
-        </div>
+    <div className={`loading-universe ${clicked ? "warp-drive" : ""}`}>
+      <canvas ref={canvasRef} className="supernova-canvas" />
+      <div className="supernova-percent" style={{
+        textShadow: `0 0 ${percent}px #00f2fe`,
+        opacity: clicked ? 0 : 1
+      }}>
+        {percent}%
       </div>
-      <div className="loading-screen">
-        <div className="loading-marquee">
-          <Marquee>
-            <span> A Creative Developer</span> <span>A Creative Designer</span>
-            <span> A Creative Developer</span> <span>A Creative Designer</span>
-          </Marquee>
-        </div>
-        <div
-          className={`loading-wrap ${clicked && "loading-clicked"}`}
-          onMouseMove={(e) => handleMouseMove(e)}
-        >
-          <div className="loading-hover"></div>
-          <div className={`loading-button ${loaded && "loading-complete"}`}>
-            <div className="loading-container">
-              <div className="loading-content">
-                <div className="loading-content-in">
-                  Loading <span>{percent}%</span>
-                </div>
-              </div>
-              <div className="loading-box"></div>
-            </div>
-            <div className="loading-content2">
-              <span>Welcome</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+      <div className="loading-vignette"></div>
+    </div>
   );
 };
 
