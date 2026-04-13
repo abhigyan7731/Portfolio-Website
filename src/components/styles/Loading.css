@@ -1,27 +1,160 @@
-/* ===== PILL LOADING SCREEN ===== */
+/* ===== 3D CINEMATIC LOADING SCREEN ===== */
 
 .loading-pill-screen {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: var(--vh, 100vh);
-  background: #0b080c;
+  background: #06040a;
   z-index: 999999999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  gap: 16px;
+  overflow: hidden;
+  perspective: 1200px;
+  transform-origin: center center;
+}
+
+/* ===== 3D PERSPECTIVE GRID FLOOR ===== */
+.ld-grid-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  pointer-events: none;
+  z-index: 0;
+  transform: perspective(400px) rotateX(55deg);
+  transform-origin: center bottom;
+  opacity: 0.1;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 80%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 80%);
+}
+
+.ld-grid-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent 5%,
+      rgba(0, 242, 254, 0.5) 30%,
+      rgba(194, 164, 255, 0.4) 70%,
+      transparent 95%);
+}
+
+.ld-grid-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg,
+      transparent,
+      rgba(0, 242, 254, 0.4),
+      rgba(194, 164, 255, 0.3),
+      transparent);
+}
+
+/* ===== HOLOGRAPHIC SCAN LINE ===== */
+.ld-scanline {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(0, 242, 254, 0.2) 20%,
+      rgba(194, 164, 255, 0.4) 50%,
+      rgba(0, 242, 254, 0.2) 80%,
+      transparent 100%);
+  box-shadow:
+    0 0 15px rgba(0, 242, 254, 0.2),
+    0 0 40px rgba(194, 164, 255, 0.1);
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* ===== CRT NOISE OVERLAY ===== */
+.ld-noise-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  animation: ldGrainShift 0.5s steps(6) infinite;
+}
+
+@keyframes ldGrainShift {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-5px, 5px);
+  }
+
+  40% {
+    transform: translate(3px, -3px);
+  }
+
+  60% {
+    transform: translate(-3px, 1px);
+  }
+
+  80% {
+    transform: translate(2px, -4px);
+  }
+}
+
+/* ===== BINARY DATA STREAMS ===== */
+.ld-data-streams {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
   overflow: hidden;
 }
 
-/* Ambient orbs */
+.ld-data-stream {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  color: rgba(0, 242, 254, 0.25);
+  letter-spacing: 2px;
+  animation: dataStreamFall linear infinite;
+  will-change: transform;
+}
+
+@keyframes dataStreamFall {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+/* ===== AMBIENT BACKGROUND ORBS ===== */
 .pill-bg-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.35;
+  z-index: 0;
 }
 
 .pill-bg-orb-1 {
@@ -40,33 +173,280 @@
   right: -10%;
 }
 
-/* WELCOME text */
-.pill-welcome-text {
-  font-size: clamp(28px, 5vw, 56px);
-  font-weight: 900;
-  letter-spacing: clamp(8px, 2vw, 20px);
+.pill-bg-orb-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(240, 147, 251, 0.1), transparent 70%);
+  top: 30%;
+  right: 20%;
+}
+
+/* ===== WELCOME AREA (Hexagon + Scramble Text) ===== */
+.ld-welcome-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.ld-hexagon-frame {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  opacity: 0.7;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.15));
+}
+
+/* ===== SCRAMBLE DECODE TEXT ===== */
+.ld-scramble-area {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(6deg);
+  transition: opacity 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ld-scramble-label {
+  font-size: 9px;
+  letter-spacing: 6px;
   text-transform: uppercase;
-  color: #fff;
-  text-shadow:
-    0 0 10px rgba(255, 255, 255, 0.3),
-    0 0 40px rgba(0, 242, 254, 0.3),
-    0 0 80px rgba(194, 164, 255, 0.2);
-  transition: opacity 0.8s ease;
+  color: rgba(0, 242, 254, 0.4);
+  font-weight: 600;
+  font-family: "SF Mono", "Fira Code", monospace;
+}
+
+.ld-scramble-text {
+  display: flex;
+  gap: 4px;
   user-select: none;
 }
 
-/* Pill wrapper */
+.ld-scramble-char {
+  display: inline-block;
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: clamp(4px, 1.5vw, 10px);
+  text-transform: uppercase;
+  min-width: 0.7em;
+  text-align: center;
+  transition: color 0.3s ease, text-shadow 0.5s ease;
+}
+
+.ld-char-scrambling {
+  color: rgba(0, 242, 254, 0.5);
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+  animation: charScrambleFlicker 0.1s steps(2) infinite;
+}
+
+.ld-char-revealed {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 1px 0 rgba(194, 164, 255, 0.5),
+    0 2px 0 rgba(194, 164, 255, 0.4),
+    0 3px 0 rgba(194, 164, 255, 0.3),
+    0 4px 0 rgba(194, 164, 255, 0.2),
+    0 5px 0 rgba(194, 164, 255, 0.15),
+    0 6px 0 rgba(194, 164, 255, 0.1),
+    0 0 20px rgba(0, 242, 254, 0.25),
+    0 0 60px rgba(194, 164, 255, 0.15),
+    0 0 120px rgba(0, 242, 254, 0.08);
+  animation: charRevealPop 0.4s ease-out;
+}
+
+@keyframes charScrambleFlicker {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+@keyframes charRevealPop {
+  0% {
+    transform: scale(1.4) translateY(-6px);
+    filter: brightness(2);
+  }
+  50% {
+    transform: scale(0.95);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.ld-scramble-underline {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(0, 242, 254, 0.4),
+    rgba(194, 164, 255, 0.5),
+    rgba(0, 242, 254, 0.4),
+    transparent
+  );
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+}
+
+/* ===== TERMINAL LOG ===== */
+.ld-terminal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  max-width: 340px;
+  width: 90%;
+  z-index: 10;
+  font-family: "SF Mono", "Fira Code", monospace;
+  transition: opacity 0.6s ease;
+}
+
+.ld-terminal-line {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: rgba(0, 242, 254, 0.35);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.ld-terminal-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ld-terminal-accent {
+  color: #43e97b !important;
+  text-shadow: 0 0 10px rgba(67, 233, 123, 0.3);
+  font-weight: 700;
+}
+
+/* ===== COUNTER AREA (Ring + Orbiting Canvas) ===== */
+.ld-counter-area {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: opacity 0.6s ease;
+}
+
+.ld-orbit-canvas {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+}
+
+/* ===== HOLOGRAPHIC SVG RING ===== */
+.ld-ring-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  z-index: 2;
+}
+
+.ld-ring-svg {
+  width: 160px;
+  height: 160px;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3));
+}
+
+.ld-ring-fill {
+  transition: stroke-dashoffset 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Big percentage number in center of ring */
+.ld-ring-percent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.ld-percent-digits {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+  animation: digitGlitch 6s infinite;
+}
+
+.ld-percent-symbol {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(0, 242, 254, 0.6);
+  align-self: flex-start;
+  margin-top: 16px;
+}
+
+/* Periodic glitch effect on numbers */
+@keyframes digitGlitch {
+
+  0%,
+  94%,
+  100% {
+    text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+    transform: translate(0);
+  }
+
+  95% {
+    text-shadow: -3px 0 #f093fb, 3px 0 #00f2fe;
+    transform: translate(3px, -1px) skewX(-2deg);
+  }
+
+  96% {
+    text-shadow: 2px 0 #c2a4ff, -2px 0 #00f2fe;
+    transform: translate(-2px, 1px) skewX(1deg);
+  }
+
+  97% {
+    text-shadow: -2px 0 #00f2fe, 2px 0 #f093fb;
+    transform: translate(1px, -1px);
+  }
+
+  98% {
+    text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+    transform: translate(0);
+  }
+}
+
+/* ===== PROGRESS PILL BAR ===== */
 .loading-pill-wrap {
   position: relative;
-  padding: 5px;
+  padding: 4px;
   border-radius: 100px;
   background: linear-gradient(135deg, rgba(194, 164, 255, 0.15), rgba(0, 242, 254, 0.1));
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(194, 164, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 15px 50px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(194, 164, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transition: transform 1.2s cubic-bezier(0.33, 0.11, 1, 0.72);
   overflow: hidden;
+  z-index: 10;
 }
 
 /* Hover glow that follows cursor */
@@ -96,8 +476,8 @@
 /* The actual pill bar */
 .loading-pill {
   position: relative;
-  width: clamp(280px, 50vw, 420px);
-  height: 60px;
+  width: clamp(260px, 42vw, 380px);
+  height: 50px;
   border-radius: 100px;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(10px);
@@ -107,18 +487,16 @@
   justify-content: center;
 }
 
-/* Progress fill — animates width via inline style */
+/* Progress fill — width animated via inline style */
 .pill-progress-fill {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 242, 254, 0.2) 0%,
-    rgba(0, 242, 254, 0.35) 40%,
-    rgba(194, 164, 255, 0.3) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(0, 242, 254, 0.15) 0%,
+      rgba(0, 242, 254, 0.3) 40%,
+      rgba(194, 164, 255, 0.25) 100%);
   border-radius: 100px;
   transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
@@ -133,7 +511,7 @@
   width: 4px;
   height: 100%;
   background: #00f2fe;
-  box-shadow: 0 0 14px #00f2fe, 0 0 40px rgba(0, 242, 254, 0.6);
+  box-shadow: 0 0 12px #00f2fe, 0 0 35px rgba(0, 242, 254, 0.5);
   border-radius: 50%;
 }
 
@@ -143,46 +521,58 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   user-select: none;
 }
 
 .pill-label {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .pill-percent {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: 1px;
   color: #fff;
   font-variant-numeric: tabular-nums;
-  min-width: 52px;
+  min-width: 44px;
   text-align: right;
   text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  font-family: "SF Mono", "Fira Code", monospace;
 }
 
 /* Blinking cursor block */
 .pill-cursor-blink {
-  width: 12px;
-  height: 20px;
+  width: 10px;
+  height: 18px;
   background: #fff;
   animation: pillBlink 1s linear infinite;
   border-radius: 2px;
 }
 
 @keyframes pillBlink {
-  0%   { opacity: 0; }
-  25%  { opacity: 1; }
-  75%  { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
-/* "Complete" state — brief glow burst */
+/* "Complete" state — glow burst */
 .pill-complete .loading-pill {
   box-shadow: 0 0 30px rgba(0, 242, 254, 0.5), 0 0 60px rgba(194, 164, 255, 0.3);
 }
@@ -197,61 +587,241 @@
   text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
 }
 
-/* Subtitle */
-.pill-subtitle {
-  font-size: 12px;
-  letter-spacing: 6px;
+/* ===== SUB-SYSTEM STATS COUNTER ROW ===== */
+.ld-sub-stats-row {
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+  transition: opacity 0.6s ease;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ld-sub-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  background: rgba(10, 10, 25, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: 80px;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.ld-sub-stat:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.ld-sub-stat-label {
+  font-size: 7px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.25);
-  transition: opacity 0.8s ease;
+  font-weight: 600;
+}
+
+.ld-sub-stat-value {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.ld-sub-stat-total {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.2) !important;
+  text-shadow: none !important;
+}
+
+.ld-sub-stat-bar {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.ld-sub-stat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.15s ease;
+}
+
+/* ===== SUBTITLE ===== */
+.ld-subtitle {
+  font-size: 11px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+  transition: opacity 0.6s ease;
   user-select: none;
+  z-index: 10;
 }
 
 /* ===== RESPONSIVE ===== */
 @media screen and (max-width: 600px) {
-  .pill-welcome-text {
-    font-size: 24px;
-    letter-spacing: 8px;
+  .loading-pill-screen {
+    gap: 10px;
+  }
+
+  .ld-scramble-char {
+    font-size: 26px;
+    letter-spacing: 4px;
+  }
+
+  .ld-scramble-label {
+    font-size: 7px;
+    letter-spacing: 4px;
+  }
+
+  .ld-terminal-container {
+    display: none;
+  }
+
+  .ld-hexagon-frame {
+    width: 180px;
+    height: 180px;
+  }
+
+  .ld-counter-area {
+    width: 140px;
+    height: 140px;
+  }
+
+  .ld-ring-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .ld-ring-svg {
+    width: 120px;
+    height: 120px;
+  }
+
+  .ld-percent-digits {
+    font-size: 26px;
+  }
+
+  .ld-percent-symbol {
+    font-size: 12px;
+    margin-top: 10px;
   }
 
   .loading-pill {
-    width: 260px;
-    height: 52px;
+    width: 240px;
+    height: 44px;
   }
 
   .pill-label {
-    font-size: 11px;
+    font-size: 9px;
     letter-spacing: 3px;
   }
 
   .pill-percent {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .pill-cursor-blink {
-    width: 10px;
-    height: 16px;
+    width: 8px;
+    height: 14px;
+  }
+
+  .ld-sub-stats-row {
+    gap: 8px;
+  }
+
+  .ld-sub-stat {
+    padding: 5px 10px;
+    min-width: 60px;
+  }
+
+  .ld-sub-stat-value {
+    font-size: 11px;
+  }
+
+  .ld-sub-stat-label {
+    font-size: 6px;
+    letter-spacing: 2px;
+  }
+
+  .ld-orbit-canvas {
+    width: 200px;
+    height: 200px;
+  }
+
+  .ld-data-streams {
+    display: none;
+  }
+
+  .ld-grid-floor {
+    display: none;
   }
 }
 
 @media screen and (min-width: 1400px) {
+  .ld-scramble-char {
+    font-size: 72px;
+    letter-spacing: 12px;
+  }
+
+  .ld-scramble-label {
+    font-size: 11px;
+    letter-spacing: 8px;
+  }
+
+  .ld-hexagon-frame {
+    width: 320px;
+    height: 320px;
+  }
+
+  .ld-counter-area {
+    width: 240px;
+    height: 240px;
+  }
+
+  .ld-ring-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .ld-ring-svg {
+    width: 200px;
+    height: 200px;
+  }
+
+  .ld-percent-digits {
+    font-size: 44px;
+  }
+
+  .ld-percent-symbol {
+    font-size: 20px;
+    margin-top: 18px;
+  }
+
   .loading-pill {
-    width: 500px;
-    height: 70px;
+    width: 460px;
+    height: 60px;
   }
 
   .pill-label {
-    font-size: 15px;
+    font-size: 14px;
     letter-spacing: 5px;
   }
 
   .pill-percent {
-    font-size: 22px;
+    font-size: 20px;
   }
 
-  .pill-welcome-text {
-    font-size: 64px;
-    letter-spacing: 24px;
+  .ld-subtitle {
+    font-size: 13px;
+    letter-spacing: 8px;
   }
 }
 

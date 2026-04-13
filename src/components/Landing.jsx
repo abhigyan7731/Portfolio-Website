@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import gsap from "gsap";
 
 // Floating code snippets that orbit around
@@ -18,9 +18,59 @@ const statusItems = [
   { icon: "◈", label: "MODE", value: "CREATIVE", color: "#c2a4ff" },
 ];
 
+// Rotating roles for the typing effect
+const typingRoles = [
+  "Full Stack Developer",
+  "ML Engineer",
+  "Frontend Architect",
+  "Backend Builder",
+  "Problem Solver",
+];
+
+// Tech orbit items
+const techOrbitItems = [
+  { icon: "⚛", label: "React", color: "#61dafb" },
+  { icon: "▲", label: "Next.js", color: "#ffffff" },
+  { icon: "◆", label: "Node.js", color: "#43e97b" },
+  { icon: "🐍", label: "Python", color: "#FFD43B" },
+  { icon: "♦", label: "Three.js", color: "#00f2fe" },
+  { icon: "⬡", label: "PostgreSQL", color: "#4facfe" },
+];
+
 const Landing = ({ children }) => {
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
+  const spotlightRef = useRef(null);
+  const [currentRole, setCurrentRole] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Typing effect
+  useEffect(() => {
+    const role = typingRoles[currentRole];
+    let timeout;
+
+    if (!isDeleting) {
+      if (displayText.length < role.length) {
+        timeout = setTimeout(() => {
+          setDisplayText(role.substring(0, displayText.length + 1));
+        }, 80 + Math.random() * 40);
+      } else {
+        timeout = setTimeout(() => setIsDeleting(true), 2500);
+      }
+    } else {
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => {
+          setDisplayText(displayText.substring(0, displayText.length - 1));
+        }, 40);
+      } else {
+        setIsDeleting(false);
+        setCurrentRole((prev) => (prev + 1) % typingRoles.length);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, currentRole]);
 
   // Particle field on canvas
   useEffect(() => {
@@ -157,6 +207,31 @@ const Landing = ({ children }) => {
         ease: "power4.out",
       }, "-=1.0");
 
+      // Typing area
+      tl.from(".l3d-typing-wrapper", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      }, "-=0.6");
+
+      // Available badge
+      tl.from(".l3d-available-badge", {
+        scale: 0,
+        opacity: 0,
+        duration: 0.6,
+        ease: "back.out(2)",
+      }, "-=0.4");
+
+      // Tech orbit
+      tl.from(".l3d-tech-orbit-item", {
+        scale: 0,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.5,
+        ease: "back.out(1.5)",
+      }, "-=0.5");
+
       // Status bar fades in
       tl.from(".l3d-status-bar", {
         y: -30,
@@ -273,9 +348,34 @@ const Landing = ({ children }) => {
         ease: "none",
       });
 
+      // Tech orbit continuous rotation
+      gsap.to(".l3d-tech-orbit-ring", {
+        rotation: 360,
+        duration: 30,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Counter-rotate each orbit item so they stay upright
+      gsap.to(".l3d-tech-orbit-item", {
+        rotation: -360,
+        duration: 30,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Available badge pulse
+      gsap.to(".l3d-available-glow", {
+        scale: 1.6,
+        opacity: 0,
+        duration: 2,
+        repeat: -1,
+        ease: "power2.out",
+      });
+
     }, section);
 
-    // Mouse parallax for name depth + decorations
+    // Mouse parallax for name depth + decorations + spotlight
     const handleMouseMove = (e) => {
       const rect = section.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -318,6 +418,12 @@ const Landing = ({ children }) => {
         duration: 1,
         ease: "power2.out",
       });
+
+      // Cursor spotlight follows mouse
+      if (spotlightRef.current) {
+        spotlightRef.current.style.left = `${e.clientX - rect.left}px`;
+        spotlightRef.current.style.top = `${e.clientY - rect.top}px`;
+      }
     };
 
     section.addEventListener("mousemove", handleMouseMove);
@@ -331,6 +437,9 @@ const Landing = ({ children }) => {
   return (
     <>
       <div className="landing-section" id="landingDiv" ref={sectionRef}>
+        {/* Magnetic cursor spotlight */}
+        <div className="l3d-cursor-spotlight" ref={spotlightRef} />
+
         {/* Interactive particle canvas */}
         <canvas className="l3d-particle-canvas" ref={canvasRef} />
 
@@ -449,6 +558,14 @@ const Landing = ({ children }) => {
           </div>
           <h1 className="l3d-hero-name">ABHIGYAN</h1>
           <h1 className="l3d-hero-lastname">KUMAR GUPTA</h1>
+
+          {/* Typing role effect */}
+          <div className="l3d-typing-wrapper">
+            <span className="l3d-typing-prefix">&gt;_</span>
+            <span className="l3d-typing-text">{displayText}</span>
+            <span className="l3d-typing-cursor">|</span>
+          </div>
+
           {/* Dynamic subtitle under the name */}
           <div className="l3d-hero-tagline">
             <span className="l3d-tagline-bracket">[</span>
@@ -457,6 +574,40 @@ const Landing = ({ children }) => {
             <span className="l3d-tagline-text l3d-tagline-alt">ML ENGINEER</span>
             <span className="l3d-tagline-bracket">]</span>
           </div>
+        </div>
+
+        {/* 3D Tech Orbit Ring */}
+        <div className="l3d-tech-orbit-container">
+          <div className="l3d-tech-orbit-ring">
+            {techOrbitItems.map((item, i) => {
+              const angle = (360 / techOrbitItems.length) * i;
+              return (
+                <div
+                  className="l3d-tech-orbit-item"
+                  key={i}
+                  style={{
+                    "--orbit-angle": `${angle}deg`,
+                    "--orbit-color": item.color,
+                  }}
+                >
+                  <span className="l3d-orbit-icon">{item.icon}</span>
+                  <span className="l3d-orbit-label">{item.label}</span>
+                </div>
+              );
+            })}
+          </div>
+          {/* Orbit track ring */}
+          <svg className="l3d-orbit-track" viewBox="0 0 420 420">
+            <circle cx="210" cy="210" r="200" fill="none" stroke="rgba(194,164,255,0.06)" strokeWidth="1" strokeDasharray="6 6" />
+            <circle cx="210" cy="210" r="200" fill="none" stroke="rgba(0,242,254,0.04)" strokeWidth="0.5" />
+          </svg>
+        </div>
+
+        {/* Available for hire badge */}
+        <div className="l3d-available-badge">
+          <div className="l3d-available-glow" />
+          <span className="l3d-available-dot" />
+          <span className="l3d-available-text">Available for Work</span>
         </div>
 
         {/* Holographic grid floor behind character */}
