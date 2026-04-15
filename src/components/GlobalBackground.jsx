@@ -3,11 +3,21 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars, Float, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 
-// Shared scroll tracker outside of React render lifecycle
+// Shared scroll and mouse trackers outside of React render lifecycle
 let cachedScrollY = 0;
+let cachedMouseX = 0;
+let cachedMouseY = 0;
+
 if (typeof window !== "undefined") {
   window.addEventListener("scroll", () => {
     cachedScrollY = window.scrollY;
+  }, { passive: true });
+  
+  window.addEventListener("mousemove", (e) => {
+    // Map screen to -1 to 1 purely for gravity coordinates
+    cachedMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    // Map Y to push depth backwards into the grid
+    cachedMouseY = (e.clientY / window.innerHeight) * 2 - 1;
   }, { passive: true });
 }
 
@@ -39,15 +49,52 @@ const CyberTerrain = () => {
     geomRef.current.computeVertexNormals();
   }, []);
 
-  useFrame((state, delta) => {
-    if (!meshRef.current) return;
+  useFrame((state) => {
+    if (!meshRef.current || !geomRef.current) return;
+    
     // Base speed + huge speed boost from scroll position 
-    // Modulo 20 allows it to seamlessly tile indefinitely (depends on geometry segments)
+    // Modulo 20 allows it to seamlessly tile indefinitely
     const baseSpeed = state.clock.getElapsedTime() * 2;
     const scrollSpeed = cachedScrollY * 0.015;
+    const currentZ = ((baseSpeed + scrollSpeed) % 20) - 20;
+    meshRef.current.position.z = currentZ;
+
+    // Apply Real-Time Gravity Displacement to Vertices!
+    const positions = geomRef.current.attributes.position.array;
     
-    // Animate forward endlessly
-    meshRef.current.position.z = ((baseSpeed + scrollSpeed) % 20) - 20;
+    // Target world-space gravity well coordinates based on mouse
+    const gravityX = cachedMouseX * 40; 
+    // The screen Y maps to depth Z. Top of screen is deep far (-80), bottom is near (-20)
+    const gravityZ = (cachedMouseY * -30) - 40; 
+
+    // Because the plane is rotated X -Math.PI/2, local plane Y axis maps to world Z!
+    // We must offset local Y by the global currentZ shift to track the world point
+    for (let i = 0; i < positions.length; i += 3) {
+      const vx = positions[i];
+      const vy = positions[i + 1]; // This is local plane Y (world Z)
+      
+      const worldZ = vy + currentZ - 40; // Plane base position is -40
+      
+      // Calculate original mountain/valley height
+      const distanceToCenter = Math.abs(vx);
+      const heightBase = Math.sin(vx / 6) * Math.cos(vy / 6) * 5;
+      const heightMultiplier = Math.max(0, distanceToCenter - 10) * 0.4;
+      let finalHeight = heightBase + heightMultiplier;
+
+      // Apply Gravity Well Dent!
+      const distToMouse = Math.sqrt(Math.pow(vx - gravityX, 2) + Math.pow(worldZ - gravityZ, 2));
+      const gravityRadius = 25;
+      
+      if (distToMouse < gravityRadius) {
+        // Create a smooth crater / dent effect
+        const dentDepth = (1 - (distToMouse / gravityRadius)) * 12; // Max depth 12 units
+        finalHeight -= dentDepth;
+      }
+      
+      positions[i + 2] = finalHeight; 
+    }
+    
+    geomRef.current.attributes.position.needsUpdate = true;
   });
 
   return (

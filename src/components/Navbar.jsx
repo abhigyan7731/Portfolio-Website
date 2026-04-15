@@ -113,6 +113,7 @@ const Navbar = () => {
     });
   };
 
+
   return (
     <div className={`spatial-wrapper ${isScrolled ? "spatial-scrolled" : ""}`} ref={wrapperRef}>
       <div 
@@ -184,6 +185,8 @@ const Navbar = () => {
               </span>
             </a>
           ))}
+          
+
         </nav>
       </div>
     </div>
