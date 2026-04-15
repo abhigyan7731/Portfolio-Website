@@ -19,6 +19,13 @@ if (typeof window !== "undefined") {
     // Map Y to push depth backwards into the grid
     cachedMouseY = (e.clientY / window.innerHeight) * 2 - 1;
   }, { passive: true });
+  
+  window.addEventListener("touchmove", (e) => {
+    if (e.touches && e.touches.length > 0) {
+      cachedMouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+      cachedMouseY = (e.touches[0].clientY / window.innerHeight) * 2 - 1;
+    }
+  }, { passive: true });
 }
 
 /* 
@@ -179,7 +186,7 @@ const GlobalBackground = () => {
     >
       <Canvas
         gl={{ alpha: false, antialias: true, powerPreference: "high-performance" }}
-        dpr={[1, 1.5]}
+        dpr={[1, typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 1.5]}
         frameloop="always" // Needs to constantly render for the endless driving effect
       >
         <PerspectiveCamera makeDefault position={[0, 2, 0]} fov={70} />

@@ -206,8 +206,8 @@ const TrophyRoom3D = () => {
       </div>
 
       <Canvas 
-        camera={{ position: [0, 2, 12], fov: 45 }} 
-        dpr={[1, 1.5]}
+        camera={{ position: [0, 2, typeof window !== "undefined" && window.innerWidth < 768 ? 22 : 12], fov: 45 }} 
+        dpr={[1, typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 1.5]}
         gl={{ powerPreference: "high-performance", alpha: true, antialias: true }}
         style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 5 }}
         frameloop={isVisible ? "always" : "demand"}

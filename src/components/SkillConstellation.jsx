@@ -60,9 +60,10 @@ const SkillConstellation = () => {
     let height = container.clientHeight;
 
     // Scene setup
+    const isMobileInit = width < 768;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 200);
-    camera.position.set(0, 2.5, 12);
+    camera.position.set(0, 2.5, isMobileInit ? 22 : 12);
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
@@ -70,7 +71,7 @@ const SkillConstellation = () => {
       antialias: false,
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileInit ? 1 : 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.5;
 
@@ -219,8 +220,7 @@ const SkillConstellation = () => {
     masterGroup.add(linesMesh);
 
     // Background star field — fewer on mobile for performance
-    const isMobile = width < 768;
-    const starCount = isMobile ? 500 : 1500;
+    const starCount = isMobileInit ? 500 : 1500;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
     const starSizes = new Float32Array(starCount);
@@ -400,11 +400,15 @@ const SkillConstellation = () => {
     const onResize = () => {
       width = container.clientWidth;
       height = container.clientHeight;
+      const isMobileNow = width < 768;
+      
       camera.aspect = width / height;
+      camera.position.z = isMobileNow ? 22 : 12;
       camera.updateProjectionMatrix();
+      
       renderer.setSize(width, height);
       composer.setSize(width, height);
-      starMat.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
+      starMat.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, isMobileNow ? 1 : 2);
     };
     window.addEventListener("resize", onResize);
 
