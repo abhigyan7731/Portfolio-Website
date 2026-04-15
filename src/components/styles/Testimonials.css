@@ -1,0 +1,129 @@
+.tm-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #030305;
+  color: white;
+  padding: 100px 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tm-title {
+  position: absolute;
+  top: 10%; left: 5%;
+  font-size: 1.2rem;
+  letter-spacing: 5px;
+  color: #c2a4ff;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.tm-blip {
+  width: 10px; height: 10px;
+  background: #c2a4ff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #c2a4ff;
+  animation: tm-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes tm-ping {
+  75%, 100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.tm-comms-terminal {
+  width: 90%;
+  max-width: 900px;
+  background: rgba(10, 10, 15, 0.7);
+  border: 1px solid rgba(194, 164, 255, 0.2);
+  border-radius: 4px;
+  padding: 40px;
+  position: relative;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 40px rgba(194, 164, 255, 0.05);
+}
+
+.tm-audio-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 60px;
+  margin-bottom: 40px;
+}
+
+.tm-bar {
+  width: 4px;
+  background: #c2a4ff;
+  border-radius: 2px;
+  height: 10px; /* modified by JS */
+  transition: height 0.1s ease;
+  box-shadow: 0 0 8px #c2a4ff;
+}
+
+.tm-content {
+  text-align: center;
+}
+
+.tm-quote {
+  font-size: 1.6rem;
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-style: italic;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.tm-author {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: #4facfe;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.tm-role {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+.tm-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.tm-control-btn {
+  background: transparent;
+  border: 1px solid rgba(194, 164, 255, 0.3);
+  color: #c2a4ff;
+  font-family: monospace;
+  padding: 8px 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.tm-control-btn:hover {
+  background: rgba(194, 164, 255, 0.2);
+  box-shadow: 0 0 15px rgba(194, 164, 255, 0.4);
+}
+
+.tm-static-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(194, 164, 255, 0.05) 3px, rgba(194, 164, 255, 0.05) 3px);
+  pointer-events: none;
+  z-index: 5;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CareerTunnel3D from "./CareerTunnel3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -147,7 +148,8 @@ const Career = () => {
   const titleChars = "CAREER & EXPERIENCE".split("");
 
   return (
-    <div className="cr-section" ref={sectionRef}>
+    <div className="cr-section" ref={sectionRef} style={{ position: "relative" }}>
+      <CareerTunnel3D />
       {/* Floating orbs */}
       <div className="cr-orb cr-orb-1" />
       <div className="cr-orb cr-orb-2" />

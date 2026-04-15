@@ -74,14 +74,14 @@ const SkillConstellation = () => {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.5;
 
-    // Bloom
+    // Bloom — reduced intensity for perf
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(width, height),
-      2.0,
-      0.5,
-      0.15
+      1.2,
+      0.6,
+      0.3
     );
     composer.addPass(bloomPass);
 
@@ -408,12 +408,34 @@ const SkillConstellation = () => {
     };
     window.addEventListener("resize", onResize);
 
+    // Pre-allocate reusable Vector3 for lerp (avoids GC churn)
+    const _tempVec3 = new THREE.Vector3();
+
+    // Pre-cache colors for connections (avoid allocating in animation loop)
+    const connectionColors = connections.map(conn => ({
+      ci: new THREE.Color(SKILLS[conn.from].color),
+      cj: new THREE.Color(SKILLS[conn.to].color),
+    }));
+
     // Animation loop
     const clock = new THREE.Clock();
     let frameId;
 
+    let isVisible = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.0, rootMargin: "300px" }
+    );
+    observer.observe(container);
+
     const animate = () => {
       frameId = requestAnimationFrame(animate);
+      if (!isVisible) return;
+      
       const elapsed = clock.getElapsedTime();
 
       mouse.x += (mouse.targetX - mouse.x) * 0.05;
@@ -431,31 +453,24 @@ const SkillConstellation = () => {
         const breathe = 1 + Math.sin(elapsed * 1.5 + i * 0.8) * 0.08;
         const isHovered = hoveredNode === i;
         const targetScale = isHovered ? baseScale * 2.0 : baseScale * breathe;
-        mesh.scale.lerp(
-          new THREE.Vector3(targetScale, targetScale, targetScale),
-          0.1
-        );
-        // Hovered node glow
+        _tempVec3.set(targetScale, targetScale, targetScale);
+        mesh.scale.lerp(_tempVec3, 0.1);
         mesh.material.opacity = isHovered ? 1.0 : 0.85;
 
         // Corresponding glow ring
         const glow = nodeGlows[i];
         glow.material.opacity = isHovered ? 0.5 : 0.1 + Math.sin(elapsed * 2 + i) * 0.05;
         const glowScale = isHovered ? 2.5 : 1 + Math.sin(elapsed * 1.2 + i) * 0.15;
-        glow.scale.lerp(
-          new THREE.Vector3(glowScale, glowScale, glowScale),
-          0.1
-        );
+        _tempVec3.set(glowScale, glowScale, glowScale);
+        glow.scale.lerp(_tempVec3, 0.1);
       });
 
-      // Animate connection lines opacity based on hover
+      // Animate connection lines opacity based on hover — using pre-cached colors
       const lineOpacities = lineGeo.attributes.color.array;
       connections.forEach((conn, idx) => {
         const base = idx * 6;
-        const ci = new THREE.Color(SKILLS[conn.from].color);
-        const cj = new THREE.Color(SKILLS[conn.to].color);
-        const isActive =
-          hoveredNode === conn.from || hoveredNode === conn.to;
+        const { ci, cj } = connectionColors[idx];
+        const isActive = hoveredNode === conn.from || hoveredNode === conn.to;
         const intensity = isActive ? 1.0 : 0.15;
         lineOpacities[base] = ci.r * intensity;
         lineOpacities[base + 1] = ci.g * intensity;
@@ -475,20 +490,13 @@ const SkillConstellation = () => {
         ring.material.opacity = (1 - t) * 0.15;
       });
 
-      // Update 3D orbital trajectory
       controls.update();
 
-      // Camera subtle movement removed in favor of orbit controls handling orientation
-
       // Overall visibility
-      masterGroup.material;
       const v = visibility.value;
       nodeGroup.children.forEach((child) => {
         if (child.material) {
-          child.material.opacity = Math.min(
-            child.material.opacity,
-            v
-          );
+          child.material.opacity = Math.min(child.material.opacity, v);
         }
       });
 
@@ -515,6 +523,7 @@ const SkillConstellation = () => {
       });
       renderer.dispose();
       composer.dispose();
+      observer.disconnect();
     };
   }, []);
 

@@ -594,6 +594,6 @@
   .about-section-v2 {
     min-height: var(--vh);
     justify-content: center;
-    padding: 0;
+    padding: 100px 0;
   }
 }

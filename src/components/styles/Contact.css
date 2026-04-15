@@ -352,7 +352,7 @@
 /* ===== 3D TERMINAL BOX ===== */
 .ct-terminal {
   width: 90%;
-  max-width: 680px;
+  max-width: 850px;
   border-radius: 16px;
   background: rgba(8, 8, 18, 0.92);
   backdrop-filter: blur(24px);

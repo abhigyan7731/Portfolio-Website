@@ -1,23 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import gsap from "gsap";
 
-// Floating code snippets that orbit around
-const codeSnippets = [
-  { text: "const app = express();", lang: "js" },
-  { text: "npm run deploy", lang: "bash" },
-  { text: "git push origin main", lang: "git" },
-  { text: "<Canvas shadows />", lang: "jsx" },
-  { text: "model.fit(X, y)", lang: "py" },
-  { text: "SELECT * FROM users", lang: "sql" },
-];
-
-// Status bar items
-const statusItems = [
-  { icon: "◉", label: "SYSTEM", value: "ONLINE", color: "#43e97b" },
-  { icon: "⚡", label: "POWER", value: "100%", color: "#00f2fe" },
-  { icon: "◈", label: "MODE", value: "CREATIVE", color: "#c2a4ff" },
-];
-
 // Rotating roles for the typing effect
 const typingRoles = [
   "Full Stack Developer",
@@ -25,16 +8,6 @@ const typingRoles = [
   "Frontend Architect",
   "Backend Builder",
   "Problem Solver",
-];
-
-// Tech orbit items
-const techOrbitItems = [
-  { icon: "⚛", label: "React", color: "#61dafb" },
-  { icon: "▲", label: "Next.js", color: "#ffffff" },
-  { icon: "◆", label: "Node.js", color: "#43e97b" },
-  { icon: "🐍", label: "Python", color: "#FFD43B" },
-  { icon: "♦", label: "Three.js", color: "#00f2fe" },
-  { icon: "⬡", label: "PostgreSQL", color: "#4facfe" },
 ];
 
 const Landing = ({ children }) => {
@@ -89,15 +62,15 @@ const Landing = ({ children }) => {
 
     const createParticles = () => {
       particles = [];
-      const count = Math.min(Math.floor((canvas.width * canvas.height) / 12000), 120);
+      const count = Math.min(Math.floor((canvas.width * canvas.height) / 25000), 60);
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          size: Math.random() * 2 + 0.5,
-          opacity: Math.random() * 0.5 + 0.1,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 1.5 + 0.5,
+          opacity: Math.random() * 0.4 + 0.1,
           color: Math.random() > 0.5 ? "0, 242, 254" : "194, 164, 255",
         });
       }
@@ -105,9 +78,13 @@ const Landing = ({ children }) => {
 
     resize();
     createParticles();
+    let resizeTimer;
     window.addEventListener("resize", () => {
-      resize();
-      createParticles();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resize();
+        createParticles();
+      }, 300);
     });
 
     const handleMouse = (e) => {
@@ -126,11 +103,12 @@ const Landing = ({ children }) => {
         // Mouse repulsion
         const dx = p.x - mouseX;
         const dy = p.y - mouseY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
+        const distSq = dx * dx + dy * dy;
+        if (distSq < 22500) { // 150²
+          const dist = Math.sqrt(distSq);
           const force = (150 - dist) / 150;
-          p.vx += (dx / dist) * force * 0.3;
-          p.vy += (dy / dist) * force * 0.3;
+          p.vx += (dx / dist) * force * 0.2;
+          p.vy += (dy / dist) * force * 0.2;
         }
 
         p.x += p.vx;
@@ -152,19 +130,21 @@ const Landing = ({ children }) => {
         ctx.fillStyle = `rgba(${p.color}, ${p.opacity})`;
         ctx.fill();
 
-        // Draw connections
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const ddx = p.x - p2.x;
-          const ddy = p.y - p2.y;
-          const d = Math.sqrt(ddx * ddx + ddy * ddy);
-          if (d < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(${p.color}, ${0.06 * (1 - d / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+        // Draw connections — only check every 3rd pair to cut O(n²)
+        if (i % 2 === 0) {
+          for (let j = i + 2; j < particles.length; j += 2) {
+            const p2 = particles[j];
+            const ddx = p.x - p2.x;
+            const ddy = p.y - p2.y;
+            const dSq = ddx * ddx + ddy * ddy;
+            if (dSq < 6400) { // 80²
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(${p.color}, ${0.04 * (1 - Math.sqrt(dSq) / 80)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
           }
         }
       }
@@ -458,31 +438,6 @@ const Landing = ({ children }) => {
         <div className="l3d-bg-orb l3d-bg-orb-2 l3d-parallax-mid" />
         <div className="l3d-bg-orb l3d-bg-orb-3 l3d-parallax-deep" />
 
-        {/* Floating wireframe shapes */}
-        <div className="l3d-wireframe-shape l3d-wf-1 l3d-parallax-deep">
-          <svg viewBox="0 0 100 100" fill="none" stroke="rgba(0,242,254,0.1)" strokeWidth="0.8">
-            <polygon points="50,5 95,27 95,72 50,95 5,72 5,27" />
-            <line x1="50" y1="5" x2="50" y2="95" />
-            <line x1="5" y1="27" x2="95" y2="72" />
-            <line x1="95" y1="27" x2="5" y2="72" />
-          </svg>
-        </div>
-        <div className="l3d-wireframe-shape l3d-wf-2 l3d-parallax-mid">
-          <svg viewBox="0 0 100 100" fill="none" stroke="rgba(194,164,255,0.08)" strokeWidth="0.8">
-            <circle cx="50" cy="50" r="40" />
-            <circle cx="50" cy="50" r="25" />
-            <circle cx="50" cy="50" r="10" />
-            <line x1="10" y1="50" x2="90" y2="50" />
-            <line x1="50" y1="10" x2="50" y2="90" />
-          </svg>
-        </div>
-        <div className="l3d-wireframe-shape l3d-wf-3 l3d-parallax-shallow">
-          <svg viewBox="0 0 100 100" fill="none" stroke="rgba(240,147,251,0.07)" strokeWidth="0.8">
-            <rect x="20" y="20" width="60" height="60" rx="3" />
-            <rect x="30" y="30" width="40" height="40" rx="2" transform="rotate(45 50 50)" />
-          </svg>
-        </div>
-
         {/* Corner decorations - cyberpunk brackets */}
         <div className="l3d-corner-deco l3d-corner-tl">
           <svg viewBox="0 0 60 60" fill="none" stroke="rgba(0,242,254,0.3)" strokeWidth="1.5">
@@ -505,25 +460,6 @@ const Landing = ({ children }) => {
           </svg>
         </div>
 
-        {/* Holographic decorative lines */}
-        <div className="l3d-holo-line l3d-holo-line-1" />
-        <div className="l3d-holo-line l3d-holo-line-2" />
-
-        {/* Status bar - top right HUD */}
-        <div className="l3d-status-bar">
-          {statusItems.map((item, i) => (
-            <div className="l3d-status-item" key={i}>
-              <span className="l3d-status-icon" style={{ color: item.color, textShadow: `0 0 8px ${item.color}` }}>
-                {item.icon}
-              </span>
-              <div className="l3d-status-info">
-                <span className="l3d-status-label">{item.label}</span>
-                <span className="l3d-status-value" style={{ color: item.color }}>{item.value}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Top kicker */}
         <div className="l3d-top-kicker">
           <span className="l3d-kicker-line" />
@@ -532,19 +468,6 @@ const Landing = ({ children }) => {
             B.Tech CSE — SRM IST
           </span>
           <span className="l3d-kicker-line" />
-        </div>
-
-        {/* Floating code snippets */}
-        <div className="l3d-code-snippets-container">
-          {codeSnippets.map((snippet, i) => (
-            <div
-              className={`l3d-code-snippet l3d-code-snippet-${i + 1}`}
-              key={i}
-            >
-              <span className="l3d-code-lang">{snippet.lang}</span>
-              <code>{snippet.text}</code>
-            </div>
-          ))}
         </div>
 
         {/* HUGE name text sitting BEHIND the character */}
@@ -566,48 +489,6 @@ const Landing = ({ children }) => {
             <span className="l3d-typing-cursor">|</span>
           </div>
 
-          {/* Dynamic subtitle under the name */}
-          <div className="l3d-hero-tagline">
-            <span className="l3d-tagline-bracket">[</span>
-            <span className="l3d-tagline-text">FULL STACK DEVELOPER</span>
-            <span className="l3d-tagline-sep">•</span>
-            <span className="l3d-tagline-text l3d-tagline-alt">ML ENGINEER</span>
-            <span className="l3d-tagline-bracket">]</span>
-          </div>
-        </div>
-
-        {/* 3D Tech Orbit Ring */}
-        <div className="l3d-tech-orbit-container">
-          <div className="l3d-tech-orbit-ring">
-            {techOrbitItems.map((item, i) => {
-              const angle = (360 / techOrbitItems.length) * i;
-              return (
-                <div
-                  className="l3d-tech-orbit-item"
-                  key={i}
-                  style={{
-                    "--orbit-angle": `${angle}deg`,
-                    "--orbit-color": item.color,
-                  }}
-                >
-                  <span className="l3d-orbit-icon">{item.icon}</span>
-                  <span className="l3d-orbit-label">{item.label}</span>
-                </div>
-              );
-            })}
-          </div>
-          {/* Orbit track ring */}
-          <svg className="l3d-orbit-track" viewBox="0 0 420 420">
-            <circle cx="210" cy="210" r="200" fill="none" stroke="rgba(194,164,255,0.06)" strokeWidth="1" strokeDasharray="6 6" />
-            <circle cx="210" cy="210" r="200" fill="none" stroke="rgba(0,242,254,0.04)" strokeWidth="0.5" />
-          </svg>
-        </div>
-
-        {/* Available for hire badge */}
-        <div className="l3d-available-badge">
-          <div className="l3d-available-glow" />
-          <span className="l3d-available-dot" />
-          <span className="l3d-available-text">Available for Work</span>
         </div>
 
         {/* Holographic grid floor behind character */}

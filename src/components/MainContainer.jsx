@@ -9,7 +9,11 @@ import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import SkillConstellation from "./SkillConstellation";
 import Work from "./Work";
-import QuoteSection from "./QuoteSection";
+import TrophyRoom3D from "./TrophyRoom3D";
+import SkillMatrix from "./SkillMatrix";
+import GitCity3D from "./GitCity3D";
+import Testimonials from "./Testimonials";
+import TechBlog from "./TechBlog";
 import ScrollProgressBar from "./ScrollProgressBar";
 import GlobalBackground from "./GlobalBackground";
 import setSplitText from "./utils/splitText";
@@ -57,7 +61,7 @@ const MainContainer = ({ children }) => {
       });
 
       tl.to(charModel, {
-        opacity: 0,
+        autoAlpha: 0,
         scale: 0.92,
         pointerEvents: "none",
         ease: "none",
@@ -83,11 +87,15 @@ const MainContainer = ({ children }) => {
           <div className="container-main">
             <Landing>{!isDesktopView && children}</Landing>
             <About />
-            <QuoteSection />
+            <TrophyRoom3D />
             <WhatIDo />
             <SkillConstellation />
+            <SkillMatrix />
             <Career />
             <Work />
+            <GitCity3D />
+            <Testimonials />
+            <TechBlog />
 
             <Contact />
           </div>

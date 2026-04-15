@@ -1,66 +1,60 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Stars } from "@react-three/drei";
-import * as THREE from 'three';
+import { Stars } from "@react-three/drei";
+
+// Use a single shared scroll value updated outside of useFrame
+let cachedScrollY = 0;
+if (typeof window !== "undefined") {
+  window.addEventListener("scroll", () => {
+    cachedScrollY = window.scrollY;
+  }, { passive: true });
+}
 
 const FloatingObjects = () => {
   const group = useRef();
-  
-  useFrame(() => {
-    // Continuous inner rotation
-    group.current.rotation.y += 0.0015;
-    group.current.rotation.x += 0.0008;
-    
-    // Tie to scroll position for extra parallax
-    const scrollY = window.scrollY || document.documentElement.scrollTop;
-    group.current.position.y = scrollY * 0.002; 
+
+  // Pre-create geometries via useMemo
+  useFrame((_, delta) => {
+    const g = group.current;
+    g.rotation.y += 0.0008 * delta * 60;
+    g.rotation.x += 0.0004 * delta * 60;
+    g.position.y = cachedScrollY * 0.002;
   });
 
   return (
     <group ref={group}>
-      <Float speed={1.5} rotationIntensity={2} floatIntensity={3}>
-        <mesh position={[8, 3, -15]}>
-          <octahedronGeometry args={[2, 0]} />
-          <meshStandardMaterial color="#00f2fe" wireframe opacity={0.3} transparent />
-        </mesh>
-      </Float>
-      <Float speed={2} rotationIntensity={3} floatIntensity={2}>
-        <mesh position={[-7, -4, -18]}>
-          <icosahedronGeometry args={[2.5, 0]} />
-          <meshStandardMaterial color="#8a2be2" wireframe opacity={0.3} transparent />
-        </mesh>
-      </Float>
-      <Float speed={1.2} rotationIntensity={1.5} floatIntensity={2.5}>
-        <mesh position={[5, -8, -12]}>
-          <torusGeometry args={[1.5, 0.4, 16, 100]} />
-          <meshStandardMaterial color="#ff007f" wireframe opacity={0.2} transparent />
-        </mesh>
-      </Float>
-      <Float speed={2.5} rotationIntensity={1} floatIntensity={3}>
-        <mesh position={[-5, 7, -20]}>
-          <dodecahedronGeometry args={[2.2, 0]} />
-          <meshStandardMaterial color="#00ff88" wireframe opacity={0.25} transparent />
-        </mesh>
-      </Float>
+      <mesh position={[8, 3, -15]}>
+        <octahedronGeometry args={[2, 0]} />
+        <meshBasicMaterial color="#00f2fe" wireframe opacity={0.15} transparent />
+      </mesh>
+      <mesh position={[-7, -4, -18]}>
+        <icosahedronGeometry args={[2.5, 0]} />
+        <meshBasicMaterial color="#8a2be2" wireframe opacity={0.15} transparent />
+      </mesh>
+      <mesh position={[5, -8, -12]}>
+        <torusGeometry args={[1.5, 0.4, 8, 32]} />
+        <meshBasicMaterial color="#ff007f" wireframe opacity={0.1} transparent />
+      </mesh>
+      <mesh position={[-5, 7, -20]}>
+        <dodecahedronGeometry args={[2.2, 0]} />
+        <meshBasicMaterial color="#00ff88" wireframe opacity={0.12} transparent />
+      </mesh>
     </group>
   );
 };
 
 const CustomParticles = () => {
   const group = useRef();
-  
-  useFrame((state, delta) => {
-    group.current.rotation.x -= delta / 30;
-    group.current.rotation.y -= delta / 40;
-    
-    // Particle parallax based on scroll
-    const scrollY = window.scrollY || document.documentElement.scrollTop;
-    group.current.position.y = scrollY * 0.005; 
+
+  useFrame((_, delta) => {
+    group.current.rotation.x -= delta / 50;
+    group.current.rotation.y -= delta / 60;
+    group.current.position.y = cachedScrollY * 0.003;
   });
 
   return (
     <group ref={group}>
-      <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1.5} />
+      <Stars radius={100} depth={50} count={1500} factor={3} saturation={0} fade speed={0.8} />
     </group>
   );
 };
@@ -68,9 +62,13 @@ const CustomParticles = () => {
 const GlobalBackground = () => {
   return (
     <div className="global-3d-bg">
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }} gl={{ alpha: true }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} intensity={1} />
+      <Canvas
+        camera={{ position: [0, 0, 10], fov: 75 }}
+        gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }}
+        dpr={[1, 1.5]}
+        frameloop="always"
+      >
+        <ambientLight intensity={0.3} />
         <FloatingObjects />
         <CustomParticles />
       </Canvas>

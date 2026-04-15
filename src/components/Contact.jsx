@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HackerRoom3D from "./HackerRoom3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -254,19 +255,7 @@ const Contact = () => {
         },
       });
 
-      // Terminal enters from deep 3D
-      gsap.from(".ct-terminal", {
-        rotateX: 45,
-        rotateY: -15,
-        z: -400,
-        opacity: 0,
-        duration: 1.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".ct-terminal",
-          start: "top 80%",
-        },
-      });
+
 
       // Contact cards cascade
       gsap.from(".ct-card", {
@@ -413,29 +402,7 @@ const Contact = () => {
     if (shine) shine.style.background = "transparent";
   };
 
-  // Terminal 3D tilt
-  const handleTerminalMove = (e) => {
-    const el = terminalRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    gsap.to(el, {
-      rotateX: y * -10,
-      rotateY: x * 15,
-      duration: 0.5,
-      ease: "power2.out",
-    });
-  };
 
-  const handleTerminalLeave = () => {
-    gsap.to(terminalRef.current, {
-      rotateX: 0,
-      rotateY: 0,
-      duration: 1.2,
-      ease: "elastic.out(1, 0.3)",
-    });
-  };
 
   const titleText = "GET IN TOUCH";
   const titleChars = titleText.split("");
@@ -584,12 +551,13 @@ const Contact = () => {
       </p>
 
       {/* 3D Terminal Box with live typing */}
-      <div
-        className="ct-terminal ct-parallax-mid"
-        ref={terminalRef}
-        onMouseMove={handleTerminalMove}
-        onMouseLeave={handleTerminalLeave}
-      >
+      <div style={{ position: "relative", width: "100%", maxWidth: "900px", height: "550px", margin: "40px auto", zIndex: 10 }}>
+       <HackerRoom3D>
+        <div
+          className="ct-terminal ct-parallax-mid"
+          ref={terminalRef}
+          style={{ width: "100%", height: "100%", margin: 0, transform: "none" }}
+        >
         {/* Animated border gradient */}
         <div className="ct-terminal-border-glow" />
 
@@ -633,7 +601,9 @@ const Contact = () => {
 
         {/* CRT flicker lines */}
         <div className="ct-terminal-crt" />
-      </div>
+       </div>
+      </HackerRoom3D>
+     </div>
 
       {/* Contact cards grid */}
       <div className="ct-grid ct-parallax-shallow">

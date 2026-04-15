@@ -33,9 +33,10 @@
   position: absolute;
   width: 200%;
   height: 50%;
-  filter: blur(100px);
-  opacity: 0.12;
-  animation: landAuroraFlow 14s ease-in-out infinite alternate;
+  filter: blur(60px);
+  opacity: 0.1;
+  animation: landAuroraFlow 20s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .l3d-aurora-1 {
@@ -46,18 +47,18 @@
       rgba(0, 242, 254, 0.25),
       rgba(102, 126, 234, 0.35),
       transparent);
-  animation-duration: 12s;
+  animation-duration: 18s;
 }
 
 .l3d-aurora-2 {
   top: 30%;
   left: -30%;
   background: linear-gradient(135deg,
-      rgba(240, 147, 251, 0.25),
-      rgba(67, 233, 123, 0.15),
-      rgba(79, 172, 254, 0.25),
+      rgba(240, 147, 251, 0.2),
+      rgba(67, 233, 123, 0.12),
+      rgba(79, 172, 254, 0.2),
       transparent);
-  animation-duration: 16s;
+  animation-duration: 24s;
   animation-delay: -4s;
 }
 
@@ -65,11 +66,11 @@
   bottom: -20%;
   right: -50%;
   background: linear-gradient(200deg,
-      rgba(0, 242, 254, 0.25),
-      rgba(194, 164, 255, 0.15),
-      rgba(245, 87, 108, 0.15),
+      rgba(0, 242, 254, 0.2),
+      rgba(194, 164, 255, 0.12),
+      rgba(245, 87, 108, 0.12),
       transparent);
-  animation-duration: 20s;
+  animation-duration: 30s;
   animation-delay: -7s;
 }
 
@@ -158,9 +159,10 @@
 .l3d-bg-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(80px);
   pointer-events: none;
   z-index: 0;
+  will-change: transform;
 }
 
 .l3d-bg-orb-1 {
@@ -278,11 +280,9 @@
   display: flex;
   gap: 24px;
   padding: 10px 20px;
-  background: rgba(10, 10, 20, 0.5);
+  background: rgba(10, 10, 20, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .l3d-status-item {
@@ -388,9 +388,8 @@
   position: absolute;
   padding: 6px 14px;
   border-radius: 8px;
-  background: rgba(10, 10, 20, 0.7);
+  background: rgba(10, 10, 20, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
   font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.5);
@@ -876,11 +875,9 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  background: rgba(10, 10, 20, 0.7);
+  background: rgba(10, 10, 20, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   will-change: transform;
 }
@@ -913,11 +910,9 @@
   align-items: center;
   gap: 10px;
   padding: 8px 18px;
-  background: rgba(10, 10, 20, 0.6);
+  background: rgba(10, 10, 20, 0.8);
   border: 1px solid rgba(67, 233, 123, 0.2);
   border-radius: 50px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   cursor: default;
 }
 

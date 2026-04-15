@@ -159,6 +159,7 @@ const ParticleUniverse = () => {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+        uAudioLevel: { value: 0 },
       },
       vertexShader: `
         attribute float aSize;
@@ -166,6 +167,7 @@ const ParticleUniverse = () => {
         uniform float uTime;
         uniform vec2 uMouse;
         uniform float uPixelRatio;
+        uniform float uAudioLevel;
         varying vec3 vColor;
         varying float vAlpha;
 
@@ -173,10 +175,10 @@ const ParticleUniverse = () => {
           vColor = color;
           vec3 pos = position;
           
-          // Organic breathing motion
-          pos.x += sin(uTime * 0.5 + aRandom * 6.28) * 0.06;
-          pos.y += cos(uTime * 0.4 + aRandom * 4.0) * 0.06;
-          pos.z += sin(uTime * 0.3 + aRandom * 5.0) * 0.04;
+          // Organic breathing motion + audio reactive expansion
+          pos.x += sin(uTime * 0.5 + aRandom * 6.28) * (0.06 + uAudioLevel * 0.5);
+          pos.y += cos(uTime * 0.4 + aRandom * 4.0) * (0.06 + uAudioLevel * 0.5);
+          pos.z += sin(uTime * 0.3 + aRandom * 5.0) * (0.04 + uAudioLevel * 0.5);
           
           vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
           
@@ -245,6 +247,37 @@ const ParticleUniverse = () => {
       mouse.targetY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     };
     container.addEventListener("mousemove", onMouseMove);
+
+    // Audio Reactivity Setup
+    let audioContext, analyser, dataArray, microphone;
+    let isAudioActive = false;
+    
+    // Attach listener to window so the button outside useEffect can trigger it
+    window.__toggleAudioReact = async () => {
+      if (isAudioActive) {
+        if (audioContext) audioContext.suspend();
+        isAudioActive = false;
+        return false;
+      }
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioContext.createAnalyser();
+          analyser.fftSize = 256;
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          microphone = audioContext.createMediaStreamSource(stream);
+          microphone.connect(analyser);
+          dataArray = new Uint8Array(analyser.frequencyBinCount);
+        } else {
+          audioContext.resume();
+        }
+        isAudioActive = true;
+        return true;
+      } catch (e) {
+        console.error("Mic access denied", e);
+        return false;
+      }
+    };
 
     // Morphing state
     let currentShapeIdx = 0;
@@ -321,8 +354,21 @@ const ParticleUniverse = () => {
     const clock = new THREE.Clock();
     let frameId;
 
+    let isVisible = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.0, rootMargin: "300px" }
+    );
+    observer.observe(container);
+
     const animate = () => {
       frameId = requestAnimationFrame(animate);
+      if (!isVisible) return;
+      
       const elapsed = clock.getElapsedTime();
 
       mouse.x += (mouse.targetX - mouse.x) * 0.05;
@@ -330,6 +376,19 @@ const ParticleUniverse = () => {
 
       material.uniforms.uTime.value = elapsed;
       material.uniforms.uMouse.value.set(mouse.x, mouse.y);
+
+      if (isAudioActive && analyser) {
+        analyser.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          sum += dataArray[i];
+        }
+        let avg = sum / dataArray.length;
+        // smooth interpolation
+        material.uniforms.uAudioLevel.value += ((avg / 255) - material.uniforms.uAudioLevel.value) * 0.1;
+      } else {
+        material.uniforms.uAudioLevel.value *= 0.95; // decay back to 0
+      }
 
       // Morph particles
       const posAttr = geometry.attributes.position;
@@ -428,6 +487,7 @@ const ParticleUniverse = () => {
       lineMaterial.dispose();
       renderer.dispose();
       composer.dispose();
+      observer.disconnect();
     };
   }, []);
 
@@ -473,6 +533,18 @@ const ParticleUniverse = () => {
           <span className="pu-hint-dot" />
           Auto-morphs every 5s • Hover to distort • Click shapes to transform
         </p>
+
+        <button 
+          className="pu-shape-btn" 
+          style={{ marginTop: 15, borderColor: "#43e97b", color: "#43e97b" }}
+          onClick={(e) => {
+            window.__toggleAudioReact().then(active => {
+              e.target.textContent = active ? "🎤 Mic Active - Sing!" : "🎤 Enable Audio Reactivity";
+            });
+          }}
+        >
+          🎤 Enable Audio Reactivity
+        </button>
       </div>
 
       <div className="pu-grid-bg">
