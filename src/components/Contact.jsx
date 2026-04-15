@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HackerRoom3D from "./HackerRoom3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -541,13 +540,37 @@ const Contact = () => {
         <span className="ct-subtitle-line" />
       </p>
 
-      {/* 3D Terminal Box with live typing */}
-      <div style={{ position: "relative", width: "100%", maxWidth: "900px", height: "550px", margin: "40px auto", zIndex: 10 }}>
-       <HackerRoom3D>
+      {/* 3D Terminal Box with live typing natively in DOM */}
+      <div 
+        style={{ perspective: "1500px", width: "100%", maxWidth: "900px", margin: "40px auto", zIndex: 10 }}
+        onMouseMove={(e) => {
+          if (!terminalRef.current) return;
+          const rect = terminalRef.current.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          gsap.to(terminalRef.current, {
+            rotateX: y * -15,
+            rotateY: x * 15,
+            z: 30,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+        }}
+        onMouseLeave={() => {
+          if (!terminalRef.current) return;
+          gsap.to(terminalRef.current, {
+            rotateX: 0,
+            rotateY: 0,
+            z: 0,
+            duration: 1,
+            ease: "elastic.out(1, 0.4)"
+          });
+        }}
+      >
         <div
           className="ct-terminal ct-parallax-mid"
           ref={terminalRef}
-          style={{ width: "100%", height: "100%", margin: 0, transform: "none" }}
+          style={{ width: "100%", height: "450px", margin: 0, transformStyle: "preserve-3d", position: "relative" }}
         >
         {/* Animated border gradient */}
         <div className="ct-terminal-border-glow" />
@@ -593,8 +616,7 @@ const Contact = () => {
         {/* CRT flicker lines */}
         <div className="ct-terminal-crt" />
        </div>
-      </HackerRoom3D>
-     </div>
+      </div>
 
       {/* Contact cards grid */}
       <div className="ct-grid ct-parallax-shallow">
