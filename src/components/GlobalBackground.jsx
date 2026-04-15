@@ -106,8 +106,8 @@ const CyberTerrain = () => {
 
   return (
     <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -12, -40]}>
-      {/* 100x100 units, divided into 50x50 squares */}
-      <planeGeometry ref={geomRef} args={[200, 200, 80, 80]} />
+      {/* 200x200 units, divided into 40x40 squares (1600 vertices instead of 6400 to save CPU) */}
+      <planeGeometry ref={geomRef} args={[200, 200, 40, 40]} />
       <meshStandardMaterial 
         color="#c2a4ff" 
         emissive="#1a0b2e"
@@ -186,7 +186,7 @@ const GlobalBackground = () => {
     >
       <Canvas
         gl={{ alpha: false, antialias: true, powerPreference: "high-performance" }}
-        dpr={[1, typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 1.5]}
+        dpr={[1, typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 1.2]}
         frameloop="always" // Needs to constantly render for the endless driving effect
       >
         <PerspectiveCamera makeDefault position={[0, 2, 0]} fov={70} />

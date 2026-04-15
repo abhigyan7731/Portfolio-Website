@@ -56,8 +56,8 @@ const SkillConstellation = () => {
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
     const container = containerRef.current;
-    let width = container.clientWidth;
-    let height = container.clientHeight;
+    let width = container.clientWidth || window.innerWidth;
+    let height = container.clientHeight || window.innerHeight;
 
     // Scene setup
     const isMobileInit = width < 768;
@@ -75,11 +75,11 @@ const SkillConstellation = () => {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.5;
 
-    // Bloom — reduced intensity for perf
+    // Bloom — massively reduced internal resolution (25%) to prevent GPU overload on Vercel
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(width, height),
+      new THREE.Vector2(width / 4, height / 4),
       1.2,
       0.6,
       0.3
@@ -398,8 +398,8 @@ const SkillConstellation = () => {
 
     // Resize
     const onResize = () => {
-      width = container.clientWidth;
-      height = container.clientHeight;
+      width = container.clientWidth || window.innerWidth;
+      height = container.clientHeight || window.innerHeight;
       const isMobileNow = width < 768;
       
       camera.aspect = width / height;
