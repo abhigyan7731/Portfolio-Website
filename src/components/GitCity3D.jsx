@@ -75,6 +75,12 @@ const GitCity3D = () => {
 
   return (
     <div className="gh-section" ref={containerRef}>
+      {/* Title */}
+      <div style={{ textAlign: "center", marginBottom: "50px", zIndex: 10 }}>
+        <h2 style={{ fontSize: "3rem", fontWeight: "900", color: "white", margin: 0, textTransform: "uppercase", letterSpacing: "5px" }}>GITHUB LOGS</h2>
+        <p style={{ color: "#c2a4ff", letterSpacing: "3px", textTransform: "uppercase", fontSize: "14px", marginTop: "10px" }}>Open Source Contributions</p>
+      </div>
+
       <div className="gh-card">
         <div className="gh-header">
           <div className="gh-header-left">

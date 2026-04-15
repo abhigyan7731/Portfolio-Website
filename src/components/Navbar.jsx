@@ -6,12 +6,19 @@ import { ScrollSmoother } from "./utils/gsapStubs";
 gsap.registerPlugin(ScrollTrigger);
 export let smoother = null;
 
+const navItems = [
+  { text: "ABOUT", href: "#about", glowIndex: 2 }, // 'O'
+  { text: "STATS", href: "#statistics", glowIndex: 3 }, // 'T'
+  { text: "CONTACT", href: "#contact", glowIndex: 4 }, // 'A'
+  { text: "RESUME", href: "/images/Abhigyan_Kumar_Gupta_ATS_Resume.pdf", external: true, glowIndex: 1 }, // 'E'
+];
+
 const Navbar = () => {
-  const navRef = useRef(null);
-  const cubeRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const magneticBoardRef = useRef(null);
+  const svgLogoRef = useRef(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState(null);
-  const magnetRefs = useRef([]);
+  const [hoverIndicator, setHoverIndicator] = useState({ opacity: 0, left: 0, width: 0 });
 
   useEffect(() => {
     smoother = ScrollSmoother.create({
@@ -23,15 +30,13 @@ const Navbar = () => {
       autoResize: true,
       ignoreMobileResize: true,
     });
-
     smoother.scrollTop(0);
     smoother.paused(true);
 
-    // Nav link smooth scrolling
-    let links = document.querySelectorAll(".nav3d-links a");
+    let links = document.querySelectorAll(".spatial-nav-link:not([target='_blank'])");
     links.forEach((elem) => {
       elem.addEventListener("click", (e) => {
-        let section = elem.getAttribute("data-href");
+        let section = elem.getAttribute("href");
         if (window.innerWidth > 1024) {
           if (section) {
             e.preventDefault();
@@ -45,174 +50,143 @@ const Navbar = () => {
       ScrollSmoother.refresh(true);
     });
 
-    // Scroll detection for navbar morphing
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollY > 80);
+      setIsScrolled(scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    // Logo rotation effect
+    gsap.to(".tech-logo-svg", {
+      rotationZ: 360,
+      duration: 20,
+      repeat: -1,
+      ease: "none"
+    });
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 3D Cube auto-rotation
-  useEffect(() => {
-    if (!cubeRef.current) return;
-    const cube = cubeRef.current;
-    let angle = 0;
-    let rafId;
-    const rotateCube = () => {
-      angle += 0.3;
-      cube.style.transform = `rotateY(${angle}deg) rotateX(${Math.sin(angle * 0.01) * 15}deg)`;
-      rafId = requestAnimationFrame(rotateCube);
-    };
-    rafId = requestAnimationFrame(rotateCube);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  // Magnetic button effect
-  const handleMagneticMove = (e, index) => {
-    const btn = magnetRefs.current[index];
-    if (!btn) return;
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    gsap.to(btn, {
-      x: x * 0.35,
-      y: y * 0.35,
-      rotateX: -y * 0.15,
-      rotateY: x * 0.15,
-      duration: 0.4,
+  const handleBoardMove = (e) => {
+    if (!magneticBoardRef.current) return;
+    const rect = magneticBoardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    
+    gsap.to(magneticBoardRef.current, {
+      rotateX: -y * 25, 
+      rotateY: x * 25,
+      duration: 0.6,
       ease: "power2.out",
+      transformPerspective: 1200
+    });
+
+    // 3D Text Shadow Parallax
+    gsap.to(".spatial-text", {
+      textShadow: `${x * -20}px ${y * -20}px 15px rgba(194, 164, 255, 0.6)`,
+      duration: 0.4
     });
   };
 
-  const handleMagneticLeave = (index) => {
-    const btn = magnetRefs.current[index];
-    if (!btn) return;
-    gsap.to(btn, {
-      x: 0,
-      y: 0,
+  const handleBoardLeave = () => {
+    if (!magneticBoardRef.current) return;
+    gsap.to(magneticBoardRef.current, {
       rotateX: 0,
       rotateY: 0,
-      duration: 0.7,
+      duration: 1.2,
       ease: "elastic.out(1, 0.4)",
     });
-    setActiveLink(null);
+    gsap.to(".spatial-text", {
+      textShadow: `0px 0px 0px transparent`,
+      duration: 0.4
+    });
+    setHoverIndicator(prev => ({ ...prev, opacity: 0 }));
   };
 
-  const navItems = [
-    { text: "ABOUT", href: "#about", type: "glitch" },
-    { text: "WORK", href: "#work", type: "holographic" },
-    { text: "CONTACT", href: "#contact", type: "neon" },
-    {
-      text: "RESUME",
-      href: "/images/Abhigyan_Kumar_Gupta_ATS_Resume.pdf",
-      type: "magnetic",
-      external: true,
-    },
-  ];
+  const handleLinkEnter = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const boardRect = magneticBoardRef.current.getBoundingClientRect();
+    setHoverIndicator({
+      opacity: 1,
+      left: rect.left - boardRect.left,
+      width: rect.width
+    });
+  };
 
   return (
-    <>
-      <div className={`nav3d-bar nav3d-animate-in ${isScrolled ? "nav3d-bar--scrolled" : ""}`} ref={navRef}>
-        {/* Animated border */}
-        <div className="nav3d-border-glow" />
+    <div className={`spatial-wrapper ${isScrolled ? "spatial-scrolled" : ""}`} ref={wrapperRef}>
+      <div 
+        className="spatial-board" 
+        ref={magneticBoardRef}
+        onMouseMove={handleBoardMove}
+        onMouseLeave={handleBoardLeave}
+      >
+        {/* Dynamic Sweeping Rainbow Edge */}
+        <div className="spatial-edge-sweep" />
 
-        {/* 3D Rotating Cube Logo */}
-        <a href="/#" className="nav3d-logo nav3d-animate-logo" data-cursor="disable" aria-label="Home">
-          <div className="nav3d-cube-wrap">
-            <div className="nav3d-cube" ref={cubeRef}>
-              <div className="nav3d-cube-face nav3d-cube-front">A</div>
-              <div className="nav3d-cube-face nav3d-cube-back">G</div>
-              <div className="nav3d-cube-face nav3d-cube-right">K</div>
-              <div className="nav3d-cube-face nav3d-cube-left">.</div>
-              <div className="nav3d-cube-face nav3d-cube-top">✦</div>
-              <div className="nav3d-cube-face nav3d-cube-bottom">⟡</div>
-            </div>
-          </div>
-          {/* Orbital rings */}
-          <div className="nav3d-orbit nav3d-orbit-1" />
-          <div className="nav3d-orbit nav3d-orbit-2" />
-        </a>
-
-        {/* Email - center */}
-        <a
-          href="mailto:abhigyankumar268@gmail.com"
-          className="nav3d-email"
-          data-cursor="disable"
+        {/* Dynamic sliding glass bubble with Liquid Effect */}
+        <div 
+          className="spatial-indicator" 
+          style={{ 
+            opacity: hoverIndicator.opacity, 
+            left: `${hoverIndicator.left}px`, 
+            width: `${hoverIndicator.width}px` 
+          }} 
         >
-          <span className="nav3d-email-text">abhigyankumar268@gmail.com</span>
-          <span className="nav3d-email-glow" />
+          <div className="spatial-liquid-glow" />
+        </div>
+
+        {/* Brand New Geometric Isometric Logo */}
+        <a href="/#" className="spatial-logo-wrapper">
+          <svg viewBox="0 0 100 100" className="tech-logo-svg" ref={svgLogoRef}>
+            {/* Hexagon Outer Frame */}
+            <polygon points="50 5, 95 25, 95 75, 50 95, 5 75, 5 25" fill="none" stroke="url(#cyanPink)" strokeWidth="6" strokeLinejoin="round" className="logo-hex" />
+            {/* Inner Isometric Cube lines */}
+            <polyline points="50 5, 50 50, 95 75" fill="none" stroke="url(#cyanPink)" strokeWidth="4" strokeLinejoin="round" className="logo-line-1" />
+            <polyline points="5 25, 50 50, 5 75" fill="none" stroke="url(#cyanPink)" strokeWidth="4" strokeLinejoin="round" className="logo-line-2" />
+            {/* Center Core Dot */}
+            <circle cx="50" cy="50" r="6" fill="#fff" className="logo-core" />
+            
+            <defs>
+              <linearGradient id="cyanPink" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#4facfe" />
+                <stop offset="50%" stopColor="#c2a4ff" />
+                <stop offset="100%" stopColor="#f093fb" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span className="spatial-logo-text">AG</span>
         </a>
 
-        {/* Navigation Links */}
-        <nav className="nav3d-links">
-          {navItems.map((item, i) => (
-            <div
+        {/* Separator */}
+        <div className="spatial-divider" />
+
+        {/* Links */}
+        <nav className="spatial-links">
+          {navItems.map((item) => (
+            <a
               key={item.text}
-              className="nav3d-btn-wrap"
-              style={{ animationDelay: `${0.8 + i * 0.12}s` }}
-              onMouseMove={(e) => handleMagneticMove(e, i)}
-              onMouseLeave={() => handleMagneticLeave(i)}
-              onMouseEnter={() => setActiveLink(i)}
+              href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
+              className={`spatial-nav-link ${item.external ? "spatial-accent" : ""}`}
+              onMouseEnter={handleLinkEnter}
             >
-              <a
-                ref={(el) => (magnetRefs.current[i] = el)}
-                data-href={item.external ? undefined : item.href}
-                href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
-                data-cursor="disable"
-                className={`nav3d-btn nav3d-btn--${item.type} ${activeLink === i ? "nav3d-btn--active" : ""}`}
-              >
-                {/* Button content layers */}
-                <span className="nav3d-btn-bg" />
-                <span className="nav3d-btn-shine" />
-                <span className="nav3d-btn-text" data-text={item.text}>
-                  {item.text}
-                </span>
-                {/* Glitch layers for glitch type */}
-                {item.type === "glitch" && (
-                  <>
-                    <span className="nav3d-glitch-r" data-text={item.text} />
-                    <span className="nav3d-glitch-b" data-text={item.text} />
-                  </>
-                )}
-                {/* Holographic scanlines */}
-                {item.type === "holographic" && <span className="nav3d-holo-scan" />}
-                {/* Neon glow layers */}
-                {item.type === "neon" && (
-                  <>
-                    <span className="nav3d-neon-glow" />
-                    <span className="nav3d-neon-flicker" />
-                  </>
-                )}
-                {/* Magnetic field lines */}
-                {item.type === "magnetic" && (
-                  <span className="nav3d-magnetic-field">
-                    {[...Array(6)].map((_, j) => (
-                      <span key={j} className="nav3d-field-line" />
-                    ))}
+              <span className="spatial-text">
+                {item.text.split("").map((char, charIdx) => (
+                  <span 
+                    key={charIdx} 
+                    className={charIdx === item.glowIndex ? "spatial-letter-glow" : ""}
+                  >
+                    {char}
                   </span>
-                )}
-                {/* Corner accents */}
-                <span className="nav3d-corner nav3d-corner--tl" />
-                <span className="nav3d-corner nav3d-corner--tr" />
-                <span className="nav3d-corner nav3d-corner--bl" />
-                <span className="nav3d-corner nav3d-corner--br" />
-              </a>
-            </div>
+                ))}
+              </span>
+            </a>
           ))}
         </nav>
       </div>
-
-      <div className="landing-circle1"></div>
-      <div className="landing-circle2"></div>
-      <div className="nav-fade"></div>
-    </>
+    </div>
   );
 };
 

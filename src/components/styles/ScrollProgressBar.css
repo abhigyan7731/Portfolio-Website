@@ -1,20 +1,156 @@
-.scroll-progress-container {
+/* ╔══════════════════════════════════════════════════╗
+   ║        VERTICAL HUD SCROLL PROGRESS SLIDER       ║
+   ╚══════════════════════════════════════════════════╝ */
+
+.scroll-v-slider-wrapper {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.05);
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 99999;
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+  pointer-events: none; /* Allows clicks to pass through */
 }
 
-.scroll-progress-indicator {
+/* 
+  Top Readout Text 
+  (Rotated vertically to run perfectly alongside the track) 
+*/
+.scroll-v-readout {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  /* Rotate writing mode to vertical */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg); /* Read from bottom to top or top to bottom */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scroll-v-value {
+  font-size: 14px;
+  color: #c2a4ff;
+  text-shadow: 0 0 10px rgba(194, 164, 255, 0.8);
+}
+
+/* 
+  The Main Track Container
+*/
+.scroll-v-track-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 250px; /* The physical height of the scroll region */
+}
+
+/* The actual line */
+.scroll-v-track {
+  position: relative;
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08); /* Empty track color */
+  border-radius: 2px;
+}
+
+/* 
+  The filled segment of the track 
+  (Grows downwards using scaleY from top)
+*/
+.scroll-v-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #b8860b 0%, #00f2fe 50%, #4facfe 100%);
-  transform-origin: 0% 50%;
-  transform: scaleX(0);
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 5px rgba(184, 134, 11, 0.6);
-  border-radius: 0 2px 2px 0;
+  background: linear-gradient(to bottom, #4facfe, #c2a4ff);
+  box-shadow: 0 0 8px rgba(194, 164, 255, 0.6);
+  transform-origin: top center;
+  scale: 1 0; /* JS will update scaleY from 0 to 1 */
+}
+
+/* 
+  The moving physical mechanical thumb 
+*/
+.scroll-v-thumb {
+  position: absolute;
+  top: 0; /* JS controls translateY */
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centers vertically on its precise Y coordinate */
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-v-thumb-core {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fff, 0 0 20px #c2a4ff;
+  z-index: 2;
+}
+
+/* Pulsing flare ring around the thumb */
+.scroll-v-thumb-flare {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(194, 164, 255, 0.6);
+  border-radius: 50%;
+  animation: thumbPulse 2s ease-out infinite;
+}
+
+@keyframes thumbPulse {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* 
+  Decorative Tick Marks 
+*/
+.scroll-v-ticks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 2px 0;
+}
+
+.scroll-v-tick {
+  width: 6px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.scroll-v-tick:nth-child(1),
+.scroll-v-tick:nth-child(3), 
+.scroll-v-tick:nth-child(5) {
+  width: 10px; /* Major ticks at 0%, 50%, 100% */
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .scroll-v-slider-wrapper {
+    right: 10px;
+  }
+  .scroll-v-track-container {
+    height: 150px;
+  }
+  .scroll-v-readout {
+    font-size: 8px;
+  }
+  .scroll-v-value {
+    font-size: 10px;
+  }
 }

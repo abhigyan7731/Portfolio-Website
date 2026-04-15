@@ -4,11 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { value: "8.88", label: "CGPA", suffix: "/10", icon: "🎓" },
-  { value: "5", label: "Projects", suffix: "+", icon: "🚀" },
-  { value: "98", label: "ML Accuracy", suffix: "%", icon: "🧠" },
-];
+
 
 const timelineEvents = [
   { year: "2023", title: "Started B.Tech CSE", desc: "SRM IST Ghaziabad", color: "#c2a4ff" },
@@ -20,8 +16,7 @@ const timelineEvents = [
 const About = () => {
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
-  const [counters, setCounters] = useState(stats.map(() => 0));
-  const hasAnimated = useRef(false);
+
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -82,27 +77,6 @@ const About = () => {
         },
       });
 
-      // Stats fly in from 3D space
-      gsap.from(".about-stat-card", {
-        y: 100,
-        z: -300,
-        rotateX: 30,
-        opacity: 0,
-        stagger: 0.12,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".about-stats-row",
-          start: "top 85%",
-          onEnter: () => {
-            if (!hasAnimated.current) {
-              hasAnimated.current = true;
-              animateCounters();
-            }
-          },
-        },
-      });
-
       // Floating orbs
       gsap.to(".about-orb-1", { y: -30, x: 20, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
       gsap.to(".about-orb-2", { y: 25, x: -15, duration: 5, repeat: -1, yoyo: true, ease: "sine.inOut" });
@@ -116,27 +90,7 @@ const About = () => {
     return () => ctx.revert();
   }, []);
 
-  const animateCounters = () => {
-    stats.forEach((stat, index) => {
-      const target = parseFloat(stat.value);
-      const isDecimal = stat.value.includes(".");
-      const duration = 2000;
-      const startTime = Date.now();
-      const tick = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = eased * target;
-        setCounters((prev) => {
-          const next = [...prev];
-          next[index] = isDecimal ? parseFloat(current.toFixed(2)) : Math.floor(current);
-          return next;
-        });
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    });
-  };
+
 
   // 3D card tilt
   const handleCardMove = (e) => {
@@ -277,19 +231,7 @@ const About = () => {
         </div>
       </div>
 
-      {/* 3D Stats */}
-      <div className="about-stats-row">
-        {stats.map((stat, i) => (
-          <div className="about-stat-card" key={i}>
-            <div className="about-stat-icon">{stat.icon}</div>
-            <div className="about-stat-value">
-              {counters[i]}
-              <span className="about-stat-suffix">{stat.suffix}</span>
-            </div>
-            <div className="about-stat-label">{stat.label}</div>
-          </div>
-        ))}
-      </div>
+
     </div>
   );
 };

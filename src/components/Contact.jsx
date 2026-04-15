@@ -464,15 +464,6 @@ const Contact = () => {
       ref={sectionRef}
       onMouseMove={handleSectionMouseMove}
     >
-      {/* Data Rain Canvas */}
-      <canvas className="ct-data-rain" ref={dataRainRef} />
-
-      {/* Aurora Background */}
-      <div className="ct-aurora">
-        <div className="ct-aurora-band ct-aurora-1" />
-        <div className="ct-aurora-band ct-aurora-2" />
-        <div className="ct-aurora-band ct-aurora-3" />
-      </div>
 
       {/* Floating Orbs */}
       <div className="ct-orb ct-orb-1 ct-parallax-deep" />
