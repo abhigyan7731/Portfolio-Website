@@ -11,11 +11,22 @@ const experiences = [
     title: "B.Tech, Computer Science and Engineering",
     institution: "SRM IST Ghaziabad",
     description:
-      "Current CGPA: 8.88/10. Built multiple full-stack and machine learning projects, with strong focus on software engineering, data structures, and practical product development.",
+      "Current CGPA: 8.88/10. Built multiple full-stack and machine learning projects. NSS Volunteer (Led cleanliness drives and community service activities).",
     icon: "🎓",
     gradient: "linear-gradient(135deg, #c2a4ff, #667eea)",
     glow: "rgba(194, 164, 255, 0.25)",
     status: "Current",
+  },
+  {
+    year: "2025 — 2026",
+    title: "Certifications & Conferences",
+    institution: "Oracle, Meta, IBM, Govt of India",
+    description:
+      "Oracle Certified AI Foundations Associate. Meta Front-End Dev & IBM Data Science. Participated in India AI Impact Summit 2026 at Bharat Mandapam.",
+    icon: "📜",
+    gradient: "linear-gradient(135deg, #f093fb, #f5576c)",
+    glow: "rgba(240, 147, 251, 0.25)",
+    status: "Certified",
   },
   {
     year: "2022",
@@ -145,7 +156,7 @@ const Career = () => {
     card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)";
   };
 
-  const titleChars = "CAREER & EXPERIENCE".split("");
+  const titleChars = "CAREER & CERTIFICATIONS".split("");
 
   return (
     <div className="cr-section" ref={sectionRef} style={{ position: "relative" }}>

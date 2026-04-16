@@ -19,7 +19,7 @@ const projects = [
   {
     title: "E-Commerce Website",
     category: "Full Stack Web Development",
-    tools: "React, Next.js, Node.js, PostgreSQL, Prisma, JavaScript",
+    tools: "React, Next.js, Node.js, REST APIs, PostgreSQL, Prisma, JavaScript",
     image: "/images/react2.webp",
     github: "https://github.com/abhigyan7731/E-commerce-website",
     gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
@@ -29,7 +29,7 @@ const projects = [
   {
     title: "Portfolio Website",
     category: "Web Development",
-    tools: "React, Next.js, Three.js, GSAP, CSS",
+    tools: "React, Node.js, Three.js, GSAP, HTML, CSS",
     image: "/images/placeholder.webp",
     github: "https://github.com/abhigyan7731/Portfolio-Website",
     gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",

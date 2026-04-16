@@ -4,8 +4,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-
 const timelineEvents = [
   { year: "2023", title: "Started B.Tech CSE", desc: "SRM IST Ghaziabad", color: "#c2a4ff" },
   { year: "2024", title: "Full Stack Projects", desc: "React, Node.js, Supabase", color: "#4facfe" },
@@ -16,7 +14,6 @@ const timelineEvents = [
 const About = () => {
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
-
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -35,7 +32,7 @@ const About = () => {
       });
 
       // Main card emerges from the void
-      gsap.from(".about-glass-card", {
+      gsap.from(".about-cyber-card", {
         z: -400,
         rotateX: 25,
         rotateY: -10,
@@ -49,15 +46,15 @@ const About = () => {
         },
       });
 
-      // Terminal lines type in
-      gsap.from(".about-term-line", {
+      // HUD rows slide in sequentially
+      gsap.from(".cyber-reveal-item", {
         x: -30,
         opacity: 0,
-        stagger: 0.12,
+        stagger: 0.1,
         duration: 0.6,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: ".about-glass-card",
+          trigger: ".about-cyber-card",
           start: "top 60%",
         },
       });
@@ -82,15 +79,10 @@ const About = () => {
       gsap.to(".about-orb-2", { y: 25, x: -15, duration: 5, repeat: -1, yoyo: true, ease: "sine.inOut" });
       gsap.to(".about-orb-3", { y: -20, x: -25, duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-      // Terminal cursor blink
-      gsap.to(".about-cursor", { opacity: 0, duration: 0.5, repeat: -1, yoyo: true, ease: "steps(1)" });
-
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
-
-
 
   // 3D card tilt
   const handleCardMove = (e) => {
@@ -150,68 +142,81 @@ const About = () => {
         ))}
       </div>
 
-      {/* Main 3D Terminal Card */}
+      {/* Cybernetic Profile ID HUD */}
       <div
-        className="about-glass-card"
+        className="about-cyber-card"
         ref={cardRef}
         onMouseMove={handleCardMove}
         onMouseLeave={handleCardLeave}
       >
-        {/* macOS-style header */}
-        <div className="about-term-bar">
-          <div className="about-term-dots">
-            <span className="about-dot about-dot-r" />
-            <span className="about-dot about-dot-y" />
-            <span className="about-dot about-dot-g" />
+        <div className="cyber-corner-top-left"></div>
+        <div className="cyber-corner-bottom-right"></div>
+        <div className="cyber-border-accent"></div>
+
+        {/* HUD Header */}
+        <div className="cyber-header">
+          <div className="cyber-status-pulse">
+            <span className="cyber-dot"></span>
+            ACTIVE
           </div>
-          <span className="about-term-title">abhigyan@portfolio ~ /about</span>
-          <div style={{ width: 52 }} />
+          <span className="cyber-clearance">[ CLEARANCE: LEVEL 09 ]</span>
+          <span className="cyber-id">ID: ag8998</span>
         </div>
 
-        {/* Terminal body */}
-        <div className="about-term-body">
-          <div className="about-term-line">
-            <span className="about-prompt">$</span>
-            <span className="about-cmd">cat profile.md</span>
-          </div>
-
-          <div className="about-term-output">
-            <div className="about-term-line about-badge-line">
-              <span className="about-badge-dot" />
-              <span className="about-badge-text">B.Tech CSE — SRM IST Ghaziabad</span>
+        {/* HUD Body */}
+        <div className="cyber-body">
+          <div className="cyber-profile-grid">
+            <div className="cyber-avatar-box cyber-reveal-item">
+              <div className="cyber-avatar-glitch">AG</div>
             </div>
-            <p className="about-term-para">
-              I build <strong>scalable full-stack web applications</strong> and{" "}
-              <strong>machine learning solutions</strong> that solve real problems.
+            
+            <div className="cyber-specs">
+              <div className="cyber-spec-row cyber-reveal-item">
+                <span className="cyber-spec-label">ROLE</span>
+                <span className="cyber-spec-value">Full-Stack Engineer</span>
+              </div>
+              <div className="cyber-spec-row cyber-reveal-item">
+                <span className="cyber-spec-label">FOCUS</span>
+                <span className="cyber-spec-value highlight">Machine Learning</span>
+              </div>
+              <div className="cyber-spec-row cyber-reveal-item">
+                <span className="cyber-spec-label">SECTOR</span>
+                <span className="cyber-spec-value">SRM IST Ghaziabad</span>
+              </div>
+              <div className="cyber-spec-row cyber-reveal-item">
+                <span className="cyber-spec-label">BASE</span>
+                <span className="cyber-spec-value">Patna // Bihar</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="cyber-divider cyber-reveal-item"></div>
+
+          <div className="cyber-desc cyber-reveal-item">
+            <p>
+              I am a Computer Science student at <strong>SRM IST-Ghaziabad</strong> with a passion for building <strong>scalable full-stack applications</strong> and high-impact <strong>machine learning models</strong>. With proficiency across the Next.js and Supabase stack, I’ve developed real-world solutions like a multi-user expense tracker and a full-featured e-commerce platform.
             </p>
-            <p className="about-term-para">
-              From real-time expense trackers to e-commerce platforms with payment
-              workflows and ML classifiers with 98%+ accuracy — I turn complex
-              problems into <em>practical products</em>.
+            <p>
+              Beyond development, I am deeply interested in <span>AI-driven healthcare</span>, specifically in using ML for early disease detection. My project on Chronic Kidney Disease (CKD) prediction achieved over <span>98% accuracy</span> and utilized XAI tools like <strong>SHAP and LIME</strong> to ensure model transparency. I thrive at the intersection of clean code and data-driven insights, always looking for ways to bridge the gap between complex algorithms and user-centric design.
             </p>
           </div>
 
-          <div className="about-term-line">
-            <span className="about-prompt">$</span>
-            <span className="about-cmd">ls skills/</span>
-          </div>
+          <div className="cyber-divider cyber-reveal-item"></div>
 
-          <div className="about-tech-chips">
-            {["React", "Next.js", "Node.js", "PostgreSQL", "Supabase", "Python", "Scikit-learn", "Three.js", "GSAP"].map((tech) => (
-              <span className="about-chip" key={tech}>{tech}</span>
+          <div className="cyber-skills-header cyber-reveal-item">/// ACTIVE_SUBSYSTEMS_ENGAGED</div>
+          
+          <div className="cyber-skills-grid cyber-reveal-item">
+            {["React", "Next.js", "Node.js", "PostgreSQL", "Supabase", "Python", "Scikit", "Three.js", "GSAP"].map((tech) => (
+              <span className="cyber-skill-node" key={tech}>
+                <span className="cyber-tech-dot"></span>
+                {tech}
+              </span>
             ))}
           </div>
-
-          <div className="about-term-line">
-            <span className="about-prompt">$</span>
-            <span className="about-cursor">▊</span>
-          </div>
         </div>
 
-        {/* Scanline */}
-        <div className="about-scanline" />
-        {/* Edge light */}
-        <div className="about-card-edge-light" />
+        {/* Holographic Scanline */}
+        <div className="cyber-scanline"></div>
       </div>
 
       {/* Journey Timeline */}
@@ -230,7 +235,6 @@ const About = () => {
           ))}
         </div>
       </div>
-
 
     </div>
   );

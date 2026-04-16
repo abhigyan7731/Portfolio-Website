@@ -14,7 +14,7 @@ const stats = [
   {
     id: "projects",
     title: "PROJECTS",
-    value: "10",
+    value: "4",
     suffix: "+",
     color: "#c2a4ff"
   },
