@@ -12,28 +12,57 @@ const GitCity3D = () => {
   const containerRef = useRef(null);
   const gridRef = useRef(null);
 
-  // Generate mock data for the commits
-  const data = useMemo(() => {
-    const list = [];
-    for (let i = 0; i < TOTAL_BLOCKS; i++) {
-        const week = Math.floor(i / DAYS);
-        const day = i % DAYS;
-        
-        let activity = Math.sin(week * 0.2) * 5 + Math.cos(day * 0.5) * 3 + Math.random() * 5;
-        activity = Math.max(0, activity); 
-        
-        if (Math.random() > 0.95) activity += 12; // Rare huge commit days
+  const [data, setData] = useState([]);
+  const [totalHits, setTotalHits] = useState(0);
 
-        // Map into simple levels 0-4
-        let level = 0;
-        if (activity > 0.5 && activity < 3) level = 1;
-        else if (activity >= 3 && activity < 6) level = 2;
-        else if (activity >= 6 && activity < 10) level = 3;
-        else if (activity >= 10) level = 4;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch("https://github-contributions-api.deno.dev/abhigyan7731.json");
+        const json = await res.json();
+        
+        const list = [];
+        let idCounter = 0;
+        let total = 0;
 
-        list.push({ id: i, week, day, level });
+        // "contributions" is an array of weeks, each containing an array of days
+        json.contributions.forEach((weekArr, weekIdx) => {
+          weekArr.forEach((dayObj, dayIdx) => {
+            let level = 0;
+            const lvlMap = {
+              "NONE": 0,
+              "FIRST_QUARTILE": 1,
+              "SECOND_QUARTILE": 2,
+              "THIRD_QUARTILE": 3,
+              "FOURTH_QUARTILE": 4
+            };
+            if (lvlMap[dayObj.contributionLevel] !== undefined) {
+              level = lvlMap[dayObj.contributionLevel];
+            }
+            
+            total += dayObj.contributionCount;
+
+            list.push({
+              id: idCounter++,
+              week: weekIdx,
+              day: dayIdx,
+              level: level,
+              count: dayObj.contributionCount,
+              date: dayObj.date
+            });
+          });
+        });
+
+        // The grid expects 52 weeks * 7 days = 364 blocks, we can just use the provided data directly.
+        setData(list);
+        
+        // Summing up total automatically or trusting the endpoint's total:
+        setTotalHits(json.totalContributions || total);
+      } catch (err) {
+        console.error("Failed to fetch Github data", err);
+      }
     }
-    return list;
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -84,10 +113,12 @@ const GitCity3D = () => {
       <div className="gh-card">
         <div className="gh-header">
           <div className="gh-header-left">
-            <h2 className="gh-title">2,104 contributions in the last year</h2>
+            <h2 className="gh-title">
+              {totalHits > 0 ? `${totalHits.toLocaleString()} contributions in the last year` : "Loading contributions..."}
+            </h2>
           </div>
           <div className="gh-header-right">
-            <span className="gh-year-badge">2026</span>
+            <span className="gh-year-badge">{new Date().getFullYear()}</span>
           </div>
         </div>
 
@@ -112,7 +143,7 @@ const GitCity3D = () => {
                 <div 
                   key={block.id} 
                   className={`gh-block gh-lvl-${block.level}`}
-                  title={`${Math.floor(Math.random() * 15)} contributions on this day`}
+                  title={`${block.count} contributions on ${block.date}`}
                 />
               ))}
             </div>
