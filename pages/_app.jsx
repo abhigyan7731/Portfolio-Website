@@ -16,7 +16,7 @@ import '../src/components/styles/GlobalBackground.css'
 import '../src/components/styles/QuoteSection.css'
 import '../src/components/styles/ScrollProgressBar.css'
 import '../src/components/styles/SkillMatrix.css'
-import '../src/components/styles/Testimonials.css'
+import '../src/components/styles/Certifications.css'
 import '../src/components/styles/TechBlog.css'
 import '../src/components/styles/GitHubContributions.css'
 export default function MyApp({ Component, pageProps }) {

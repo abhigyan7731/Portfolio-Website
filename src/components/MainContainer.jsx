@@ -12,7 +12,7 @@ import Work from "./Work";
 import TrophyRoom3D from "./TrophyRoom3D";
 import SkillMatrix from "./SkillMatrix";
 import GitCity3D from "./GitCity3D";
-import Testimonials from "./Testimonials";
+import Certifications from "./Certifications";
 import TechBlog from "./TechBlog";
 import ScrollProgressBar from "./ScrollProgressBar";
 import GlobalBackground from "./GlobalBackground";
@@ -94,7 +94,7 @@ const MainContainer = ({ children }) => {
             <Career />
             <Work />
             <GitCity3D />
-            <Testimonials />
+            <Certifications />
             <TechBlog />
 
             <Contact />
