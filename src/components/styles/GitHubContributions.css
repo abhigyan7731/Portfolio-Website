@@ -108,6 +108,13 @@
 .gh-lvl-3 { background-color: #26a641; }
 .gh-lvl-4 { background-color: #39d353; box-shadow: 0 0 8px rgba(57, 211, 83, 0.4); }
 
+/* LeetCode Heatmap Colors (Golden Yellow) */
+.lc-lvl-0 { background-color: #161b22; outline: 1px solid rgba(255,255,255,0.05); }
+.lc-lvl-1 { background-color: #4a3a10; }
+.lc-lvl-2 { background-color: #8c6808; }
+.lc-lvl-3 { background-color: #cc9900; }
+.lc-lvl-4 { background-color: #ffa116; box-shadow: 0 0 8px rgba(255, 161, 22, 0.4); }
+
 .gh-footer {
   display: flex;
   justify-content: space-between;
@@ -134,4 +141,87 @@
 
 .gh-legend span {
   margin: 0 5px;
+}
+
+/* Tab Toggle Styles (Cyberpunk Theme) */
+.log-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  z-index: 10;
+  position: relative;
+}
+
+.log-tab-btn {
+  background: rgba(15, 20, 25, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #8b949e;
+  padding: 12px 45px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  overflow: hidden;
+  transform: skewX(-15deg);
+  backdrop-filter: blur(5px);
+}
+
+.log-tab-btn span {
+  display: inline-block;
+  transform: skewX(15deg); /* Un-skew the text */
+  pointer-events: none;
+}
+
+/* Hover Shine Effect */
+.log-tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: skewX(15deg);
+  transition: all 0.6s ease;
+}
+
+.log-tab-btn:hover::before {
+  left: 150%;
+}
+
+.log-tab-btn:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+  transform: skewX(-15deg) scale(1.05);
+}
+
+/* GitHub Active State */
+.log-tab-btn.active-github {
+  background: rgba(38, 166, 65, 0.1);
+  border: 1px solid #39d353;
+  color: #39d353;
+  box-shadow: inset 0 0 20px rgba(57, 211, 83, 0.2), 0 0 20px rgba(57, 211, 83, 0.4);
+  text-shadow: 0 0 10px rgba(57, 211, 83, 0.5);
+}
+
+.log-tab-btn.active-github:hover {
+  box-shadow: inset 0 0 20px rgba(57, 211, 83, 0.3), 0 0 30px rgba(57, 211, 83, 0.6);
+  border-color: #53f56e;
+}
+
+/* LeetCode Active State */
+.log-tab-btn.active-leetcode {
+  background: rgba(255, 161, 22, 0.1);
+  border: 1px solid #ffa116;
+  color: #ffa116;
+  box-shadow: inset 0 0 20px rgba(255, 161, 22, 0.2), 0 0 20px rgba(255, 161, 22, 0.4);
+  text-shadow: 0 0 10px rgba(255, 161, 22, 0.5);
+}
+
+.log-tab-btn.active-leetcode:hover {
+  box-shadow: inset 0 0 20px rgba(255, 161, 22, 0.3), 0 0 30px rgba(255, 161, 22, 0.6);
+  border-color: #ffb84d;
 }
