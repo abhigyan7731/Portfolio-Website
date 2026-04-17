@@ -90,7 +90,7 @@ const WhatIDo = () => {
           start: "top 70%",
         },
       });
-    }, sectionRef);
+    }, sectionRef.current);
 
     return () => ctx.revert();
   }, []);

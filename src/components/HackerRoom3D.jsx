@@ -113,7 +113,7 @@ const HackerRoom3D = ({ children }) => {
           frameloop={isVisible ? "always" : "demand"}
         >
           <ambientLight intensity={0.1} />
-          <Environment preset="city" />
+          <Environment files="/models/char_enviorment.hdr" />
           
           <PresentationControls 
             global 

@@ -57,7 +57,7 @@ const TechBlog = () => {
           start: "top 75%"
         }
       });
-    }, sectionRef);
+    }, sectionRef.current);
 
     return () => ctx.revert();
   }, []);

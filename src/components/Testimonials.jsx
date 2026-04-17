@@ -58,7 +58,7 @@ const Testimonials = () => {
           start: "top 75%"
         }
       });
-    }, sectionRef);
+    }, sectionRef.current);
     return () => ctx.revert();
   }, []);
 

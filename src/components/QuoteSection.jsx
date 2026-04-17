@@ -54,7 +54,7 @@ const QuoteSection = () => {
         yoyo: true,
         ease: "sine.inOut"
       });
-    }, sectionRef);
+    }, sectionRef.current);
 
     return () => ctx.revert();
   }, []);

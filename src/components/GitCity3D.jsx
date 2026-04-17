@@ -23,7 +23,7 @@ const GitCity3D = () => {
         // Fetch Github Data
         const ghRes = await fetch("https://github-contributions-api.deno.dev/abhigyan7731.json");
         const ghJson = await ghRes.json();
-        
+
         let ghList = [];
         let ghIdCounter = 0;
         let ghTot = 0;
@@ -50,11 +50,11 @@ const GitCity3D = () => {
         let lcList = [];
         let lcIdCounter = 0;
         let lcTot = lcJson ? lcJson.totalSolved : 0;
-        
+
         // Use GitHub contributions structure to define our calendar baseline
         ghJson.contributions.forEach((weekArr) => {
           weekArr.forEach((dayObj) => {
-            
+
             // GitHub Processing
             let ghLevel = 0;
             const lvlMap = {
@@ -109,7 +109,7 @@ const GitCity3D = () => {
           let d = new Date();
           d.setDate(d.getDate() - i);
           let dStr = d.toISOString().split('T')[0];
-          
+
           if (lcDatesMap[dStr] > 0) {
             cStreak++;
           } else {
@@ -120,7 +120,7 @@ const GitCity3D = () => {
 
         setGhData(ghList);
         setGhTotal(ghJson.totalContributions || ghTot);
-        
+
         setLcData(lcList);
         setLcTotal(lcTot);
         setLcStreak({ current: cStreak, max: maxStreak });
@@ -144,7 +144,7 @@ const GitCity3D = () => {
           start: "top 80%"
         }
       });
-    }, containerRef);
+    }, containerRef.current);
 
     return () => ctx.revert();
   }, []);
@@ -152,7 +152,7 @@ const GitCity3D = () => {
   // Re-trigger animation when tab changes
   useEffect(() => {
     if (gridRef.current && (ghData.length > 0 || lcData.length > 0)) {
-      gsap.fromTo(gridRef.current.children, 
+      gsap.fromTo(gridRef.current.children,
         { opacity: 0, scale: 0.2 },
         { opacity: 1, scale: 1, duration: 0.4, stagger: { amount: 0.8, from: "random" }, ease: "back.out(2)" }
       );
@@ -176,13 +176,13 @@ const GitCity3D = () => {
 
       {/* Tabs */}
       <div className="log-tabs">
-        <button 
+        <button
           className={`log-tab-btn ${!isLc ? "active-github" : ""}`}
           onClick={() => setActiveTab("github")}
         >
           <span>GitHub</span>
         </button>
-        <button 
+        <button
           className={`log-tab-btn ${isLc ? "active-leetcode" : ""}`}
           onClick={() => setActiveTab("leetcode")}
         >
@@ -199,7 +199,7 @@ const GitCity3D = () => {
               ) : (
                 lcTotal > 0 ? (
                   <span>
-                    <span style={{ color: '#ffa116', fontWeight: 'bold' }}>{lcTotal}</span> Problems Solved | 
+                    <span style={{ color: '#ffa116', fontWeight: 'bold' }}>{lcTotal}</span> Problems Solved |
                     Streak: <span style={{ color: '#ffa116' }}>{lcStreak.current}</span> Days (Max: {lcStreak.max})
                   </span>
                 ) : "Loading LeetCode stats..."
@@ -217,7 +217,7 @@ const GitCity3D = () => {
             <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
             <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
           </div>
-          
+
           <div className="gh-grid-body">
             <div className="gh-days">
               <span>Mon</span>
@@ -227,8 +227,8 @@ const GitCity3D = () => {
 
             <div className="gh-grid" ref={gridRef}>
               {activeData.map((block) => (
-                <div 
-                  key={block.id} 
+                <div
+                  key={block.id}
                   className={`gh-block ${isLc ? `lc-lvl-${block.level}` : `gh-lvl-${block.level}`}`}
                   title={`${block.count} ${isLc ? "submissions" : "contributions"} on ${block.date}`}
                 />

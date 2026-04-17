@@ -136,7 +136,7 @@ const AboutSandbox = () => {
         >
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
-          <Environment preset="city" />
+          <Environment files="/models/char_enviorment.hdr" />
           
           <Physics gravity={[0, -15, 0]}>
             <MouseInteractor />

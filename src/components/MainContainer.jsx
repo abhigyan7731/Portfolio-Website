@@ -14,6 +14,8 @@ import SkillMatrix from "./SkillMatrix";
 import GitCity3D from "./GitCity3D";
 import Certifications from "./Certifications";
 import TechBlog from "./TechBlog";
+import QuoteSection from "./QuoteSection";
+
 import ScrollProgressBar from "./ScrollProgressBar";
 import GlobalBackground from "./GlobalBackground";
 import setSplitText from "./utils/splitText";
@@ -91,8 +93,10 @@ const MainContainer = ({ children }) => {
             <WhatIDo />
             <SkillConstellation />
             <SkillMatrix />
+            <QuoteSection />
             <Career />
             <Work />
+
             <GitCity3D />
             <Certifications />
             <TechBlog />

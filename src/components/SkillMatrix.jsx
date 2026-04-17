@@ -39,7 +39,7 @@ const SkillMatrix = () => {
     const ctx = gsap.context(() => {
       gsap.from(".sm-header", { y: -50, opacity: 0, duration: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 80%" } });
       gsap.from(".sm-panel", { y: 100, opacity: 0, stagger: 0.2, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".sm-dashboard", start: "top 75%" } });
-    }, sectionRef);
+    }, sectionRef.current);
 
     return () => ctx.revert();
   }, []);

@@ -47,7 +47,7 @@ const StatNode = ({ data, position, delay = 0 }) => {
   // Use useFrame to animate the rotation and hover dynamics
   useFrame((state, delta) => {
     const elapsed = state.clock.elapsedTime;
-    
+
     // Smoothly scale up on init
     if (outerRingRef.current && outerRingRef.current.scale.x < scale) {
       const newScale = THREE.MathUtils.lerp(outerRingRef.current.scale.x, scale, 0.1);
@@ -62,7 +62,7 @@ const StatNode = ({ data, position, delay = 0 }) => {
       outerRingRef.current.rotation.y += delta * 0.8;
       outerRingRef.current.rotation.z += delta * 0.2;
     }
-    
+
     // Inner gyro ring
     if (innerRingRef.current) {
       innerRingRef.current.rotation.x -= delta * 0.4;
@@ -74,7 +74,7 @@ const StatNode = ({ data, position, delay = 0 }) => {
       // Very fast spin if hovered
       innerCoreRef.current.rotation.y -= delta * (hovered ? 3 : 0.8);
       innerCoreRef.current.rotation.x += delta * (hovered ? 2 : 0.4);
-      
+
       // Floating bounce effect
       innerCoreRef.current.position.y = Math.sin(elapsed * 2.5 + delay) * 0.3;
 
@@ -93,34 +93,34 @@ const StatNode = ({ data, position, delay = 0 }) => {
   });
 
   return (
-    <group 
+    <group
       position={position}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
       {/* Outer Holographic Track (Gyro ring 1) */}
-      <mesh ref={outerRingRef} scale={[0,0,0]}>
+      <mesh ref={outerRingRef} scale={[0, 0, 0]}>
         <torusGeometry args={[1.8, 0.04, 16, 100]} />
         <meshBasicMaterial color={data.color} transparent opacity={hovered ? 0.8 : 0.3} wireframe={!hovered} />
       </mesh>
 
       {/* Inner Holographic Track (Gyro ring 2) */}
-      <mesh ref={innerRingRef} scale={[0,0,0]} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh ref={innerRingRef} scale={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[1.4, 0.02, 16, 100]} />
         <meshBasicMaterial color={data.color} transparent opacity={0.5} />
       </mesh>
 
       {/* Glowing Inner Core (Data Crystal / Icosahedron) */}
-      <mesh ref={innerCoreRef} scale={[0,0,0]}>
+      <mesh ref={innerCoreRef} scale={[0, 0, 0]}>
         <icosahedronGeometry args={[0.7, 0]} />
-        <meshStandardMaterial 
-          color={data.color} 
-          emissive={data.color} 
+        <meshStandardMaterial
+          color={data.color}
+          emissive={data.color}
           emissiveIntensity={hovered ? 2.5 : 1.0}
           wireframe={!hovered}
         />
       </mesh>
-      
+
       {/* Interactive Light Beam Floor Ring */}
       <mesh ref={baseRingRef} position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[1.2, 1.4, 64]} />
@@ -131,9 +131,9 @@ const StatNode = ({ data, position, delay = 0 }) => {
       {hovered && (
         <mesh position={[0, -1.25, 0]}>
           <cylinderGeometry args={[1.3, 1.3, 2.5, 32, 1, true]} />
-          <meshBasicMaterial 
-            color={data.color} 
-            transparent 
+          <meshBasicMaterial
+            color={data.color}
+            transparent
             opacity={0.1}
             side={THREE.DoubleSide}
             blending={THREE.AdditiveBlending}
@@ -142,10 +142,10 @@ const StatNode = ({ data, position, delay = 0 }) => {
       )}
 
       {/* High-Fidelity Holographic Text hovering above */}
-      <Html 
-        position={[0, 1.4, 0]} 
-        center 
-        transform 
+      <Html
+        position={[0, 1.4, 0]}
+        center
+        transform
         distanceFactor={2.5}
         zIndexRange={[100, 0]}
       >
@@ -164,11 +164,11 @@ const StatNode = ({ data, position, delay = 0 }) => {
           <h2 style={{ fontSize: "50px", fontWeight: "900", margin: 0, lineHeight: 1, letterSpacing: "2px" }}>
             {data.value}<span style={{ fontSize: "24px", color: data.color }}>{data.suffix}</span>
           </h2>
-          <div style={{ 
-            fontSize: "14px", 
-            fontWeight: "inline: 600", 
-            letterSpacing: "4px", 
-            color: hovered ? "#fff" : "#ccc", 
+          <div style={{
+            fontSize: "14px",
+            fontWeight: "inline: 600",
+            letterSpacing: "4px",
+            color: hovered ? "#fff" : "#ccc",
             marginTop: "10px",
             transition: "color 0.3s ease"
           }}>
@@ -198,15 +198,15 @@ const TrophyRoom3D = () => {
 
   return (
     <div className="tr-section" ref={containerRef} id="statistics" style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", zIndex: 12 }}>
-      
+
       {/* Title block */}
       <div style={{ position: "absolute", top: "10%", width: "100%", textAlign: "center", zIndex: 10, pointerEvents: "none" }}>
         <h2 style={{ fontSize: "40px", fontWeight: "900", color: "white", margin: 0, textTransform: "uppercase", letterSpacing: "4px" }}>STATISTICS</h2>
         <p style={{ color: "#777", letterSpacing: "3px", textTransform: "uppercase", fontSize: "14px", marginTop: "10px" }}>Performance Metrics Matrix</p>
       </div>
 
-      <Canvas 
-        camera={{ position: [0, 2, typeof window !== "undefined" && window.innerWidth < 768 ? 22 : 12], fov: 45 }} 
+      <Canvas
+        camera={{ position: [0, 2, typeof window !== "undefined" && window.innerWidth < 768 ? 22 : 12], fov: 45 }}
         dpr={[1, typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 1.5]}
         gl={{ powerPreference: "high-performance", alpha: true, antialias: true }}
         style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 5 }}
@@ -215,28 +215,28 @@ const TrophyRoom3D = () => {
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" />
         <directionalLight position={[-10, 10, -5]} intensity={1} color="#c2a4ff" />
-        <Environment preset="city" />
+        <Environment files="/models/char_enviorment.hdr" />
 
-        <PresentationControls 
-          global 
-          config={{ mass: 1, tension: 300, friction: 20 }} 
-          snap={{ mass: 1, tension: 300, friction: 20 }} 
-          rotation={[0.1, 0, 0]} 
-          polar={[-0.2, 0.2]} 
-          azimuth={[-0.4, 0.4]} 
+        <PresentationControls
+          global
+          config={{ mass: 1, tension: 300, friction: 20 }}
+          snap={{ mass: 1, tension: 300, friction: 20 }}
+          rotation={[0.1, 0, 0]}
+          polar={[-0.2, 0.2]}
+          azimuth={[-0.4, 0.4]}
         >
           {/* Base Grid for the Holograms */}
-          <Grid 
-            position={[0, -2.5, 0]} 
-            args={[30, 30]} 
-            cellSize={1} 
-            cellThickness={0.5} 
-            cellColor="#4facfe" 
-            sectionSize={3} 
-            sectionThickness={1} 
-            sectionColor="#c2a4ff" 
-            fadeDistance={25} 
-            fadeStrength={2} 
+          <Grid
+            position={[0, -2.5, 0]}
+            args={[30, 30]}
+            cellSize={1}
+            cellThickness={0.5}
+            cellColor="#4facfe"
+            sectionSize={3}
+            sectionThickness={1}
+            sectionColor="#c2a4ff"
+            fadeDistance={25}
+            fadeStrength={2}
           />
 
           {/* Render the 3 Holographic Data Cores only when visible */}
@@ -249,7 +249,7 @@ const TrophyRoom3D = () => {
           )}
         </PresentationControls>
       </Canvas>
-      
+
       {/* Edge Blur / Cinematic Vignette */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle, transparent 40%, rgba(2,2,2,0.9) 100%)", zIndex: 6, pointerEvents: "none" }} />
     </div>

@@ -85,6 +85,19 @@ const Cursor = () => {
     // Attach magnetics after a brief delay so DOM is ready
     const magnetTimer = setTimeout(addMagnetics, 2000);
 
+    // Mousedown/up feedback
+    const onMouseDown = () => {
+      gsap.to(dot, { scale: 1.5, duration: 0.15 });
+      gsap.to(ring, { scale: 0.8, duration: 0.15 });
+    };
+    const onMouseUp = () => {
+      gsap.to(dot, { scale: 1, duration: 0.2 });
+      gsap.to(ring, { scale: 1, duration: 0.2 });
+    };
+
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+
     // Throttle particle spawning - only every 3rd move event
     let moveCount = 0;
 
@@ -161,6 +174,8 @@ const Cursor = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
       cancelAnimationFrame(animationFrameId);
       clearTimeout(magnetTimer);
       clearTimeout(resizeTimer);

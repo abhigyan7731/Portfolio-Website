@@ -219,7 +219,7 @@ const ProjectsVault3D = () => {
         >
           <ambientLight intensity={0.5} />
           <pointLight position={[0, 5, 0]} intensity={2} color="#4facfe" />
-          <Environment preset="city" />
+          <Environment files="/models/char_enviorment.hdr" />
           <VaultCore />
         </Canvas>
       )}

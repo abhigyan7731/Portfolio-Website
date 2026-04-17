@@ -79,7 +79,7 @@ const About = () => {
       gsap.to(".about-orb-2", { y: 25, x: -15, duration: 5, repeat: -1, yoyo: true, ease: "sine.inOut" });
       gsap.to(".about-orb-3", { y: -20, x: -25, duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-    }, sectionRef);
+    }, sectionRef.current);
 
     return () => ctx.revert();
   }, []);

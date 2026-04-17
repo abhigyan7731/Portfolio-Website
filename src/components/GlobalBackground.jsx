@@ -1,7 +1,10 @@
 import { useRef, useEffect, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars, Float, PerspectiveCamera } from "@react-three/drei";
+import { EffectComposer, Bloom, Noise, Glitch, Vignette } from "@react-three/postprocessing";
+import { GlitchMode } from "postprocessing";
 import * as THREE from "three";
+import { useState } from "react";
 
 // Shared scroll and mouse trackers outside of React render lifecycle
 let cachedScrollY = 0;
@@ -206,6 +209,26 @@ const GlobalBackground = () => {
 
         {/* Starfield */}
         <DeepSpaceParticles />
+
+        {/* Cinematic Post-Processing */}
+        <EffectComposer disableNormalPass>
+          <Bloom 
+            luminanceThreshold={0.2} 
+            mipmapBlur 
+            intensity={1.5} 
+            radius={0.4} 
+          />
+          <Noise opacity={0.08} />
+          <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          <Glitch
+            delay={[1.5, 3.5]} // min and max delay between glitches
+            duration={[0.1, 0.3]} // min and max duration of a glitch
+            strength={[0.1, 0.3]} // min and max strength of a glitch
+            mode={GlitchMode.SPORADIC} // glitch mode
+            active={true} // turn on/off
+            ratio={0.85} // threshold for activation
+          />
+        </EffectComposer>
 
         {/* Heavy fog to make the terrain fade smoothly into black distance */}
         <fog attach="fog" args={["#03010b", 20, 80]} />
